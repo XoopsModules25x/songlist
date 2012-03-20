@@ -1,0 +1,11 @@
+<{if $categories}>
+<table>
+	<{foreach from=$categories item=row}>
+	<tr>
+		<{foreach from=$row item=category}>
+		<td><{includeq file="db:songlist_category_item.html" category=$category}></td>
+		<{/foreach}>
+	</tr>
+	<{/foreach}>
+</table>
+<{/if}>

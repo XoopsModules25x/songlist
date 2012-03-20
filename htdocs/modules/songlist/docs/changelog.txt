@@ -1,0 +1,212 @@
+==========================================
+ 2011/01/30 01:26:01 Version 1.17 BETA
+==========================================
+ - Added /tag/plugin/vod.php Tag Module Plugin code added (wishcraft)
+ - Added /xpayment/plugin/vod.php XPayment Module Plugin code added (wishcraft)
+ - Changed /class/cart.php restructing and debugged code added for cart & cart session (wishcraft)
+ - Changed /class/sessions.php restructing and debugged code added for cart & cart session  (wishcraft)
+ - Changed /class/log.php restructing and debugged code added for videos class  (wishcraft)
+ - Changed /index.php restructing and debugged code added for cart & cart session   (wishcraft)
+ - Changed /xoops_version.php Support for New Variables, Constants & Templates; version updated of Application (wishcraft)
+   
+==========================================
+ 2011/01/27 5:48:01 Version 1.16 ALPHA
+==========================================
+ - Added /cron/notify.php Notification Cron Added & Matrixstream code added (wishcraft)
+ - Added /language/english/email.php Email Language Constants Added to Application (wishcraft)
+ - Added /language/english/mail_templates/vod_video_available_cart.html Email Template (wishcraft)
+ - Added /language/english/mail_templates/vod_video_expired_cart.html Email Template (wishcraft)
+ - Added /language/english/mail_templates/vod_video_expired_viewing_cart.html Email Template (wishcraft)
+ - Added /templates/vod_index_cart_view.html User Cart View Added to Application (wishcraft)
+ - Added /templates/vod_index_cart_xpayment_form.html User Cart Checkout Form Added to Application (wishcraft)
+ - Added /templates/vod_index_category_list.html User Category List Added to Application (wishcraft)
+ - Added /templates/vod_index_category_view.html User Category View Added to Application (wishcraft)
+ - Added /templates/vod_index_videos_list.html User Video List Added to Application (wishcraft)
+ - Added /templates/vod_index_videos_view.html User Video View Details Added to Application (wishcraft)
+ - Changed /class/cart.php restructing and new code added for cart & cart session (wishcraft)
+ - Changed /class/currency.php new functions added to the handler (wishcraft)
+ - Changed /class/session.php restructing and new code added for cart & cart session  (wishcraft)
+ - Changed /index.php User Interface Added (wishcraft)
+ - Changed /language/english/modinfo.php New & Changed Preferences Language Constants Added to Application (wishcraft)
+ - Changed /xoops_version.php Support for New Variables, Constants & Templates; version updated of Application (wishcraft)
+ - Changed /include/update.php Emptied of all flowplayer upgrades - new module installation (wishcraft)
+ - Renamed /language/english/mainfile.php to main.php - Main Language Constants Added (wishcraft)
+  
+==========================================
+ 2011/01/26 20:42:01 Version 1.15 PREALPHA
+==========================================
+ - Replace /modules/vod Search through entire Application for 'flowplayer' and replaced with 'vod' (wishcraft)
+ - Replace /modules/vod Search through entire Application for 'Flowplayer' and replaced with 'Vod' (wishcraft)
+ - Replace /modules/vod Search through entire Application for 'FLOWPLAYER' and replaced with 'VOD' (wishcraft)
+ - Replace /modules/vod Search through entire Application for 'player' and replaced with 'videos' (wishcraft)
+ - Replace /modules/vod Search through entire Application for 'Player' and replaced with 'Video' (wishcraft)
+ - Replace /modules/vod Search through entire Application for 'PLAYER' and replaced with 'VIDEOS' (wishcraft)
+ - Replace /modules/vod Search through entire Application for 'FLOWORDER' and replaced with 'VOD' (wishcraft)
+ - Added /class/cart.php Cart Items Class added to Application (wishcraft)
+ - Added /class/category.php Categories Class added to Application (wishcraft)
+ - Added /class/currency.php Currency & Currency Conversion Class added to Application (wishcraft)
+ - Added /class/log.php Log Class added to Application (wishcraft)
+ - Added /class/session.php Cart Session Class added to Application (wishcraft)
+ - Added /include/formselectcategory.php VodFormSelectCategory form object added to Application (wishcraft)
+ - Added /include/formselectcurrency.php VodFormSelectCurrency form object added to Application (wishcraft)
+ - Added /include/formselectpackageid.php VodFormSelectPackageID form object added to Application (wishcraft)
+ - Added /include/forms.vod.php vod_category_get_form() Category Form Added to Application (wishcraft)
+ - Added /include/forms.vod.php vod_sessions_get_form() Cart Sessions Form Added to Application (wishcraft)
+ - Added /include/forms.vod.php vod_cart_get_form() Cart Items Form Added to Application (wishcraft)
+ - Added /include/forms.vod.php vod_currency_get_form() Currency Form Added to Application (wishcraft)
+ - Added /include/functions.php vod_getToken() MD5 Token/Salt generation function to Application (wishcraft)
+ - Added /include/functions.php ucword() Uppercase First letter of every word function to Application (wishcraft)
+ - Added /language/english/log.php Log Language Constants Added to Application (wishcraft)
+ - Added /language/english/forms.php Forms Language Constants Added to Application (wishcraft)
+ - Added /language/english/admin.php Admin Language Constants Added to Application (wishcraft)
+ - Added /language/english/modinfo.php Module Language Constants Added to Application (wishcraft)
+ - Added /templates/vod_cpanel_cart_edit.html Control Panel Edit Cart Added to Application (wishcraft)
+ - Added /templates/vod_cpanel_cart_list.html Control Panel List Cart Added to Application (wishcraft)
+ - Added /templates/vod_cpanel_category_edit.html Control Panel Edit Category Added to Application (wishcraft)
+ - Added /templates/vod_cpanel_category_list.html Control Panel List Category Added to Application (wishcraft)
+ - Added /templates/vod_cpanel_currency_edit.html Control Panel Edit Currency Added to Application (wishcraft)
+ - Added /templates/vod_cpanel_currency_list.html Control Panel List Currency Added to Application (wishcraft)
+ - Added /templates/vod_cpanel_log_list.html Control Panel List Log Added to Application (wishcraft)
+ - Added /templates/vod_cpanel_sessions_edit.html Control Panel Edit Sessions Added to Application (wishcraft)
+ - Added /templates/vod_cpanel_sessions_list.html Control Panel List Sessions Added to Application (wishcraft)
+ - Changed /include/formobjects.vod.php Instanciate new application form objects & tag module (wishcraft)
+ - Changed /admin/menu.php Support for Categories, Currencies, Log, Permissions & Cart Sessions Added (wishcraft)
+ - Changed /admin/index.php Support for Categories, Currencies, Log, Permissions & Cart Sessions Added (wishcraft)
+ - Changed /sql/mysql.sql Support for VOD Shopping Experiences in application added and renamed players table to videos (wishcraft)
+ - Changed /language/english/forms.php New & Changed Form Language Constants Added to Application (wishcraft)
+ - Changed /include/formobjects.vod.php Support for New Field Types Added (wishcraft)
+ - Changed /include/forms.vod.php vod_videos_get_form() changed to support database changes from flowplayer module (wishcraft)
+ - Changed /xoops_version.php Support for New Variables, Constants & Templates; version updated of Application (wishcraft)
+ - Changed /include/update.php Emptied of all flowplayer upgrades - new module installation (wishcraft)
+ - Changed /modules/vod Rename all files containing keywords of replace [see above - replace] (wishcraft)
+ 
+
+========================================
+ 2011/01/22 20:42:01 Version 1.14 STABLE
+========================================
+ - Added /class/videos.php VodVideos::getVar() Support for Special Useragent Variables (wishcraft)
+ - Added /class/videos.php VodVideos::getSpecialWithUserAgent() Support for Special Useragent Variables (wishcraft)
+ - Added Template templates/vod_index_iframe_http_videos.html (Wishcraft)
+ - Added Template templates/vod_index_http_videos.html (Wishcraft)
+ - Added Template templates/vod_json_block_http_videos.html (Wishcraft)
+ - Added Template templates/vod_json_http_videos.html (Wishcraft)
+ - Changed /class/videos.php VodVideos::toArray() Support for Special Useragent Variables (wishcraft)
+ - Changed /class/videos.php VodVideos::getSource() Support for HTTP Videos Mode (wishcraft)
+ - Changed /class/videos.php VodVideos::getJS() Support for Special Useragent Variables (wishcraft)
+ - Changed /xoops_version.php Support for Special Useragent Variables & HTTP Useragent Videos Mode (wishcraft)
+ - Changed /sql/mysql.sql Support for Special Useragent Variables & HTTP Useragent Videos Mode (wishcraft)
+ - Changed /include/update.php Support for Special Useragent Variables & HTTP Useragent Videos Mode (wishcraft)
+ - Changed /include/form.vod.php Support for Special Useragent Variables & HTTP Useragent Videos Mode (wishcraft)
+ - Changed /include/formselectsupport.php Support for HTTP Useragent Videos Mode (wishcraft)
+ 
+========================================
+ 2011/01/19 2:30:01 Version 1.13 STABLE
+========================================
+ - Added /class/videos.php VideosObject::getInsecureJS() Support for Insecure Javascript (No JSON) (wishcraft)
+ - Changed /index.php Support for Insecure HTML/Javascript (No JSON) (wishcraft)
+ - Changed /xoops_version.php Support for Insecure HTML/Javascript (No JSON) (wishcraft)
+ - Changed /language/english/modinfo.php Insecure preference settings (Wishcraft)
+ - Changed /templates/vod_index_iframe_flash_videos.html Support Insecure HTML (Wishcraft)
+ - Changed /templates/vod_index_iframe_ios_videos.html Support Insecure HTML (Wishcraft)
+ - Changed /templates/vod_index_iframe_rtmp_videos.html Support Insecure HTML (Wishcraft)
+ - Changed /templates/vod_index_iframe_rtsp_videos.html Support Insecure HTML (Wishcraft)
+ - Changed /templates/vod_index_iframe_silverlight_videos.html Support Insecure HTML (Wishcraft)
+ - Changed /templates/vod_index_iframe_html5_videos.html Support Insecure HTML (Wishcraft)
+ - Changed /templates/vod_index_iframe_other_videos.html Support Insecure HTML (Wishcraft)
+ 
+ 
+ ========================================
+ 2011/01/18 21:00:01 Version 1.12 STABLE
+========================================
+ - Added /preloads/core.php User Agent Spy stored in cache (wishcraft)
+ - Added /templates/vod_cpanel_useragents_list.html User Agent Spy control panel template (wishcraft)
+ - Changed /language/english/modinfo.php menu constants & spelling error in style.css path (Wishcraft)
+ - Changed /language/english/admin.php menu constants User Agent Spy control panel (Wishcraft)
+ - Changed /admin/menu.php menu constants for User Agent Spy control panel added (Wishcraft)
+ - Changed /admin/index.php Code for User Agent Spy control panel added (Wishcraft)
+ 
+========================================
+ 2011/01/11 05:00:01 Version 1.10 STABLE
+========================================
+ - Changed Implementation of HTML Generater getHTML() /class/videos.php  (Wishcraft)
+ - Changed Implementation of Javascript Generater getJS() /class/videos.php  (Wishcraft) 
+ - Changed Implementation of Index /index.php  (Wishcraft)
+ - Changed Implementation of JSON Strapping /dojson_videos.php  (Wishcraft)
+ - Changed New Preferences /xoops_version.php (Wishcraft)
+ - Changed System menu defined /xoops_version.php (Wishcraft)
+ - Changed New Preference Language Defines for config language/english/modinfo.php (Wishcraft)
+ - Changed New Fields added to `vod_videos` sql/mysql.sql (Wishcraft)
+ - Changed New Fields & Table added to update script include/update.php (Wishcraft)
+ - Removed Template templates/vod_index_iframe_videos.html (Wishcraft)
+ - Removed Template templates/vod_index_videos.html (Wishcraft)
+ - Removed Template templates/vod_json_block_videos.html (Wishcraft)
+ - Removed Template templates/vod_json_videos.html (Wishcraft)
+ - Added New Table added to `vod_mimetypes` sql/mysql.sql (Wishcraft)
+ - Added Classes Blue Room class for `vod_mimetypes` class/mimetypes.php (Wishcraft)
+ - Added Function getSource() class/videos.php (Wishcraft)
+ - Added Function getModeWithUserAgent() class/videos.php (Wishcraft) 
+ - Added Javascript js/video.js (Wishcraft)
+ - Added Stylesheet language/english/video-js.css (Wishcraft)
+ - Added Template templates/vod_cpanel_mimetypes_edit.html (Wishcraft)
+ - Added Template templates/vod_cpanel_mimetypes_list.html (Wishcraft)
+ - Added Template templates/vod_index_iframe_flash_videos.html (Wishcraft)
+ - Added Template templates/vod_index_iframe_ios_videos.html (Wishcraft)
+ - Added Template templates/vod_index_iframe_other_videos.html (Wishcraft)
+ - Added Template templates/vod_index_iframe_rtmp_videos.html (Wishcraft)
+ - Added Template templates/vod_index_iframe_rtsp_videos.html (Wishcraft)
+ - Added Template templates/vod_index_iframe_silverlight_videos.html (Wishcraft)
+ - Added Template templates/vod_index_flash_videos.html (Wishcraft)
+ - Added Template templates/vod_index_ios_videos.html (Wishcraft)
+ - Added Template templates/vod_index_other_videos.html (Wishcraft)
+ - Added Template templates/vod_index_rtmp_videos.html (Wishcraft)
+ - Added Template templates/vod_index_rtsp_videos.html (Wishcraft)
+ - Added Template templates/vod_index_silverlight_videos.html (Wishcraft)
+ - Added Template templates/vod_json_block_flash_videos.html (Wishcraft)
+ - Added Template templates/vod_json_block_ios_videos.html (Wishcraft)
+ - Added Template templates/vod_json_block_other_videos.html (Wishcraft)
+ - Added Template templates/vod_json_block_rtmp_videos.html (Wishcraft)
+ - Added Template templates/vod_json_block_rtsp_videos.html (Wishcraft)
+ - Added Template templates/vod_json_block_silverlight_videos.html (Wishcraft)
+ - Added Template templates/vod_json_flash_videos.html (Wishcraft)
+ - Added Template templates/vod_json_ios_videos.html (Wishcraft)
+ - Added Template templates/vod_json_other_videos.html (Wishcraft)
+ - Added Template templates/vod_json_rtmp_videos.html (Wishcraft)
+ - Added Template templates/vod_json_rtsp_videos.html (Wishcraft)
+ - Added Template templates/vod_json_silverlight_videos.html (Wishcraft)
+ 
+========================================
+ 2011/12/06 08:00:01 Version 1.07 STABLE
+========================================
+ - Changed token system uses $_SESSION instead of Java /blocks/vod_block_videos.php (Wishcraft)
+ - Changed token system uses $_SESSION instead of Java /class/videos.php (Wishcraft)
+ - Changed token system uses $_SESSION instead of Java /dojson_videos.php (Wishcraft)
+ - Changed Implementation of Blocks form Language /blocks/vod_block_videos.php  (Wishcraft)
+ - Changed Allow for videos states to be specifiable for files js/core.php (Wishcraft)
+ - Changed Allow for videos states to be specifiable for files /dojson_videos.php (Wishcraft)
+ - Changed New Preference Language Defines for config language/english/modinfo.php (Wishcraft)
+ - Removed Unrequired language file language/english/block.php (Wishcraft)
+ - Removed Unrequired flash file swf/vod-3.2.7-0.swf (Wishcraft)
+ - Removed Unrequired Block Unique Java Function js/json_functions.js (Wishcraft)
+ - Added Function vod_getUserIP() include/functions.php (Wishcraft)
+ - Added Function is_ipv6() include/functions.php (Wishcraft)
+ - Added Function getIP() class/videos.php (Wishcraft)
+ - Added Preference for Difference in Passkey Timer /xoops_version.php (Wishcraft)
+ - Added Preference for Variance Weight in Passkey Timer /xoops_version.php (Wishcraft)
+ 
+========================================
+ 2011/11/10 09:40:00 Version 1.06 STABLE
+========================================
+ - Changed token system changed to by second range  (Wishcraft)
+ - Changed allow for iframe, width & height $_GET Switch on main index /index.php  (Wishcraft)
+ - Changed $GLOBALS['vodModule'] population checking in language/english/modinfo.php (Wishcraft)
+ - Changed Admin GUI Defaults and About Box admin/index.php (Wishcraft)
+ - Added XOOPS 2.5.x Admin GUI - xoops_version.php variable added (missing) (Wishcraft)
+ 
+========================================
+ 2011/11/08 07:42:00 Version 1.05 STABLE
+========================================
+ - Changed $pathImageAdmin renamed to $GLOBALS['vodImageAdmin']  (Wishcraft)
+ - Changed $pathImageIcon renamed to $GLOBALS['vodImageIcon']  (Wishcraft)
+ - Changed $GLOBALS['xoopsModule'] in module renamed to $GLOBALS['vodModule'] (Wishcraft)
+ - Changed $GLOBALS['xoopsModuleConfig'] in module renamed to $GLOBALS['vodModuleConfig'] (Wishcraft)
+ - Changed XOOPS 2.5.x Admin GUI  (Wishcraft)
