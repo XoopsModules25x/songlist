@@ -106,6 +106,24 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
     		return '&nbsp;';
     }
     
+	function GetCatAndSubCat($pid=0){
+		$categories = $this->getObjects(new Criteria('pid', $pid), true);
+		$langs_array = $this->TreeIDs(array(), $categories, -1);
+		return $langs_array;
+	}
+	
+	private function TreeIDs($langs_array, $categories, $level) {
+		foreach($categories as $catid => $category) {
+			if ($catid!=$ownid) {
+				$langs_array[$catid] = $catid;
+				if ($categoriesb = $this->getObjects(new Criteria('pid', $catid), true)){
+					$langs_array = $this->TreeIDs($langs_array, $categoriesb, $level);
+				}
+			}
+		}
+		return ($langs_array);
+	}
+	
 	function insert($obj, $force=true) {
     	if ($obj->isNew()) {
     		$obj->setVar('created', time());	
@@ -115,5 +133,30 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
     	return parent::insert($obj, $force);
     }
      
+    function get($id, $fields = '*') {
+    	$ret = parent::get($id, $fields);
+    	if (!isset($GLOBALS['songlistAdmin'])) {
+	    	$sql = 'UPDATE `'.$this->table.'` set hits=hits+1 where `'.$this->keyName.'` = '.$ret->getVar($this->keyName);
+	    	$GLOBALS['xoopsDB']->queryF($sql);
+    	}
+    	return $ret;
+    }
+    
+    function getObjects($criteria = NULL, $id_as_key = false, $as_object = true) {
+    	$ret = parent::getObjects($criteria, $id_as_key, $as_object);
+    	$id = array();
+    	foreach($ret as $data) {
+    		if ($as_object==true) {
+    			$id[$data->getVar($this->keyName)] = $data->getVar($this->keyName);
+    		} else {
+    			$id[$data[$this->keyName]] = $data[$this->keyName];
+    		}
+    	}
+    	if (!isset($GLOBALS['songlistAdmin'])) {
+	    	$sql = 'UPDATE `'.$this->table.'` set hits=hits+1 where `'.$this->keyName.'` IN ('.implode(',', $id).')';
+	    	$GLOBALS['xoopsDB']->queryF($sql);
+    	}
+    	return $ret;
+    }
 }
 ?>

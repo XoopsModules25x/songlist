@@ -450,7 +450,7 @@
 		$ele['title']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_TITLE_DESC:''));
 		$ele['image'] = new XoopsFormFile(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_UPLOAD_POSTER:''), 'image', $GLOBALS['songlistModuleConfig']['filesize_upload']);
 		$ele['image']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_UPLOAD_POSTER_DESC:''));
-		if (strlen($object->getVar('image'))>0&&file_exists($GLOBALS['xoops']->path($object->getVar('path').$object->getVar('poster')))) {
+		if (strlen($object->getVar('image'))>0&&file_exists($GLOBALS['xoops']->path($object->getVar('path').$object->getVar('image')))) {
 			$ele['image_preview'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_POSTER:''), '<img src="'.$object->getImage('image').'" width="340px" />' );
 			$ele['image_preview']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_POSTER_DESC:''));
 		}
@@ -599,7 +599,7 @@
 		$ele['description']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_CATEGORY_DESCRIPTION_DESC:''));
 		$ele['image'] = new XoopsFormFile(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_UPLOAD_POSTER:''), 'image', $GLOBALS['songlistModuleConfig']['filesize_upload']);
 		$ele['image']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_UPLOAD_POSTER_DESC:''));
-		if (strlen($object->getVar('image'))>0&&file_exists($GLOBALS['xoops']->path($object->getVar('path').$object->getVar('poster')))) {
+		if (strlen($object->getVar('image'))>0&&file_exists($GLOBALS['xoops']->path($object->getVar('path').$object->getVar('image')))) {
 			$ele['image_preview'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_POSTER:''), '<img src="'.$object->getImage('image').'" width="340px" />' );
 			$ele['image_preview']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_POSTER_DESC:''));
 		}

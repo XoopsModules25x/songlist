@@ -1,5 +1,5 @@
 <div class="sl_maincat">
-	<a href="<{$category.url}>"><{$category.name}></a>
+	<a href="<{$category.url}>"><{$category.name}></a><{if $category.parenturl}> <a href="<{$category.parenturl}>"><em><{$smarty.const._MN_SONGLIST_GOTOPARENT}></em></a><{/if}>
 </div>
 <{if $category.subcategories}>
 <div class="sl_subcat">
