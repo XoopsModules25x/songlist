@@ -3,7 +3,7 @@
 	<{foreach from=$categories item=row}>
 	<tr>
 		<{foreach from=$row item=category}>
-		<td><{includeq file="db:songlist_category_item.html" category=$category}></td>
+		<td width="<{$category.width}>%"><{includeq file="db:songlist_category_item.html" category=$category}></td>
 		<{/foreach}>
 	</tr>
 	<{/foreach}>

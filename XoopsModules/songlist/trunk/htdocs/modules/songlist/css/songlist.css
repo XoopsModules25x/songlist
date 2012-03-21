@@ -61,3 +61,59 @@
 #sl_resulttable thead {
 	
 }
+
+#sl_mainartist {
+	font-size:1.23em; 
+	clear:both;
+}
+
+#sl_subartist {
+	margin-left:13px; 
+	font-size:0.90em; 
+	clear:both;
+}
+
+#sl_mainalbum {
+	font-size:1.23em; 
+	clear:both;
+}
+
+#sl_subalbum {
+	margin-left:13px; 
+	font-size:0.90em; 
+	clear:both;
+}
+
+#sl_artalbum {
+	margin:5px 5px 5px 5px; 
+	font-size:0.75em; 
+	border-style: dotted;
+	border-width: 1px;
+	clear:both;
+}
+
+#sl_subtitle {
+	font-size:1.15em;
+	font-weight: bold;
+}
+
+#sl_mainsong {
+	font-size:1.23em; 
+	clear:both;
+	margin-left: 7px;
+	margin-top: 3px;
+}
+
+#sl_subsong {
+	margin-left:13px; 
+	font-size:0.90em; 
+	clear:both;
+}
+
+#sl_artsong {
+	margin:5px 5px 5px 5px; 
+	font-size:0.75em; 
+	border-style: dotted;
+	border-width: 1px;
+	clear:both;
+}

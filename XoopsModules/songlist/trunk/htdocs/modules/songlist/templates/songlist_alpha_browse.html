@@ -3,10 +3,12 @@
 	<div class="sl_alphasubdiva">
 		<select id='browsetype' name='browsetype'>
 			<option value="title"<{if $smarty.get.fct eq 'title' or $smarty.get.fct eq ''}> selected="selected"<{/if}>><{$smarty.const._MN_SONGLIST_SELECTBY_TITLE}></option>
+			<{if $songs}>
 			<option value="lyrics"<{if $smarty.get.fct eq 'lyrics'}> selected="selected"<{/if}>><{$smarty.const._MN_SONGLIST_SELECTBY_LYRICS}></option>
 			<option value="artist"<{if $smarty.get.fct eq 'artist'}> selected="selected"<{/if}>><{$smarty.const._MN_SONGLIST_SELECTBY_ARTIST}></option>
 			<{if $xoConfig.album}>
 			<option value="album"<{if $smarty.get.fct eq 'album'}> selected="selected"<{/if}>><{$smarty.const._MN_SONGLIST_SELECTBY_ALBUM}></option>
+			<{/if}>
 			<{/if}>
 		</select>
 	</div>

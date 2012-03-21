@@ -1,0 +1,27 @@
+<{if $artists}>
+<{if not $artists.pagenav eq ''}> 
+<div style='width:100%; clear:both; height:25px;'>
+	<div style='float:right;'>
+		<{$artists.pagenav}>
+	</div>
+</div>
+<{/if}>
+<table>
+	<{foreach from=$artists key=$rowkey item=row}>
+	<{if not $rowkey eq 'pagenav'}> 
+	<tr>
+		<{foreach from=$row item=artist}>
+		<td width="<{$artist.width}>%"><{includeq file="db:songlist_artists_item.html" artist=$artist}></td>
+		<{/foreach}>
+	</tr>
+	<{/if}>
+	<{/foreach}>
+</table>
+<{/if}>
+<{if not $artists.pagenav eq ''}> 
+<div style='width:100%; clear:both; height:25px;'>
+	<div style='float:left;'>
+		<{$artists.pagenav}>
+	</div>
+</div>
+<{/if}
