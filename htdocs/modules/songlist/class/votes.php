@@ -88,6 +88,56 @@ class SonglistVotesHandler extends XoopsPersistableObjectHandler
     	}
     	return parent::insert($obj, $force);
     }
-     
+
+    function addVote($sid, $value) {
+    	
+    	$criteria = new CriteriaCompo(new Criteria('sid', $sid));
+    	
+    	$ip = songlist_getIPData(false);
+    	if ($ip['uid']>0) {
+    		$criteria->add(new Criteria('uid', $ip['uid']));
+    	} else {
+    		$criteria->add(new Criteria('ip', $ip['ip']));
+    		$criteria->add(new Criteria('netaddy', $ip['network-addy']));
+    	}
+    	
+    	if ($this->getCount($criteria)==0&&$sid>0&&$value>0) {
+    		$vote = $this->create();
+    		$vote->setVar('sid', $sid);
+    		$vote->setVar('uid', $ip['uid']);
+    		$vote->setVar('ip', $ip['ip']);
+    		$vote->setVar('netaddy', $ip['network-addy']);
+    		$vote->setVar('rank', $value);
+    		if ($this->insert($vote)) {
+    			$songs_handler = xoops_getmodulehandler('songs', 'songlist');
+    			$albums_handler = xoops_getmodulehandler('albums', 'songlist');
+    			$artists_handler = xoops_getmodulehandler('artists', 'songlist');
+    			$category_handler = xoops_getmodulehandler('category', 'songlist');
+    			$genre_handler = xoops_getmodulehandler('genre', 'songlist');
+    			
+    			$song = $songs_handler->get($sid);
+    			$sql = array();
+    			$sql[] = "UPDATE `" . $songs_handler->table . "` SET `rank` = `rank` + ".$value.", `votes` = `votes` + 1 WHERE `". $songs_handler->keyName . "` = " . $sid;
+    			$sql[] = "UPDATE `" . $category_handler->table . "` SET `rank` = `rank` + ".$value.", `votes` = `votes` + 1 WHERE `". $category_handler->keyName . "` = " . $song->getVar($category_handler->keyName);
+    			$sql[] = "UPDATE `" . $genre_handler->table . "` SET `rank` = `rank` + ".$value.", `votes` = `votes` + 1 WHERE `". $genre_handler->keyName . "` = " . $song->getVar($genre_handler->keyName);
+    			$sql[] = "UPDATE `" . $albums_handler->table . "` SET `rank` = `rank` + ".$value.", `votes` = `votes` + 1 WHERE `". $albums_handler->keyName . "` = " . $song->getVar($albums_handler->keyName);
+    			foreach($song->getVar('aids') as $aid) {
+    				$sql[] = "UPDATE `" . $artists_handler->table . "` SET `rank` = `rank` + ".$value.", `votes` = `votes` + 1 WHERE `". $artists_handler->keyName . "` = " . $aid;
+    			}
+    			foreach($sql as $question) { 
+    				$GLOBALS['xoopsDB']->queryF($question);
+    			}
+    			redirect_header($_POST['uri'], 10, _MN_SONGLIST_MSG_VOTED_FINISHED);
+    			exit(0);
+    		} else {
+	    		redirect_header($_POST['uri'], 10, _MN_SONGLIST_MSG_VOTED_ALREADY);
+	    		exit(0);
+	    	}
+    	} else {
+    		redirect_header($_POST['uri'], 10, _MN_SONGLIST_MSG_VOTED_SOMETHINGWRONG);
+    		exit(0);
+    	}
+    	return false;
+    }
 }
 ?>

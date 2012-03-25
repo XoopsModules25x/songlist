@@ -75,9 +75,9 @@ if ( $op == "access" ) {
 	}
 	
 } else {
-	$profile_handler = xoops_getmodulehandler('extras');
-	$fields = $profile_handler->loadFields();
-	
+	$extras_handler = xoops_getmodulehandler('extras');
+	$fields = $extras_handler->loadFields();
+
 	if ( $op != "search" ) {
 		foreach (array_keys($fields) as $i ) {
 			if ( $restriction == "" || $fields[$i]->getVar($restriction)  ) {

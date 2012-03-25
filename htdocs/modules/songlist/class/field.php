@@ -12,7 +12,7 @@ class SonglistField extends XoopsObject
     function __construct()
     {
         $this->initVar('field_id', XOBJ_DTYPE_INT, null);
-        $this->initVar('forum_id', XOBJ_DTYPE_ARRAY, array(0=>'0'), true);
+        $this->initVar('cids', XOBJ_DTYPE_ARRAY, array(0=>'0'), true);
         $this->initVar('field_type', XOBJ_DTYPE_TXTBOX);
         $this->initVar('field_valuetype', XOBJ_DTYPE_INT, null, true);
         $this->initVar('field_name', XOBJ_DTYPE_TXTBOX, null, true);
@@ -572,10 +572,9 @@ class SonglistFieldHandler extends XoopsPersistableObjectHandler
     {
         static $fields = array();
         if (!empty($force_update) || count($fields) == 0) {
-            $this->table_link = $this->db->prefix('songlist_forums');
-            $criteria = new Criteria('o.field_id', 0, "!=");
-            $criteria->setSort('l.forum_order ASC, o.field_weight');
-            $field_objs = $this->getByLink($criteria, array('o.*'), true, 'forum_id', 'forum_id');
+            $criteria = new Criteria('field_id', 0, "!=");
+            $criteria->setSort('field_weight');
+            $field_objs = $this->getObjects($criteria);
             foreach (array_keys($field_objs) as $i ) {
                 $fields[$field_objs[$i]->getVar('field_name')] = $field_objs[$i];
             }
@@ -770,14 +769,14 @@ class SonglistFieldHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     * Get array of standard variable names (user table)
+     * Get array of standard variable names (song table)
      *
      * @return array
      */
     function getPostVars()
     {
-        return array('post_id', 'topic_id', 'forum_id', 'post_time', 'poster_ip', 'poster_name', 'subject', 'pid', 'dohtml', 'dosmiley', 'doxcode', 'doimage',
- 					 'dobr', 'uid', 'icon', 'attachsig', 'approved', 'post_karma', 'require_reply', 'attachment', 'post_text', 'post_edit', 'tags');
+        return array('sid', 'cid', 'gid', 'aids', 'abid', 'songid', 'title', 'lyrics', 'hits', 'rank', 'votes', 'tags',
+ 					 'created', 'updated');
     }
 }
 ?>

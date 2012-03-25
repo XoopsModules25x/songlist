@@ -92,6 +92,12 @@ class SonglistUtf8mapHandler extends XoopsPersistableObjectHandler
     	return parent::insert($obj, $force);
     }
      
-    
+ 	function convert($phrase = '', $criteria = NULL) {
+ 		foreach($this->getObjects($criteria, true) as $utfid => $utf8) {
+ 			$phrase = str_replace(strtolower($utf8->getVar('from')), strtolower($utf8->getVar('to')), $phrase);
+ 			$phrase = str_replace(strtoupper($utf8->getVar('from')), strtoupper($utf8->getVar('to')), $phrase);
+ 		}
+ 		return $phrase;
+ 	}   
 }
 ?>

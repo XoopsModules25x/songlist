@@ -32,8 +32,8 @@
 	</tr>
 	<{foreach item=item from=$albums}>
 	<tr class="<{cycle values="even,odd"}>">
-		<td align='center'><{$item.aid}><{$item.form.id}></td>
-		<td align='center'><{$item.form.aid}></td>
+		<td align='center'><{$item.abid}><{$item.form.id}></td>
+		<td align='center'><{$item.form.cid}></td>
 		<td align='center'><{$item.form.title}></td>
 		<td align='center'><{$item.artists}></td>
 		<td align='center'><{$item.songs}></td>
@@ -41,11 +41,11 @@
 		<td align='center'><{$item.rank}></td>
 		<td align='right'><{$item.form.created}></td>
 		<td align='right'><{$item.form.updated}></td>
-		<td align='right'><a href="<{$php_self}>?op=albums&fct=edit&id=<{$item.aid}>&start=<{$start}>&limit=<{$limit}>&order=<{$order}>&sort=<{$sort}>&filter=<{$filter}>"><{$smarty.const._EDIT}></a>&nbsp;|&nbsp;<a href="<{$php_self}>?op=albums&fct=delete&id=<{$item.aid}>&start=<{$start}>&limit=<{$limit}>&order=<{$order}>&sort=<{$sort}>&filter=<{$filter}>"><{$smarty.const._DELETE}></a></td>
+		<td align='right'><a href="<{$php_self}>?op=albums&fct=edit&id=<{$item.abid}>&start=<{$start}>&limit=<{$limit}>&order=<{$order}>&sort=<{$sort}>&filter=<{$filter}>"><{$smarty.const._EDIT}></a>&nbsp;|&nbsp;<a href="<{$php_self}>?op=albums&fct=delete&id=<{$item.abid}>&start=<{$start}>&limit=<{$limit}>&order=<{$order}>&sort=<{$sort}>&filter=<{$filter}>"><{$smarty.const._DELETE}></a></td>
 	</tr>
 	<{/foreach}>
 	<tr class="foot">
-		<td colspan="9"><input type='submit' name='submit' value='<{$smarty.const._SUBMIT}>'/></td>
+		<td colspan="10"><input type='submit' name='submit' value='<{$smarty.const._SUBMIT}>'/></td>
 	</tr>
 </table>
 <input type='hidden' name='op' value='albums'/>

@@ -20,6 +20,9 @@
 			<{/if}>
 			<td><{$smarty.const._MN_SONGLIST_RESULTS_TITLE}></td>
 			<td><{$smarty.const._MN_SONGLIST_RESULTS_SONGID}></td>
+			<{if $xoConfig.tags}>
+			<td><{$smarty.const._MN_SONGLIST_RESULTS_TAGS}></td>
+			<{/if}>
 			<td><{$smarty.const._MN_SONGLIST_RESULTS_ACTIONS}></td>
 		</tr>
 	</thead>
@@ -27,7 +30,7 @@
 		<{foreach item=result from=$results}>
 		<tr class="<{cycle values="even,odd"}>">
 			<td><a href="<{$result.url}>"><{$result.artist}></a></td>
-			<{if not $wurlf_mobile}>
+			<{if !isset($wurlf_mobile) or not $wurlf_mobile}>
 			<{if $xoConfig.album}>
 			<td><a href="<{$result.url}>"><{$result.album}></a></td>
 			<{/if}>
@@ -40,7 +43,13 @@
 			<{/if}>
 			<td><a href="<{$result.url}>"><{$result.title}></a></td>
 			<td><a href="<{$result.url}>"><{$result.songid}></a></td>
-			<td><form action="<{$php_self}>?op=vote&id=<{$result.id}>&uri=<{$uri}>" method='post'>
+			<{if $xoConfig.tags}>
+			<td><{include file="db:tag_bar.html" tagbar=$result.tagbar}></a></td>
+			<{/if}>
+			<td><form action="<{$xoops_url}>/modules/songlist/index.php" method='post'>
+				<input type="hidden" name='id' value='<{$result.sid}>'/>
+				<input type="hidden" name='op' value='vote'/>
+				<input type="hidden" name='uri' value='<{$uri}>'/>
 				<select name='value' id='value'>
 					<option value="10"><{$smarty.const._MN_SONGLIST_10STARS}></option>
 					<option value="9"><{$smarty.const._MN_SONGLIST_9STARS}></option>
@@ -55,11 +64,11 @@
 					<option value="2"><{$smarty.const._MN_SONGLIST_2STARS}></option>
 					<option value="1"><{$smarty.const._MN_SONGLIST_1STARS}></option>
 				</select>
-				&nsbp;<input type="submit" name='vote' value="<{$smarty.const._MN_SONGLIST_VOTE}>"/>
+				&nbsp;<input type="submit" name='vote' value="<{$smarty.const._MN_SONGLIST_VOTE}>"/>
 				</form>
 			</td>
 		</tr>
-		<{if not $wurlf_mobile}>
+		<{if !isset($wurlf_mobile) or not $wurlf_mobile}>
 		<{if $xoConfig.lyrics}>
 		<tr class="<{cycle values="even,odd"}>">
 			<td colspan='7'><{$result.lyrics}></td>

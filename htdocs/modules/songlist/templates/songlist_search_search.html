@@ -1,12 +1,12 @@
 <h2><{$smarty.const._MN_SONGLIST_SEARCH}></h2>
 <div class="sl_search">
 	<div class="sl_searchdiv">
-		<form action="<{$php_self}>" method='get'>
+		<form action="<{$xoops_url}>/modules/songlist/search.php" method='GET'>
 		<input type="hidden" name="op" value="search" />
-		<table width="38%" border='0' cellpadding="5">
+		<table width="100%" border='0' cellpadding="5">
 			<tr>
 				<td class="head"><{$smarty.const._MN_SONGLIST_FILTER_KEYWORD}>:&nbsp;</td>
-				<td class="foot"><input type="textbox" max="128" size="35" name="value" id="value" value="<{$smarty.get.keywords}>" /></td>
+				<td class="foot"><input type="textbox" max="128" size="35" name="value" id="value" value="<{$smarty.get.value}>" /></td>
 			</tr>
 			<tr>
 				<td class="head"><{$smarty.const._MN_SONGLIST_FILTER_SEARCHBY}>:&nbsp;</td>
@@ -45,3 +45,4 @@
 		</form>
 	</div>
 </div>
+<div class='sl_sep'>&nbsp;</div>

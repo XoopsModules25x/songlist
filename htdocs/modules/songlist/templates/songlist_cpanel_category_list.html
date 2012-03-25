@@ -38,6 +38,7 @@
 		<td align='center'><{$item.form.pid}></td>
 		<td align='center'><{$item.form.name}></td>
 		<td align='center'><{$item.artists}></td>
+		<td align='center'><{$item.albums}></td>
 		<td align='center'><{$item.songs}></td>
 		<td align='center'><{$item.hits}></td>
 		<td align='center'><{$item.rank}></td>
@@ -47,7 +48,7 @@
 	</tr>
 	<{/foreach}>
 	<tr class="foot">
-		<td colspan="10"><input type='submit' name='submit' value='<{$smarty.const._SUBMIT}>'/></td>
+		<td colspan="11"><input type='submit' name='submit' value='<{$smarty.const._SUBMIT}>'/></td>
 	</tr>
 </table>
 <input type='hidden' name='op' value='category'/>

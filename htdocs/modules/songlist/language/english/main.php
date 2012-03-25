@@ -1,8 +1,16 @@
 <?php
 
+	// Song Item Index
+	define('_MN_SONGLIST_ALBUM', 'Album:-');
+	define('_MN_SONGLIST_ARTISTS', 'Artists:-');
+	define('_MN_SONGLIST_ARTIST', 'Artist:-');
+	define('_MN_SONGLIST_TITLE', 'Song title:-');
+	define('_MN_SONGLIST_SONGID', 'Song Reference ID:-');
+	define('_MN_SONGLIST_TAGS', 'Tags:-');
+		
 	// Browse By
 	define('_MN_SONGLIST_BROWSEBY', 'Browse by Character');
-	define('_MN_SONGLIST_SELECTBY_TITLE', 'Browse by Song Title');
+	define('_MN_SONGLIST_SELECTBY_TITLE', 'Browse by Title');
 	define('_MN_SONGLIST_SELECTBY_LYRICS', 'Browse by Lyrics');
 	define('_MN_SONGLIST_SELECTBY_ARTIST', 'Browse by Artist');
 	define('_MN_SONGLIST_SELECTBY_ALBUM', 'Browse by Album');
@@ -41,5 +49,19 @@
 	define('_MN_SONGLIST_1STARS', '1 Stars');
 	define('_MN_SONGLIST_VOTE', 'Vote!');
 	
+	// Categories
+	define('_MN_SONGLIST_CATEGORIES', 'Categories');
+	define('_MN_SONGLIST_HOME', 'Base of Categories');
+	define('_MN_SONGLIST_MSG_CATEGORYCHANGED', 'Category Session Changed!');
 	
+	//Votes
+	define('_MN_SONGLIST_MSG_VOTED_ALREADY', 'You have already voted for this item, you can only vote once on an item!');
+	define('_MN_SONGLIST_MSG_VOTED_FINISHED', 'Thanks for the vote for this item, you not be able to vote again on this item!');
+	define('_MN_SONGLIST_MSG_VOTED_SOMETHINGWRONG', 'Something is wrong with taking the vote, we where unable to rate the items for you!');
+	
+	// Requests
+	define('_MN_SONGLIST_MSG_REQUESTSENT', 'Request to Admin has been sent for this song to be added!');
+	define('_MN_SONGLIST_MSG_REQUESTNOTSENT', 'Request to Admin has not been sent you may have been missing a field like `email`!');
+	define('_MN_SONGLIST_REQUEST_H1', 'Make a request for a song to be added!');
+	define('_MN_SONGLIST_REQUEST_P', 'Fill out this form to email the webmasters, so that a song will be added to the site, you will need to include as much information as possible including your name and email addresses so we can tell you when we have found the song!');
 ?>

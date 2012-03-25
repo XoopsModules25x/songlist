@@ -6,8 +6,8 @@
 	
 	xoops_cp_header();
 	
-	$op = isset($_REQUEST['op'])?$_REQUEST['op']:"dashboard";
-	$fct = isset($_REQUEST['fct'])?$_REQUEST['fct']:"";
+	$op = isset($_REQUEST['op'])?$_REQUEST['op']:"requests";
+	$fct = isset($_REQUEST['fct'])?$_REQUEST['fct']:"lists";
 	$limit = !empty($_REQUEST['limit'])?intval($_REQUEST['limit']):30;
 	$start = !empty($_REQUEST['start'])?intval($_REQUEST['start']):0;
 	$order = !empty($_REQUEST['order'])?$_REQUEST['order']:'DESC';
@@ -15,6 +15,7 @@
 	$filter = !empty($_REQUEST['filter'])?''.$_REQUEST['filter'].'':'1,1';
 	
 	switch($op) {
+	default:
 	case "requests":
 		switch ($fct)
 		{

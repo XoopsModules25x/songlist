@@ -1,6 +1,6 @@
 CREATE TABLE `songlist_albums` (
-  `abid` int(10) unsigned DEFAULT '0',
-  `cid` int(10) unsigned DEFAULT '0',
+  `abid` INT(12) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `cid` int(12) unsigned DEFAULT '0',
   `aids` mediumtext,
   `sids` mediumtext,
   `title` varchar(128) DEFAULT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE `songlist_albums` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `songlist_artists` (
-  `aid` int(10) unsigned DEFAULT NULL,
+  `aid` INT(12) UNSIGNED NOT NULL AUTO_INCREMENT,
   `cids` mediumtext,
   `sids` mediumtext,
   `singer` ENUM('_ENUM_SONGLIST_SOLO','_ENUM_SONGLIST_DUET') DEFAULT NULL,
@@ -25,6 +25,7 @@ CREATE TABLE `songlist_artists` (
   `songs` int(12) unsigned DEFAULT '0',
   `rank` decimal(10,3) unsigned DEFAULT '0.000',
   `votes` int(10) unsigned DEFAULT '0',  
+  `hits` int(12) unsigned DEFAULT '0',
   `created` int(12) unsigned DEFAULT '0',
   `updated` int(12) unsigned DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -32,7 +33,7 @@ CREATE TABLE `songlist_artists` (
 CREATE TABLE `songlist_category` (
   `cid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `pid` int(10) unsigned DEFAULT '0',
-  `weight` int(10) unsigned DEFAULT '0',
+  `weight` int(5) unsigned DEFAULT '0',
   `name` varchar(128) DEFAULT NULL,
   `description` mediumtext,
   `image` varchar(128) DEFAULT NULL,
@@ -122,7 +123,7 @@ CREATE TABLE `songlist_songs` (
   PRIMARY KEY (`sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `songlist_uft8map` (
+CREATE TABLE `songlist_utf8map` (
   `utfid` INT(12) UNSIGNED NOT NULL AUTO_INCREMENT,
   `from` VARCHAR(2) DEFAULT NULL,
   `to` VARCHAR(2) DEFAULT NULL,
@@ -141,7 +142,7 @@ CREATE TABLE `songlist_visibility` (
 
 CREATE TABLE `songlist_votes` (
   `vid` int(23) unsigned NOT NULL AUTO_INCREMENT,
-  `sid` int(10) unsigned DEFAULT '0',
+  `sid` int(12) unsigned DEFAULT '0',
   `uid` int(12) unsigned DEFAULT '0',
   `ip` varchar(64) DEFAULT NULL,
   `netaddy` varchar(255) DEFAULT NULL,

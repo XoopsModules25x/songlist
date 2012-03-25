@@ -1,12 +1,12 @@
-<div><a href="field.php?op=new"><{$smarty.const._ADD}> <{$smarty.const._AM_SONGLIST_FIELD}></a></div>
+<div><a href="field.php?op=new"><{$smarty.const._ADD}> <{$smarty.const._AM_SONGLIST_FIELDS_FIELD}></a></div>
 <form action="field.php" method="post" id="fieldform">
     <table>
-        <th><{$smarty.const._AM_SONGLIST_NAME}></th>
-        <th><{$smarty.const._AM_SONGLIST_TITLE}></th>
-        <th><{$smarty.const._AM_SONGLIST_DESCRIPTION}></th>
-        <th><{$smarty.const._AM_SONGLIST_TYPE}></th>
-        <th><{$smarty.const._AM_SONGLIST_CATEGORIES}></th>
-        <th><{$smarty.const._AM_SONGLIST_WEIGHT}></th>
+        <th><{$smarty.const._AM_SONGLIST_FIELDS_NAME}></th>
+        <th><{$smarty.const._AM_SONGLIST_FIELDS_TITLE}></th>
+        <th><{$smarty.const._AM_SONGLIST_FIELDS_DESCRIPTION}></th>
+        <th><{$smarty.const._AM_SONGLIST_FIELDS_TYPE}></th>
+        <th><{$smarty.const._AM_SONGLIST_FIELDS_CATEGORIES}></th>
+        <th><{$smarty.const._AM_SONGLIST_FIELDS_WEIGHT}></th>
         <th></th>
         <{foreach item=category from=$fieldcategories}>
             <{foreach item=field from=$category}>
@@ -17,7 +17,7 @@
                     <td><{$field.fieldtype}></td>
                     <td align="center">
                         <{if $field.canEdit}>
-                            <select multiple="multiple" name="categories[<{$field.field_id}>][]" size="4" ><{foreach from=$categories item=category}><option value="<{$category.cid}>"<{if in_array($category.cid, $field.cid) }> selected="selected"<{/if}>><{$category.name}></option><{/foreach}></select>
+                            <select multiple="multiple" name="categories[<{$field.field_id}>][]" size="4" ><{foreach from=$categories item=cate}><option value="<{$cate.cid}>"<{if in_array($cate.cid, $field.cids) }> selected="selected"<{/if}>><{$cate.name}></option><{/foreach}></select>
                         <{/if}>
                     </td>
                     <td align="center">
@@ -28,15 +28,15 @@
                     <td>
                         <{if $field.canEdit}>
                         	<{foreach from=$categories item=category}>
-                            <{if in_array($category.cid, $field.cid) }>
+                            <{if in_array($category.cid, $field.cids) }>
                             <input type="hidden" name="oldcategories[<{$field.field_id}>][<{$category.cid}>]" value="<{$category.cid}>" />
                             <{/if}>
                             <{/foreach}>
                             <input type="hidden" name="oldweight[<{$field.field_id}>]" value="<{$field.field_weight}>" />
-                            <{foreach from=$field.cat_id item=cat_id}>
-                            <input type="hidden" name="oldcat[<{$field.field_id}>][<{$cat_id}>]" value="<{$cat_id}>" />
+                            <{foreach from=$field.cids item=cid}>
+                            <input type="hidden" name="oldcat[<{$field.field_id}>][<{$cid}>]" value="<{$cid}>" />
                             <{/foreach}>
-                            <input type="hidden" name="field_ids[]" value="<{$field.field_id}>" />
+                            <input type="hidden" name="field_ids[<{$field.field_id}>]" value="<{$field.field_id}>" />
                             <a href="field.php?id=<{$field.field_id}>" title="<{$smarty.const._EDIT}>"><{$smarty.const._EDIT}></a>
                         <{/if}>
                         <{if $field.canDelete}>

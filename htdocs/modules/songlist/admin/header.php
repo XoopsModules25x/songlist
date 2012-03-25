@@ -83,8 +83,8 @@
 	$GLOBALS['xoopsTpl']->assign('pathImageAdmin', $GLOBALS['songlistImageAdmin']);
 
 	include_once XOOPS_ROOT_PATH."/modules/".$GLOBALS['songlistModule']->getVar("dirname")."/include/functions.php";
-	include_once XOOPS_ROOT_PATH."/modules/".$GLOBALS['songlistModule']->getVar("dirname")."/include/songlist.objects.php";
-	include_once XOOPS_ROOT_PATH."/modules/".$GLOBALS['songlistModule']->getVar("dirname")."/include/songlist.forms.php";
+	include_once XOOPS_ROOT_PATH."/modules/".$GLOBALS['songlistModule']->getVar("dirname")."/include/songlist.object.php";
+	include_once XOOPS_ROOT_PATH."/modules/".$GLOBALS['songlistModule']->getVar("dirname")."/include/songlist.form.php";
 
 	xoops_loadLanguage('admin', 'songlist');
 

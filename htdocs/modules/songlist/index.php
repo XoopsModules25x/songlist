@@ -2,11 +2,11 @@
 
 	include (dirname(__FILE__).'/header.php');
 	
-	$category_handler = xoops_getmodulehandler('category', 'handler');
+	global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit;
+	
+	$category_handler = xoops_getmodulehandler('category', 'songlist');
 	$criteria_cat = new CriteriaCompo();
-	foreach($category_handler->GetCatAndSubCat($_SESSION['cid']) as $cid) {
-		$criteria_cat->add(new Criteria('`cids`', '%"'.$cid.'"%', 'LIKE'), 'OR');	
-	}
+	$criteria_cat->add(new Criteria('`cid`', '('.implode(',',  $category_handler->GetCatAndSubCat($_SESSION['cid'])).')', 'IN'), 'OR');	
 	$criteria_cat->setSort('`created`');
 	$criteria_cat->setOrder('ASC');
 	
@@ -35,78 +35,88 @@
 		}
 	}
 	
-	$artists_handler = xoops_getmodulehandler('artists', 'handler');
+	$category_element = new SonglistFormSelectCategory('', 'cid');
+	$genre_element = new SonglistFormSelectGenre('', 'gid');
+	$singer_element = new SonglistFormSelectSinger('', 'singer');
+		
+	$songs_handler = xoops_getmodulehandler('songs', 'songlist');
 	switch ($op) {
+		case "vote":
+			$votes_handler = xoops_getmodulehandler('votes', 'songlist');
+			$votes_handler->addVote($id, $value);
+			redirect_header($_POST['uri'], 10, _MN_SONGLIST_MSG_VOTED_ALREADY);
+			exit;
 		default:
 		case "item":
 			switch ($fct) {
 			default:
 			case "list":
-				break;
-				$pagenav = new XoopsPageNav($artists_handler->getCount($criteria_cat), $limit, $start, 'start', "?op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
+				
+				$pagenav = new XoopsPageNav($songs_handler->getCount($criteria_cat), $limit, $start, 'start', "?op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
 
 				$criteria_cat->setLimit($limit);
 				$criteria_cat->setStart($start);
 				
-				$artists = $artists_handler->getObjects($criteria, false);
+				$songs = $songs_handler->getObjects($criteria_cat, false);
 				
-				$ret = array();
-				$col = 1;
-				$row = 1;
-				foreach($artists as $artist) {
-					$ret[$row][$col] = $artist->toArray(true);
-					$ret[$row][$col]['width'] = floor(100/$GLOBALS['songlistModuleConfig']['cols']).'%';
-					$col++;
-					if ($col>$GLOBALS['songlistModuleConfig']['cols']) {
-						$row++;
-						$col=1;
-					}
-				}
-				if ($col!=1) {
-					$col--;
-					for($j=$col;$j<=$GLOBALS['songlistModuleConfig']['cols'];$j++) {
-						$ret[$row][$j][$artists_handler->keyName] = 0;
-						$ret[$row][$j]['width'] = floor(100/$GLOBALS['songlistModuleConfig']['cols']).'%';
-					}
-				}
-				
-				$url = $artists_handler->getURL();
+				$url = $songs_handler->getURL();
 				if (!strpos($url, $_SERVER['REQUEST_URI'])) {
 					header( "HTTP/1.1 301 Moved Permanently" ); 
 					header('Location: '.$url);
 					exit(0);
 				}
 
-				$xoopsOption['template_main'] = 'songlist_artists_index.html';
+				$xoopsOption['template_main'] = 'songlist_songs_index.html';
 				include($GLOBALS['xoops']->path('/header.php'));
+				if ($GLOBALS['songlistModuleConfig']['force_jquery']&&!isset($GLOBALS['loaded_jquery'])) {
+					$GLOBALS['xoTheme']->addScript(XOOPS_URL._MI_SONGLIST_JQUERY, array('type'=>'text/javascript'));
+					$GLOBALS['loaded_jquery']=true;
+				}
+				$GLOBALS['xoTheme']->addStylesheet(XOOPS_URL._MI_SONGLIST_STYLESHEET, array('type'=>'text/css'));
+				$GLOBALS['xoopsTpl']->assign('xoConfig', $GLOBALS['songlistModuleConfig']);			
 				$GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['PHP_SELF']);
-				$GLOBALS['xoopsTpl']->assign('artists', $ret);
-				$GLOBALS['xoopsTpl']->assign('songs', false);
+				foreach($songs as $song)
+					$GLOBALS['xoopsTpl']->append('results', $song->toArray(false));
+				$GLOBALS['xoopsTpl']->assign('songs', true);			
 				$GLOBALS['xoopsTpl']->assign('categories', $cat);
 				$GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
+				$GLOBALS['xoopsTpl']->assign('category_element', $category_element->render());
+				$GLOBALS['xoopsTpl']->assign('genre_element', $genre_element->render());
+				$GLOBALS['xoopsTpl']->assign('singer_element', $singer_element->render());				
 				$GLOBALS['xoopsTpl']->assign('cid', $_SESSION['cid']);
 				if ($_SESSION['cid']!=0) {
 					$category = $category_handler->get($_SESSION['cid']);
-					$GLOBALS['xoopsTpl']->assign('category', $category->getVar('name'));
+					$GLOBALS['xoopsTpl']->assign('category', $category->toArray(true));
 				}				
+				$GLOBALS['xoopsTpl']->assign('uri', $_SERVER['REQUEST_URI']);
 				include($GLOBALS['xoops']->path('/footer.php'));
 				break;
 			case "item":
-				$artist = $artists_handler->get($id);
+				$song = $songs_handler->get($id);
 
-				$url = $artist->getURL();
+				$url = $song->getURL();
 				if (!strpos($url, $_SERVER['REQUEST_URI'])) {
 					header( "HTTP/1.1 301 Moved Permanently" ); 
 					header('Location: '.$url);
 					exit(0);
 				}
 				
-				$xoopsOption['template_main'] = 'songlist_artists_item.html';
+				$xoopsOption['template_main'] = 'songlist_songs_item.html';
 				include($GLOBALS['xoops']->path('/header.php'));
+				if ($GLOBALS['songlistModuleConfig']['force_jquery']&&!isset($GLOBALS['loaded_jquery'])) {
+					$GLOBALS['xoTheme']->addScript(XOOPS_URL._MI_SONGLIST_JQUERY, array('type'=>'text/javascript'));
+					$GLOBALS['loaded_jquery']=true;
+				}			
+				$GLOBALS['xoTheme']->addStylesheet(XOOPS_URL._MI_SONGLIST_STYLESHEET, array('type'=>'text/css'));
+				$GLOBALS['xoopsTpl']->assign('xoConfig', $GLOBALS['songlistModuleConfig']);
 				$GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['PHP_SELF']);
 				$GLOBALS['xoopsTpl']->assign('songs', false);
-				$GLOBALS['xoopsTpl']->assign('artist', $artist->toArray());
+				$GLOBALS['xoopsTpl']->assign('song', $song->toArray(true));
 				$GLOBALS['xoopsTpl']->assign('categories', $cat);
+				$GLOBALS['xoopsTpl']->assign('category_element', $category_element->render());
+				$GLOBALS['xoopsTpl']->assign('genre_element', $genre_element->render());
+				$GLOBALS['xoopsTpl']->assign('singer_element', $singer_element->render());
+				$GLOBALS['xoopsTpl']->assign('uri', $_SERVER['REQUEST_URI']);				
 				include($GLOBALS['xoops']->path('/footer.php'));
 				break;	
 			}
@@ -115,9 +125,42 @@
 			switch ($fct) {
 			default:
 			case "title":
+				
+				$browse_criteria = new CriteriaCompo();
+				switch ($value) {
+					case '0':
+						for($u=0;$u<10;$u++) {
+							$browse_criteria->add(new Criteria('`title`', $u.'%', 'LIKE'), 'OR');							
+						}
+						break;
+					default:
+						$browse_criteria->add(new Criteria('`title`', strtoupper($value).'%', 'LIKE'), 'OR');
+						$browse_criteria->add(new Criteria('`title`', strtolower($value).'%', 'LIKE'), 'OR');
+						break;
+				}
+				$criteria = new CriteriaCompo($criteria_cat, 'AND');
+				$criteria->add($browse_criteria);
+				break;
+				
 			case "lyrics":
-			case "artists":
-			case "albums":
+				
+				$browse_criteria = new CriteriaCompo();
+				switch ($value) {
+					case '0':
+						for($u=0;$u<10;$u++) {
+							$browse_criteria->add(new Criteria('`lyrics`', $u.'%', 'LIKE'), 'OR');							
+						}
+						break;
+					default:
+						$browse_criteria->add(new Criteria('`lyrics`', strtoupper($value).'%', 'LIKE'), 'OR');
+						$browse_criteria->add(new Criteria('`lyrics`', strtolower($value).'%', 'LIKE'), 'OR');
+						break;
+				}
+				$criteria = new CriteriaCompo($criteria_cat, 'AND');
+				$criteria->add($browse_criteria);
+				break;
+				
+			case "artist":
 				
 				$browse_criteria = new CriteriaCompo();
 				switch ($value) {
@@ -131,57 +174,78 @@
 						$browse_criteria->add(new Criteria('`name`', strtolower($value).'%', 'LIKE'), 'OR');
 						break;
 				}
-				$criteria = CriteriaCompo($criteria_cat, 'AND');
+				$artists_handler = xoops_getmodulehandler('artists', 'songlist');
+				$browse_criteriab = new CriteriaCompo();
+				foreach($artists_handler->getObjects($browse_criteria, true) as $aid => $obj) {
+					$browse_criteriab->add(new Criteria('`aids`', '%"'.$aid.'"%', 'LIKE'), 'OR'); 
+					
+				}
+				$criteria = new CriteriaCompo($criteria_cat, 'AND');
 				$criteria->add($browse_criteria);
+				$criteria->add($browse_criteriab);
+				break;
 				
+			case "album":
+				
+				$browse_criteria = new CriteriaCompo();
+				switch ($value) {
+					case '0':
+						for($u=0;$u<10;$u++) {
+							$browse_criteria->add(new Criteria('`title`', $u.'%', 'LIKE'), 'OR');							
+						}
+						break;
+					default:
+						$browse_criteria->add(new Criteria('`title`', strtoupper($value).'%', 'LIKE'), 'OR');
+						$browse_criteria->add(new Criteria('`title`', strtolower($value).'%', 'LIKE'), 'OR');
+						break;
+				}
+				$albums_handler = xoops_getmodulehandler('albums', 'songlist');
+				foreach($artists_handler->getObjects($browse_criteria, true) as $id => $obj) {
+					$ids[$id] = $id; 
+					
+				}
+				$criteria = new CriteriaCompo($criteria_cat, 'AND');
+				$criteria->add(new Criteria('abid', '('.implode(',', $ids).')', 'IN'));
+				break;
 			}
 			
-			$pagenav = new XoopsPageNav($artists_handler->getCount($criteria), $limit, $start, 'start', "?op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
+			$pagenav = new XoopsPageNav($songs_handler->getCount($criteria), $limit, $start, 'start', "?op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
 
 			$criteria->setLimit($limit);
 			$criteria->setStart($start);
 			
-			$artists = $artists_handler->getObjects($criteria, false);
+			$songs = $songs_handler->getObjects($criteria, false);
 			
-			$ret = array();
-			$col = 1;
-			$row = 1;
-			foreach($artists as $artist) {
-				$ret[$row][$col] = $artist->toArray(true);
-				$ret[$row][$col]['width'] = floor(100/$GLOBALS['songlistModuleConfig']['cols']).'%';
-				$col++;
-				if ($col>$GLOBALS['songlistModuleConfig']['cols']) {
-					$row++;
-					$col=1;
-				}
-			}
-			if ($col!=1) {
-				$col--;
-				for($j=$col;$j<=$GLOBALS['songlistModuleConfig']['cols'];$j++) {
-					$ret[$row][$j][$artists_handler->keyName] = 0;
-					$ret[$row][$j]['width'] = floor(100/$GLOBALS['songlistModuleConfig']['cols']).'%';
-				}
-			}
-			
-			$url = $artists_handler->getURL();
+			$url = $songs_handler->getURL();
 			if (!strpos($url, $_SERVER['REQUEST_URI'])) {
 				header( "HTTP/1.1 301 Moved Permanently" ); 
 				header('Location: '.$url);
 				exit(0);
 			}
 		
-			$xoopsOption['template_main'] = 'songlist_artists_index.html';
+			$xoopsOption['template_main'] = 'songlist_songs_index.html';
 			include($GLOBALS['xoops']->path('/header.php'));
+			if ($GLOBALS['songlistModuleConfig']['force_jquery']&&!isset($GLOBALS['loaded_jquery'])) {
+				$GLOBALS['xoTheme']->addScript(XOOPS_URL._MI_SONGLIST_JQUERY, array('type'=>'text/javascript'));
+				$GLOBALS['loaded_jquery']=true;
+			}			
+			$GLOBALS['xoTheme']->addStylesheet(XOOPS_URL._MI_SONGLIST_STYLESHEET, array('type'=>'text/css'));
+			$GLOBALS['xoopsTpl']->assign('xoConfig', $GLOBALS['songlistModuleConfig']);
 			$GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['PHP_SELF']);
-			$GLOBALS['xoopsTpl']->assign('artists', $ret);
-			$GLOBALS['xoopsTpl']->assign('songs', false);
+			foreach($songs as $song)
+				$GLOBALS['xoopsTpl']->append('results', $song->toArray(false));
+			$GLOBALS['xoopsTpl']->assign('songs', true);
 			$GLOBALS['xoopsTpl']->assign('categories', $cat);
 			$GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
+			$GLOBALS['xoopsTpl']->assign('category_element', $category_element->render());
+			$GLOBALS['xoopsTpl']->assign('genre_element', $genre_element->render());
+			$GLOBALS['xoopsTpl']->assign('singer_element', $singer_element->render());			
 			$GLOBALS['xoopsTpl']->assign('cid', $_SESSION['cid']);
 			if ($_SESSION['cid']!=0) {
 				$category = $category_handler->get($_SESSION['cid']);
-				$GLOBALS['xoopsTpl']->assign('category', $category->getVar('name'));
+				$GLOBALS['xoopsTpl']->assign('category', $category->toArray(true));
 			}
+			$GLOBALS['xoopsTpl']->assign('uri', $_SERVER['REQUEST_URI']);
 			include($GLOBALS['xoops']->path('/footer.php'));
 			break;
 		
@@ -194,10 +258,10 @@
 				$_SESSION['cid'] = $id;
 				break;
 			case "home":
-				$_SESSION['cid'] = 0;
+				unset($_SESSION['cid']);
 				break;
 			}
-			redirect($_SERVER["PHP_SELF"]."?op=item&fct=list&id=$id&value=$value&start=$start&limit=$limit", 10, _MN_SONGLIST_MSG_CATEGORYCHANGED);
+			redirect_header($_SERVER["PHP_SELF"]."?op=item&fct=list&id=$id&value=$value&start=$start&limit=$limit&cid=".$_SESSION['cid'], 10, _MN_SONGLIST_MSG_CATEGORYCHANGED);
 			exit;
 	}	
 ?>

@@ -1,0 +1,94 @@
+<{if $block}>
+	<div style='font-size:1.15em; clear:both;'>
+		<{if $block.title}>
+		<{$block.title}>
+		<{elseif $block.name}>
+		<{$block.name}>
+		<{/if}>
+	</div>
+	<{if count($block.categories)>0}>
+	<div style='font-size:0.85em; clear:both;'>
+		<{$smary.const._BL_SONGLIST_CATEGORIES}>
+	</div>
+	<div style='font-size:0.65em; clear:both;'>
+		<{foreach from=$block.categories key=number item=category}>
+			<{$category.name}></a><{if $number<sizeof($block.categories)-1}>,&nbsp;<{/if}>
+		<{/foreach}>
+	</div>
+	<{elseif $block.category}>
+	<div style='font-size:0.85em; clear:both;'>
+		<{$smary.const._BL_SONGLIST_CATEGORY}>
+	</div>
+	<div style='font-size:0.65em; clear:both;'>
+		<{$block.category.title}>
+	</div>
+	<{/if}>
+	<{if count($block.genres)>0}>
+	<div style='font-size:0.85em; clear:both;'>
+		<{$smary.const._BL_SONGLIST_GENRES}>
+	</div>
+	<div style='font-size:0.65em; clear:both;'>
+		<{foreach from=$block.genres key=number item=genre}>
+			<{$genre.name}><{if $number<sizeof($block.genres)-1}>,&nbsp;<{/if}>
+		<{/foreach}>
+	</div>
+	<{elseif $block.genre}>
+	<div style='font-size:0.85em; clear:both;'>
+		<{$smary.const._BL_SONGLIST_GENRE}>
+	</div>
+	<div style='font-size:0.65em; clear:both;'>
+		<{$block.genre.name}></a>
+	</div>
+	<{/if}>
+	<{if count($block.artists)>0}>
+	<div style='font-size:0.85em; clear:both;'>
+		<{$smary.const._BL_SONGLIST_ARTISTS}>
+	</div>
+	<div style='font-size:0.65em; clear:both;'>
+		<{foreach from=$block.artists key=number item=artist}>
+			<a href="<{$artist.url}>"><{$artist.name}></a><{if $number<sizeof($block.artists)-1}>,&nbsp;<{/if}>
+		<{/foreach}>
+	</div>
+	<{elseif $block.artist}>
+	<div style='font-size:0.85em; clear:both;'>
+		<{$smary.const._BL_SONGLIST_ARTIST}>
+	</div>
+	<div style='font-size:0.65em; clear:both;'>
+		<a href="<{$block.artist.url}>"><{$block.artist.title}></a>
+	</div>
+	<{/if}>
+	<{if count($block.albums)>0}>
+	<div style='font-size:0.85em; clear:both;'>
+		<{$smary.const._BL_SONGLIST_ALBUMS}>
+	</div>
+	<div style='font-size:0.65em; clear:both;'>
+		<{foreach from=$block.albums key=number item=album}>
+			<a href="<{$album.url}>"><{$album.title}></a><{if $number<sizeof($block.albums)-1}>,&nbsp;<{/if}>
+		<{/foreach}>
+	</div>
+	<{elseif $block.album}>
+	<div style='font-size:0.85em; clear:both;'>
+		<{$smary.const._BL_SONGLIST_ALBUM}>
+	</div>
+	<div style='font-size:0.65em; clear:both;'>
+		<a href="<{$block.album.url}>"><{$block.album.title}></a>
+	</div>
+	<{/if}>
+	<{if count($block.songs)>0}>
+	<div style='font-size:0.85em; clear:both;'>
+		<{$smary.const._BL_SONGLIST_SONGS}>
+	</div>
+	<div style='font-size:0.65em; clear:both;'>
+		<{foreach from=$block.songs key=number item=song}>
+			<a href="<{$song.url}>"><{$song.title}></a><{if $number<sizeof($block.songs)-1}>,&nbsp;<{/if}>
+		<{/foreach}>
+	</div>
+	<{elseif $block.song}>
+	<div style='font-size:0.85em; clear:both;'>
+		<{$smary.const._BL_SONGLIST_SONG}>
+	</div>
+	<div style='font-size:0.65em; clear:both;'>
+		<a href="<{$block.song.url}>"><{$block.song.title}></a>
+	</div>
+	<{/if}>
+<{/if}>

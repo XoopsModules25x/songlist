@@ -51,7 +51,7 @@ class SonglistExtrasHandler extends XoopsPersistableObjectHandler
 
     function __construct($db)
     {
-        parent::__construct($db, "songlist_extras", 'SonglistExtras', "sid");
+        parent::__construct($db, "songlist_extra", 'SonglistExtras', "sid");
         $this->_fHandler = xoops_getmodulehandler('field', 'songlist');
     }
 
@@ -222,7 +222,7 @@ class SonglistExtrasHandler extends XoopsPersistableObjectHandler
     {
         $uservars = $this->getPostVars();
         foreach ($uservars as $var) {
-			if ($var!='post_id')
+			if ($var!='sid')
 	            unset($obj->vars[$var]);
         }
         if (count($obj->vars) == 0) {

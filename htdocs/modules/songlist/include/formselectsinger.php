@@ -52,7 +52,7 @@ xoops_load('XoopsFormElement');
  * @subpackage 	form
  * @access 		public
  */
-class SonglistFormSelectGenre extends XoopsFormElement
+class SonglistFormSelectSinger extends XoopsFormElement
 {
     /**
      * Options
@@ -95,7 +95,7 @@ class SonglistFormSelectGenre extends XoopsFormElement
      * @param int $size Number or rows. "1" makes a drop-down-list
      * @param bool $multiple Allow multiple selections?
      */
-    function SonglistFormSelectGenre($caption, $name, $value = null, $size = 1, $multiple = false)
+    function SonglistFormSelectSinger($caption, $name, $value = null, $size = 1, $multiple = false)
     {
     	xoops_loadLanguage('enum', 'songlist');
     	

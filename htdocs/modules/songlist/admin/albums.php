@@ -6,8 +6,8 @@
 	
 	xoops_cp_header();
 	
-	$op = isset($_REQUEST['op'])?$_REQUEST['op']:"dashboard";
-	$fct = isset($_REQUEST['fct'])?$_REQUEST['fct']:"";
+	$op = isset($_REQUEST['op'])?$_REQUEST['op']:"albums";
+	$fct = isset($_REQUEST['fct'])?$_REQUEST['fct']:"list";
 	$limit = !empty($_REQUEST['limit'])?intval($_REQUEST['limit']):30;
 	$start = !empty($_REQUEST['start'])?intval($_REQUEST['start']):0;
 	$order = !empty($_REQUEST['order'])?$_REQUEST['order']:'DESC';
@@ -15,13 +15,14 @@
 	$filter = !empty($_REQUEST['filter'])?''.$_REQUEST['filter'].'':'1,1';
 	
 	switch($op) {
+	default:
 	case "albums":
 		switch ($fct)
 		{
 			default:
 			case "list":				
 				$indexAdmin = new ModuleAdmin();
-				echo $indexAdmin->addNavigation(basetitle(__FILE__));
+				echo $indexAdmin->addNavigation(basename(__FILE__));
 				
 				$albums_handler =& xoops_getmodulehandler('albums', 'songlist');
 					
@@ -33,7 +34,7 @@
 				$GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
 		
 				foreach ($albums_handler->filterFields() as $id => $key) {
-					$GLOBALS['xoopsTpl']->assign(strtolower(str_replace('-','_',$key).'_th'), '<a href="'.$_SERVER['PHP_SELF'].'?start='.$GLOBALS['start'].'&limit='.$GLOBALS['limit'].'&sort='.$key.'&order='.(($key==$GLOBALS['sort'])?($GLOBALS['order']=='DESC'?'ASC':'DESC'):$GLOBALS['order']).'&op='.$GLOBALS['op'].'&filter='.$GLOBALS['filter'].'">'.(defined('_AM_SONGLIST_TH_'.strtoupper(str_replace('-','_',$key)))?constant('_AM_SONGLIST_TH_'.strtoupper(str_replace('-','_',$key))):'_AM_SONGLIST_TH_'.strtoupper(str_replace('-','_',$key))).'</a>');
+					$GLOBALS['xoopsTpl']->assign(strtolower(str_replace('-','_',$key).'_th'), '<a href="'.$_SERVER['PHP_SELF'].'?start='.$GLOBALS['start'].'&limit='.$GLOBALS['limit'].'&sort='.$key.'&order='.(($key==$GLOBALS['sort'])?($GLOBALS['order']=='DESC'?'ASC':'DESC'):$GLOBALS['order']).'&op='.$GLOBALS['op'].'&filter='.$GLOBALS['filter'].'">'.(defined('	'.strtoupper(str_replace('-','_',$key)))?constant('_AM_SONGLIST_TH_'.strtoupper(str_replace('-','_',$key))):'_AM_SONGLIST_TH_'.strtoupper(str_replace('-','_',$key))).'</a>');
 					$GLOBALS['xoopsTpl']->assign('filter_'.strtolower(str_replace('-','_',$key)).'_th', $albums_handler->getFilterForm($GLOBALS['filter'], $key, $GLOBALS['sort'], $GLOBALS['op'], $GLOBALS['fct']));
 				}
 				
@@ -63,7 +64,7 @@
 			case "edit":
 				
 				$indexAdmin = new ModuleAdmin();
-				echo $indexAdmin->addNavigation(basetitle(__FILE__));
+				echo $indexAdmin->addNavigation(basename(__FILE__));
 								
 				$albums_handler =& xoops_getmodulehandler('albums', 'songlist');
 				if (isset($_REQUEST['id'])) {

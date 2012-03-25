@@ -6,14 +6,14 @@ xoops_cp_header();
 
 
 $op = (!empty($_GET['op']) ? $_GET['op'] : (!empty($_POST['op']) ? $_POST['op'] : (!empty($_REQUEST['id']) ? "edit" : 'list')));
-$profilefield_handler = xoops_getmodulehandler('field');
+$field_handler = xoops_getmodulehandler('field', 'songlist');
 switch( $op ) {
 default:
 case "list":
 	$indexAdmin = new ModuleAdmin();
 	echo $indexAdmin->addNavigation(basename(__FILE__));
 
-	$fields = $profilefield_handler->getObjects(NULL, false, false);
+	$fields = $field_handler->getObjects(NULL, false, false);
 
 	$module_handler = xoops_gethandler('module');
 	$modules = $module_handler->getObjects(null, true);
@@ -21,45 +21,46 @@ case "list":
 	$GLOBALS['categoryHandler'] = xoops_getmodulehandler('category');
 	$criteria = new CriteriaCompo();
 	$criteria->setSort('weight');
-	$categories = $GLOBALS['categoryHandler']->getObjects($criteria, true);
-	unset($criteria);
-
-	$categories[0] = array('cids' => 0, 'name' => _AM_SONGLIST_DEFAULT);
-	if ( count($categories) > 0 ) {
-		foreach (array_keys($categories) as $i ) {
-			$categories[$categories[$i]->getVar('cids')] = array('cids' => $categories[$i]->getVar('cids'), 'name' => $categories[$i]->getVar('name'));
+	if ($categorys = $GLOBALS['categoryHandler']->getObjects($criteria, true)) {
+		unset($criteria);
+	
+		$categories[0] = array('cid' => 0, 'name' => _AM_SONGLIST_FIELDS_DEFAULT);
+		if ( count($categorys) > 0 ) {
+			foreach (array_keys($categorys) as $i ) {
+				$categories[$categorys[$i]->getVar('cid')] = array('cid' => $categorys[$i]->getVar('cid'), 'name' => $categorys[$i]->getVar('name'));
+			}
 		}
+		$GLOBALS['xoopsTpl']->assign('categories', $categories);
 	}
-	$GLOBALS['xoopsTpl']->assign('categories', $categories);
 	unset($categories);
-	$valuetypes = array(XOBJ_DTYPE_ARRAY => _AM_SONGLIST_ARRAY,
-						XOBJ_DTYPE_EMAIL => _AM_SONGLIST_EMAIL,
-						XOBJ_DTYPE_INT => _AM_SONGLIST_INT,
-						XOBJ_DTYPE_TXTAREA => _AM_SONGLIST_TXTAREA,
-						XOBJ_DTYPE_TXTBOX => _AM_SONGLIST_TXTBOX,
-						XOBJ_DTYPE_URL => _AM_SONGLIST_URL,
-						XOBJ_DTYPE_OTHER => _AM_SONGLIST_OTHER,
-						XOBJ_DTYPE_MTIME => _AM_SONGLIST_DATE);
+	$valuetypes = array(XOBJ_DTYPE_ARRAY => _AM_SONGLIST_FIELDS_ARRAY,
+						XOBJ_DTYPE_EMAIL => _AM_SONGLIST_FIELDS_EMAIL,
+						XOBJ_DTYPE_INT => _AM_SONGLIST_FIELDS_INT,
+						XOBJ_DTYPE_TXTAREA => _AM_SONGLIST_FIELDS_TXTAREA,
+						XOBJ_DTYPE_TXTBOX => _AM_SONGLIST_FIELDS_TXTBOX,
+						XOBJ_DTYPE_URL => _AM_SONGLIST_FIELDS_URL,
+						XOBJ_DTYPE_OTHER => _AM_SONGLIST_FIELDS_OTHER,
+						XOBJ_DTYPE_MTIME => _AM_SONGLIST_FIELDS_DATE);
 
-	$fieldtypes = array('checkbox' => _AM_SONGLIST_CHECKBOX,
-							'group' => _AM_SONGLIST_GROUP,
-							'group_multi' => _AM_SONGLIST_GROUPMULTI,
-							'language' => _AM_SONGLIST_LANGUAGE,
-							'radio' => _AM_SONGLIST_RADIO,
-							'select' => _AM_SONGLIST_SELECT,
-							'select_multi' => _AM_SONGLIST_SELECTMULTI,
-							'textarea' => _AM_SONGLIST_TEXTAREA,
-							'dhtml' => _AM_SONGLIST_DHTMLTEXTAREA,
-							'editor' => _AM_SONGLIST_EDITOR,
-							'textbox' => _AM_SONGLIST_TEXTBOX,
-							'timezone' => _AM_SONGLIST_TIMEZONE,
-							'yesno' => _AM_SONGLIST_YESNO,
-							'date' => _AM_SONGLIST_DATE,
-							'datetime' => _AM_SONGLIST_DATETIME,
-							'longdate' => _AM_SONGLIST_LONGDATE,
-							'theme' => _AM_SONGLIST_THEME,
-							'autotext' => _AM_SONGLIST_AUTOTEXT,
-							'rank' => _AM_SONGLIST_RANK);
+	$fieldtypes = array('checkbox' => _AM_SONGLIST_FIELDS_CHECKBOX,
+							'group' => _AM_SONGLIST_FIELDS_GROUP,
+							'group_multi' => _AM_SONGLIST_FIELDS_GROUPMULTI,
+							'language' => _AM_SONGLIST_FIELDS_LANGUAGE,
+							'radio' => _AM_SONGLIST_FIELDS_RADIO,
+							'select' => _AM_SONGLIST_FIELDS_SELECT,
+							'select_multi' => _AM_SONGLIST_FIELDS_SELECTMULTI,
+							'textarea' => _AM_SONGLIST_FIELDS_TEXTAREA,
+							'dhtml' => _AM_SONGLIST_FIELDS_DHTMLTEXTAREA,
+							'editor' => _AM_SONGLIST_FIELDS_EDITOR,
+							'textbox' => _AM_SONGLIST_FIELDS_TEXTBOX,
+							'timezone' => _AM_SONGLIST_FIELDS_TIMEZONE,
+							'yesno' => _AM_SONGLIST_FIELDS_YESNO,
+							'date' => _AM_SONGLIST_FIELDS_DATE,
+							'datetime' => _AM_SONGLIST_FIELDS_DATETIME,
+							'longdate' => _AM_SONGLIST_FIELDS_LONGDATE,
+							'theme' => _AM_SONGLIST_FIELDS_THEME,
+							'autotext' => _AM_SONGLIST_FIELDS_AUTOTEXT,
+							'rank' => _AM_SONGLIST_FIELDS_RANK);
 
 	foreach (array_keys($fields) as $i ) {
 		$fields[$i]['canEdit'] = $fields[$i]['field_config'] || $fields[$i]['field_show'] || $fields[$i]['field_edit'];
@@ -83,7 +84,7 @@ case "new":
 
 	$indexAdmin = new ModuleAdmin();
 	echo $indexAdmin->addNavigation(basename(__FILE__));
-	$obj = $profilefield_handler->create();
+	$obj = $field_handler->create();
 	$form = songlist_getFieldForm($obj);
 	$form->display();
 	break;
@@ -92,9 +93,9 @@ case "edit":
 
 	$indexAdmin = new ModuleAdmin();
 	echo $indexAdmin->addNavigation(basename(__FILE__));
-	$obj = $profilefield_handler->get($_REQUEST['id']);
+	$obj = $field_handler->get($_REQUEST['id']);
 	if ( !$obj->getVar('field_config') && !$obj->getVar('field_show') && !$obj->getVar('field_edit')  ) { //If no configs exist
-		redirect_header('field.php', 2, _AM_SONGLIST_FIELDNOTCONFIGURABLE);
+		redirect_header('field.php', 2, _AM_SONGLIST_FIELDS_FIELDNOTCONFIGURABLE);
 	}
 	$form = songlist_getFieldForm($obj);
 	$form->display();
@@ -108,7 +109,7 @@ case "reorder":
 		$oldweight = $_POST['oldweight'];
 		$oldcat = $_POST['oldcat'];
 		$oldcategories = $_POST['oldcategories'];
-		$categories = $_POST['categories'];
+		$categories = $_POST['cids'];
 		$weight = $_POST['weight'];
 		$ids = array();
 		foreach ($_POST['field_ids'] as $field_id ) {
@@ -131,13 +132,13 @@ case "reorder":
 			}
 			if ( count($errors) == 0 ) {
 				//no errors
-				redirect_header('field.php', 2, sprintf(_AM_SONGLIST_SAVEDSUCCESS, _AM_SONGLIST_FIELDS) );
+				redirect_header('field.php', 2, sprintf(_AM_SONGLIST_FIELDS_SAVEDSUCCESS, _AM_SONGLIST_FIELDS_FIELDS) );
 			} else {
 				redirect_header('field.php', 3, implode('<br />', $errors) );
 			}
 		}
 	}
-	redirect_header('field.php', 2, sprintf(_AM_SONGLIST_SAVEDSUCCESS, _AM_SONGLIST_FIELDS) );
+	redirect_header('field.php', 2, sprintf(_AM_SONGLIST_FIELDS_SAVEDSUCCESS, _AM_SONGLIST_FIELDS_FIELDS) );
 	break;
 
 case "save":
@@ -146,12 +147,12 @@ case "save":
 	}
 	$redirect_to_edit = false;
 	if ( isset($_REQUEST['id'])  ) {
-		$obj = $profilefield_handler->get($_REQUEST['id']);
+		$obj = $field_handler->get($_REQUEST['id']);
 		if ( !$obj->getVar('field_config') && !$obj->getVar('field_show') && !$obj->getVar('field_edit')  ) { //If no configs exist
-			redirect_header('fields.php', 2, _AM_SONGLIST_FIELDNOTCONFIGURABLE);
+			redirect_header('fields.php', 2, _AM_SONGLIST_FIELDS_FIELDNOTCONFIGURABLE);
 		}
 	} else {
-		$obj = $profilefield_handler->create();
+		$obj = $field_handler->create();
 		$obj->setVar('field_name', $_REQUEST['field_name']);
 		$obj->setVar('field_moduleid', $GLOBALS['songlistModule']->getVar('mid') );
 		$obj->setVar('field_show', 1);
@@ -202,9 +203,10 @@ case "save":
 	}
 
 	$obj->setVar('field_weight', $_REQUEST['field_weight']);
-	$obj->setVar('cids', $_REQUEST['categories']);
+	$obj->setVar('cids', $_REQUEST['cids']);
 
-	if ( $profilefield_handler->insert($obj)  ) {
+	if ( $field_handler->insert($obj)  ) {
+	
 		$groupperm_handler = xoops_gethandler('groupperm');
 
 		$perm_arr = array();
@@ -258,29 +260,30 @@ case "save":
 			}
 		}
 		$url = $redirect_to_edit ? 'field.php?op=edit&amp;id=' . $obj->getVar('field_id') : 'field.php';
-		redirect_header($url, 3, sprintf(_AM_SONGLIST_SAVEDSUCCESS, _AM_SONGLIST_FIELD) );
+		redirect_header($url, 3, sprintf(_AM_SONGLIST_FIELDS_SAVEDSUCCESS, _AM_SONGLIST_FIELDS_FIELD) );
 	}
+	
 	echo $obj->getHtmlErrors();
 	$form = songlist_getFieldForm($obj);
 	$form->display();
 	break;
 
 case "delete":
-	$obj = $profilefield_handler->get($_REQUEST['id']);
+	$obj = $field_handler->get($_REQUEST['id']);
 	if ( !$obj->getVar('field_config')  ) {
-		redirect_header('index.php', 2, _AM_SONGLIST_FIELDNOTCONFIGURABLE);
+		redirect_header('index.php', 2, _AM_SONGLIST_FIELDS_FIELDNOTCONFIGURABLE);
 	}
 	if ( isset($_REQUEST['ok']) && $_REQUEST['ok'] == 1 ) {
 		if ( !$GLOBALS['xoopsSecurity']->check()  ) {
 			redirect_header('field.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors() ));
 		}
-		if ( $profilefield_handler->delete($obj)  ) {
-			redirect_header('field.php', 3, sprintf(_AM_SONGLIST_DELETEDSUCCESS, _AM_SONGLIST_FIELD) );
+		if ( $field_handler->delete($obj)  ) {
+			redirect_header('field.php', 3, sprintf(_AM_SONGLIST_FIELDS_DELETEDSUCCESS, _AM_SONGLIST_FIELDS_FIELD) );
 		} else {
 			echo $obj->getHtmlErrors();
 		}
 	} else {
-		xoops_confirm(array('ok' => 1, 'id' => $_REQUEST['id'], 'op' => 'delete'), $_SERVER['REQUEST_URI'], sprintf(_AM_SONGLIST_RUSUREDEL, $obj->getVar('field_title') ));
+		xoops_confirm(array('ok' => 1, 'id' => $_REQUEST['id'], 'op' => 'delete'), $_SERVER['REQUEST_URI'], sprintf(_AM_SONGLIST_FIELDS_RUSUREDEL, $obj->getVar('field_title') ));
 	}
 	break;
 }

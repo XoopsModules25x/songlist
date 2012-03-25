@@ -1,16 +1,23 @@
 <?php
+error_reporting(E_ALL);
+
+$module_handler = xoops_gethandler('module');
+$config_handler = xoops_gethandler('config');
+$GLOBALS['songlistModule'] = $module_handler->getByDirname('songlist');
+if (is_object($GLOBALS['songlistModule']))
+	$GLOBALS['songlistModuleConfig'] = $config_handler->getConfigList($GLOBALS['songlistModule']->getVar('mid')); 
 
 // $Id: xoops_version.php,v 4.04 2008/06/05 15:35:59 wishcraft Exp $
 
 $modversion['name'] = _MI_SONGLIST_NAME;
-$modversion['version'] = 1.00;
+$modversion['version'] = 1.07;
 $modversion['description'] = _MI_SONGLIST_DESC;
 $modversion['credits'] = "Orginally Based on Newbb by phppp - adaption by (wishcraft)";
 $modversion['author'] = "Simon Roberts (wishcraft)";
 $modversion['license'] = "GNU General Public License (GPL) see LICENSE";
 $modversion['image'] = "images/songlist_slogo.png";
 $modversion['dirname'] = "songlist";
-$modversion['releasedate'] = "Sunday, 18th March 03, 2012";
+$modversion['releasedate'] = "Sunday, 26th March 03, 2012";
 $modversion['module_status'] = "Stable";
 $modversion['website'] = "www.chronolabs.coop";
 
@@ -18,9 +25,9 @@ $modversion['dirmoduleadmin'] = 'Frameworks/moduleclasses';
 $modversion['icons16'] = 'Frameworks/moduleclasses/icons/16';
 $modversion['icons32'] = 'Frameworks/moduleclasses/icons/32';
 
-$modversion['release_info'] = "Stable 2012/03/18";
+$modversion['release_info'] = "Stable 2012/03/26";
 $modversion['release_file'] = XOOPS_URL."/modules/xforum/docs/changelog.txt";
-$modversion['release_date'] = "2012/03/18";
+$modversion['release_date'] = "2012/03/26";
 
 $modversion['author_realname'] = "Wishcraft";
 $modversion['author_website_url'] = "http://www.chronolabs.coop";
@@ -93,7 +100,16 @@ $i++;
 $modversion['templates'][$i]['file'] = 'songlist_songs_item.html';
 $modversion['templates'][$i]['description'] = '';
 $i++;
-$modversion['templates'][$i]['file'] = 'songlist_songs_rank.html';
+$modversion['templates'][$i]['file'] = 'songlist_songs_index.html';
+$modversion['templates'][$i]['description'] = '';
+$i++;
+$modversion['templates'][$i]['file'] = 'songlist_requests_index.html';
+$modversion['templates'][$i]['description'] = '';
+$i++;
+$modversion['templates'][$i]['file'] = 'songlist_search_search.html';
+$modversion['templates'][$i]['description'] = '';
+$i++;
+$modversion['templates'][$i]['file'] = 'songlist_search_index.html';
 $modversion['templates'][$i]['description'] = '';
 $i++;
 $modversion['templates'][$i]['file'] = 'songlist_albums_list.html';
@@ -102,16 +118,16 @@ $i++;
 $modversion['templates'][$i]['file'] = 'songlist_albums_item.html';
 $modversion['templates'][$i]['description'] = '';
 $i++;
+$modversion['templates'][$i]['file'] = 'songlist_albums_index.html';
+$modversion['templates'][$i]['description'] = '';
+$i++;
 $modversion['templates'][$i]['file'] = 'songlist_artists_list.html';
 $modversion['templates'][$i]['description'] = '';
 $i++;
 $modversion['templates'][$i]['file'] = 'songlist_artists_item.html';
 $modversion['templates'][$i]['description'] = '';
 $i++;
-$modversion['templates'][$i]['file'] = 'songlist_index.html';
-$modversion['templates'][$i]['description'] = '';
-$i++;
-$modversion['templates'][$i]['file'] = 'songlist_search.html';
+$modversion['templates'][$i]['file'] = 'songlist_artists_index.html';
 $modversion['templates'][$i]['description'] = '';
 $i++;
 $modversion['templates'][$i]['file'] = 'songlist_search_results.html';
@@ -147,6 +163,12 @@ $i++;
 $modversion['templates'][$i]['file'] = 'songlist_cpanel_genre_list.html';
 $modversion['templates'][$i]['description'] = '';
 $i++;
+$modversion['templates'][$i]['file'] = 'songlist_cpanel_import_actiona.html';
+$modversion['templates'][$i]['description'] = '';
+$i++;
+$modversion['templates'][$i]['file'] = 'songlist_cpanel_import_actionb.html';
+$modversion['templates'][$i]['description'] = '';
+$i++;
 $modversion['templates'][$i]['file'] = 'songlist_cpanel_requests_edit.html';
 $modversion['templates'][$i]['description'] = '';
 $i++;
@@ -174,10 +196,26 @@ $i++;
 $modversion['templates'][$i]['file'] = 'songlist_cpanel_votes_list.html';
 $modversion['templates'][$i]['description'] = '';
 
+// Submenus
+$i=0;
+$modversion['sub'][$i]['name'] = _MI_SONGLIST_MENU_ARTISTS;
+$modversion['sub'][$i]['url'] = "artists.php";
+$i++;
+if ($GLOBALS['songlistModuleConfig']['album']) {
+	$modversion['sub'][$i]['name'] = _MI_SONGLIST_MENU_ALBUMS;
+	$modversion['sub'][$i]['url'] = "albums.php";
+	$i++;
+}		
+$modversion['sub'][$i]['name'] = _MI_SONGLIST_MENU_SEARCH;
+$modversion['sub'][$i]['url'] = "search.php";
+$i++;
+$modversion['sub'][$i]['name'] = _MI_SONGLIST_MENU_REQUEST;
+$modversion['sub'][$i]['url'] = "request.php";
+$i++;
 
-
+$i=0;
 // Blocks
-$modversion['blocks'][] = array(
+$modversion['blocks'][$i] = array(
 	'file' => "songlist_popular_artist.php",
 	'name' => _MI_SONGLIST_BLOCK_TOP_ARTIST,
 	'description' => "Shows top artist",
@@ -186,7 +224,8 @@ $modversion['blocks'][] = array(
 	'edit_func' => "b_songlist_popular_artist_edit",
 	'template' => 'songlist_popular_artist.html');
 
-$modversion['blocks'][] = array(
+$i++;
+$modversion['blocks'][$i] = array(
 	'file' => "songlist_popular_artists.php",
 	'name' => _MI_SONGLIST_BLOCK_POPULAR_ARTISTS,
 	'description' => "Shows popular artists",
@@ -195,7 +234,8 @@ $modversion['blocks'][] = array(
 	'edit_func' => "b_songlist_popular_artists_edit",
 	'template' => 'songlist_popular_artists.html');
 
-$modversion['blocks'][] = array(
+$i++;
+$modversion['blocks'][$i] = array(
 	'file' => "songlist_popular_album.php",
 	'name' => _MI_SONGLIST_BLOCK_TOP_ALBUM,
 	'description' => "Shows top album",
@@ -204,7 +244,8 @@ $modversion['blocks'][] = array(
 	'edit_func' => "b_songlist_popular_album_edit",
 	'template' => 'songlist_popular_album.html');
 
-$modversion['blocks'][] = array(
+$i++;
+$modversion['blocks'][$i] = array(
 	'file' => "songlist_popular_albums.php",
 	'name' => _MI_SONGLIST_BLOCK_POPULAR_ALBUMS,
 	'description' => "Shows popular albums",
@@ -213,7 +254,8 @@ $modversion['blocks'][] = array(
 	'edit_func' => "b_songlist_popular_albums_edit",
 	'template' => 'songlist_popular_albums.html');
 
-$modversion['blocks'][] = array(
+$i++;
+$modversion['blocks'][$i] = array(
 	'file' => "songlist_popular_genre.php",
 	'name' => _MI_SONGLIST_BLOCK_TOP_GENRE,
 	'description' => "Shows top genre",
@@ -222,7 +264,8 @@ $modversion['blocks'][] = array(
 	'edit_func' => "b_songlist_popular_genre_edit",
 	'template' => 'songlist_popular_genre.html');
 
-$modversion['blocks'][] = array(
+$i++;
+$modversion['blocks'][$i] = array(
 	'file' => "songlist_popular_genres.php",
 	'name' => _MI_SONGLIST_BLOCK_POPULAR_GENRES,
 	'description' => "Shows popular genres",
@@ -231,7 +274,8 @@ $modversion['blocks'][] = array(
 	'edit_func' => "b_songlist_popular_genres_edit",
 	'template' => 'songlist_popular_genres.html');
 
-$modversion['blocks'][] = array(
+$i++;
+$modversion['blocks'][$i] = array(
 	'file' => "songlist_popular_song.php",
 	'name' => _MI_SONGLIST_BLOCK_TOP_SONG,
 	'description' => "Shows top song",
@@ -240,7 +284,8 @@ $modversion['blocks'][] = array(
 	'edit_func' => "b_songlist_popular_song_edit",
 	'template' => 'songlist_popular_song.html');
 
-$modversion['blocks'][] = array(
+$i++;
+$modversion['blocks'][$i] = array(
 	'file' => "songlist_popular_songs.php",
 	'name' => _MI_SONGLIST_BLOCK_POPULAR_SONGS,
 	'description' => "Shows popular songs",
@@ -270,9 +315,19 @@ $modversion['config'][$i]['title'] = "_MI_SONGLIST_SALT";
 $modversion['config'][$i]['description'] = "_MI_SONGLIST_SALT_DESC";
 $modversion['config'][$i]['formtype'] = 'text';
 $modversion['config'][$i]['valuetype'] = 'text';
-mt_srand();
+mt_srand(microtime(true));
 $modversion['config'][$i]['default'] = (mt_rand(0,4)!=2?chr(mt_rand(32,190)):'').(mt_rand(0,4)!=2?chr(mt_rand(32,190)):'').(mt_rand(0,4)!=2?chr(mt_rand(32,190)):'').(mt_rand(0,4)!=2?chr(mt_rand(32,190)):'').(mt_rand(0,4)!=2?chr(mt_rand(32,190)):'').(mt_rand(0,4)!=2?chr(mt_rand(32,190)):'').(mt_rand(0,4)!=2?chr(mt_rand(32,190)):'').(mt_rand(0,4)!=2?chr(mt_rand(32,190)):'').(mt_rand(0,4)!=2?chr(mt_rand(32,190)):'').(mt_rand(0,4)!=2?chr(mt_rand(32,190)):'').(mt_rand(0,4)!=2?chr(mt_rand(32,190)):'').(mt_rand(0,4)!=2?chr(mt_rand(32,190)):'').(mt_rand(0,4)!=2?chr(mt_rand(32,190)):'').(mt_rand(0,4)!=2?chr(mt_rand(32,190)):'');
 $modversion['config'][$i]['options'] = array();
+
+$i++;
+$modversion['config'][$i]['name'] = 'email';
+$modversion['config'][$i]['title'] = "_MI_SONGLIST_EMAIL";
+$modversion['config'][$i]['description'] = "_MI_SONGLIST_EMAIL_DESC";
+$modversion['config'][$i]['formtype'] = 'textarea';
+$modversion['config'][$i]['valuetype'] = 'text';
+$modversion['config'][$i]['default'] = $GLOBALS['xoopsConfig']['adminmail'];
+$modversion['config'][$i]['options'] = array();
+
 
 $i++;
 $modversion['config'][$i]['name'] = 'filesize_upload';
@@ -327,6 +382,14 @@ $modversion['config'][$i]['valuetype'] = 'int';
 $modversion['config'][$i]['default'] = '0';
 
 $i++;
+$modversion['config'][$i]['name'] = 'singer';
+$modversion['config'][$i]['title'] = "_MI_SONGLIST_SINGER";
+$modversion['config'][$i]['description'] = "_MI_SONGLIST_SINGER_DESC";
+$modversion['config'][$i]['formtype'] = 'yesno';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = '0';
+
+$i++;
 $modversion['config'][$i]['name'] = 'htaccess';
 $modversion['config'][$i]['title'] = "_MI_SONGLIST_HTACCESS";
 $modversion['config'][$i]['description'] = "_MI_SONGLIST_HTACCESS_DESC";
@@ -357,5 +420,13 @@ $modversion['config'][$i]['description'] = "_MI_SONGLIST_TAGS_DESC";
 $modversion['config'][$i]['formtype'] = 'yesno';
 $modversion['config'][$i]['valuetype'] = 'int';
 $modversion['config'][$i]['default'] = '0';
+
+$i++;
+$modversion['config'][$i]['name'] = 'force_jquery';
+$modversion['config'][$i]['title'] = "_MI_SONGLIST_FORCE_JQUERY";
+$modversion['config'][$i]['description'] = "_MI_SONGLIST_FORCE_JQUERY_DESC";
+$modversion['config'][$i]['formtype'] = 'yesno';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = true;
 
 ?>

@@ -1,13 +1,13 @@
 <{if $artists}>
-<{if not $artists.pagenav eq ''}> 
+<{if not $pagenav eq ''}> 
 <div style='width:100%; clear:both; height:25px;'>
 	<div style='float:right;'>
-		<{$artists.pagenav}>
+		<{$pagenav}>
 	</div>
 </div>
 <{/if}>
 <table>
-	<{foreach from=$artists key=$rowkey item=row}>
+	<{foreach from=$artists key=rowkey item=row}>
 	<{if not $rowkey eq 'pagenav'}> 
 	<tr>
 		<{foreach from=$row item=artist}>
@@ -17,11 +17,11 @@
 	<{/if}>
 	<{/foreach}>
 </table>
-<{/if}>
-<{if not $artists.pagenav eq ''}> 
+<{if not $pagenav eq ''}> 
 <div style='width:100%; clear:both; height:25px;'>
 	<div style='float:left;'>
-		<{$artists.pagenav}>
+		<{$pagenav}>
 	</div>
 </div>
-<{/if}
+<{/if}>
+<{/if}>

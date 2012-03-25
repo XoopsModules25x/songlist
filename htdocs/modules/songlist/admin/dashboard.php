@@ -44,71 +44,25 @@
 			echo $indexAdmin->addNavigation(basename(__FILE__));
 			
 			$indexAdmin = new ModuleAdmin();	
-		    $indexAdmin->addInfoBox(_AM_SONGLIST_PREFERENCES);
-		    	        
-		    $indexAdmin->addInfoBoxLine(_AM_SONGLIST_PREFERENCES, "<label>"._AM_SONGLIST_POLLMODULE."</label>", ($isOK)?_AM_SONGLIST_AVAILABLE:_AM_SONGLIST_NOTAVAILABLE, ($isOK)?'Green':'Red');
-		    
-		    if(array_key_exists('imagemagick',$imageLibs)) {
-		    	$indexAdmin->addInfoBoxLine(_AM_SONGLIST_PREFERENCES, "<label>"._AM_SONGLIST_IMAGEMAGICK."</label>", _AM_SONGLIST_AUTODETECTED.$imageLibs['imagemagick'], 'Green');
-		    } else { 
-		    	$indexAdmin->addInfoBoxLine(_AM_SONGLIST_PREFERENCES, "<label>"._AM_SONGLIST_IMAGEMAGICK."</label>", _AM_SONGLIST_NOTAVAILABLE, 'Red');
-			}
-			if(array_key_exists('netpbm',$imageLibs)) {
-		    	$indexAdmin->addInfoBoxLine(_AM_SONGLIST_PREFERENCES, "<label>"._AM_SONGLIST_NETPDM."</label>", _AM_SONGLIST_AUTODETECTED.$imageLibs['netpbm'], 'Green');
-		    } else { 
-		    	$indexAdmin->addInfoBoxLine(_AM_SONGLIST_PREFERENCES, "<label>"._AM_SONGLIST_NETPDM."</label>", _AM_SONGLIST_NOTAVAILABLE, 'Red');
-			}
-			if(array_key_exists('gd1',$imageLibs)) {
-		    	$indexAdmin->addInfoBoxLine(_AM_SONGLIST_PREFERENCES, "<label>"._AM_SONGLIST_GDLIB1."</label>", _AM_SONGLIST_AUTODETECTED.$imageLibs['gd1'], 'Green');
-		    } else { 
-		    	$indexAdmin->addInfoBoxLine(_AM_SONGLIST_PREFERENCES, "<label>"._AM_SONGLIST_GDLIB1."</label>", _AM_SONGLIST_NOTAVAILABLE, 'Red');
-			}
-			if(array_key_exists('gd2',$imageLibs)) {
-		    	$indexAdmin->addInfoBoxLine(_AM_SONGLIST_PREFERENCES, "<label>"._AM_SONGLIST_GDLIB2."</label>", _AM_SONGLIST_AUTODETECTED.$imageLibs['gd2'], 'Green');
-		    } else { 
-		    	$indexAdmin->addInfoBoxLine(_AM_SONGLIST_PREFERENCES, "<label>"._AM_SONGLIST_GDLIB2."</label>", _AM_SONGLIST_NOTAVAILABLE, 'Red');
-			}
-				      
-	        $attach_path = XOOPS_ROOT_PATH . '/' . $GLOBALS['xforumModuleConfig']['dir_attachments'] . '/';
-	        $path_status = forum_getPathStatus($attach_path);
-	        $indexAdmin->addInfoBox(_AM_SONGLIST_PATHS);
-			$indexAdmin->addInfoBoxLine(_AM_SONGLIST_PATHS, "<label>"._AM_SONGLIST_ATTACHPATH."</label>", $attach_path . ' ( ' . $path_status . ' )', 'Green');
-	        $thumb_path = $attach_path . 'thumbs/'; // be careful
-	        $path_status = forum_getPathStatus($thumb_path);
-	        $indexAdmin->addInfoBoxLine(_AM_SONGLIST_PATHS, "<label>"._AM_SONGLIST_THUMBPATH."</label>", $thumb_path . ' ( ' . $path_status . ' )', 'Green');
-
-	        $indexAdmin->addInfoBox(_AM_SONGLIST_BOARDSUMMARY);
-			$indexAdmin->addInfoBoxLine(_AM_SONGLIST_BOARDSUMMARY, "<label>"._AM_SONGLIST_TOTALTOPICS."</label>", get_total_topics(), 'Green');
-			$indexAdmin->addInfoBoxLine(_AM_SONGLIST_BOARDSUMMARY, "<label>"._AM_SONGLIST_TOTALPOSTS."</label>", get_total_posts(), 'Green');
-			$indexAdmin->addInfoBoxLine(_AM_SONGLIST_BOARDSUMMARY, "<label>"._AM_SONGLIST_TOTALVIEWS."</label>", get_total_views(), 'Green');
-			$criteria = new Criteria('approved', 0);
-			$post_handler = xoops_getmodulehandler('post', 'xforum');
-			$topic_handler = xoops_getmodulehandler('topic', 'xforum');
 			
-			$indexAdmin->addInfoBoxLine(_AM_SONGLIST_BOARDSUMMARY, "<label>"._AM_SONGLIST_POSTSWAITINGAPPROVAL."</label>", $post_handler->getCount($criteria), 'Green');
-			$indexAdmin->addInfoBoxLine(_AM_SONGLIST_BOARDSUMMARY, "<label>"._AM_SONGLIST_TOPICWAITINGAPPROVAL."</label>", $topic_handler->getCount($criteria), 'Green');
+			$category_handler = xoops_getmodulehandler('category', 'songlist');
+			$artists_handler = xoops_getmodulehandler('artists', 'songlist');
+			$albums_handler = xoops_getmodulehandler('albums', 'songlist');
+			$genre_handler = xoops_getmodulehandler('genre', 'songlist');
+			$songs_handler = xoops_getmodulehandler('songs', 'songlist');
+			$requests_handler = xoops_getmodulehandler('requests', 'songlist');
+			$votes_handler = xoops_getmodulehandler('votes', 'songlist');
 			
-	        $report_handler = xoops_getmodulehandler('report', 'xforum');
-	        $indexAdmin->addInfoBox(_AM_SONGLIST_REPORT);
-			$indexAdmin->addInfoBoxLine(_AM_SONGLIST_REPORT, "<label>"._AM_SONGLIST_REPORT_PENDING."</label>", $report_handler->getCount(new Criteria("report_result", 0)), 'Green');
-			$indexAdmin->addInfoBoxLine(_AM_SONGLIST_REPORT, "<label>"._AM_SONGLIST_REPORT_PROCESSED."</label>", $report_handler->getCount(new Criteria("report_result", 1)), 'Green');
-	
-	        if ($GLOBALS['xforumModuleConfig']['email_digest'] > 0) {
-	            $digest_handler = xoops_getmodulehandler('digest', 'xforum');
-	           	$due = ($digest_handler->checkStatus()) / 60; // minutes
-	            $prompt = ($due > 0)? sprintf(_AM_SONGLIST_DIGEST_PAST, $due):sprintf(_AM_SONGLIST_DIGEST_NEXT, abs($due));
-	            $indexAdmin->addInfoBox(_AM_SONGLIST_DIGEST);
-				$indexAdmin->addInfoBoxLine(_AM_SONGLIST_DIGEST, "<label>"._AM_SONGLIST_DIGEST_SEND."</label>", $prompt, 'Green');
-				$indexAdmin->addInfoBoxLine(_AM_SONGLIST_DIGEST, "<label>"._AM_SONGLIST_DIGEST_ARCHIVE."</label>", $digest_handler->getDigestCount(), 'Green');
-	        }
-	
-	    	if (!empty($GLOBALS['xforumModuleConfig']['enable_usermoderate'])){
-				$moderate_handler = xoops_getmodulehandler('moderate', 'xforum');
-				$moderate_handler->clearGarbage();
-			}
+		    $indexAdmin->addInfoBox(_AM_SONGLIST_COUNT);
+		    $indexAdmin->addInfoBoxLine(_AM_SONGLIST_COUNT, "<label>"._AM_SONGLIST_NUMBER_OF_CATEGORY."</label>", $category_handler->getCount(NULL, true), 'green');
+		    $indexAdmin->addInfoBoxLine(_AM_SONGLIST_COUNT, "<label>"._AM_SONGLIST_NUMBER_OF_ARTISTS."</label>", $artists_handler->getCount(NULL, true), 'green');
+		    $indexAdmin->addInfoBoxLine(_AM_SONGLIST_COUNT, "<label>"._AM_SONGLIST_NUMBER_OF_ALBUMS."</label>", $albums_handler->getCount(NULL, true), 'green');
+		    $indexAdmin->addInfoBoxLine(_AM_SONGLIST_COUNT, "<label>"._AM_SONGLIST_NUMBER_OF_GENRE."</label>", $genre_handler->getCount(NULL, true), 'green');
+		    $indexAdmin->addInfoBoxLine(_AM_SONGLIST_COUNT, "<label>"._AM_SONGLIST_NUMBER_OF_SONGS."</label>", $songs_handler->getCount(NULL, true), 'green');
+		    $indexAdmin->addInfoBoxLine(_AM_SONGLIST_COUNT, "<label>"._AM_SONGLIST_NUMBER_OF_REQUESTS."</label>", $requests_handler->getCount(NULL, true), 'green');
+		    $indexAdmin->addInfoBoxLine(_AM_SONGLIST_COUNT, "<label>"._AM_SONGLIST_NUMBER_OF_VOTES."</label>", $votes_handler->getCount(NULL, true), 'green');
     		echo $indexAdmin->renderIndex();
-			
-	        echo chronolabs_inline(false); 
+
 	        xoops_cp_footer();
 	        break;
 	}

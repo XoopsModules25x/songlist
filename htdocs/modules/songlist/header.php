@@ -30,7 +30,7 @@
 // Project: The XOOPS Project                                                //
 // ------------------------------------------------------------------------- //
 	
-	require_once (dirname(dirname(__FILE__)).'/mainfile.php');
+	require_once (dirname(dirname(dirname(__FILE__))).'/mainfile.php');
 	
 	if (!defined('_CHARSET'))
 		define ("_CHARSET","UTF-8");
@@ -52,9 +52,26 @@
 	xoops_loadLanguage('user');
 	
 	include_once XOOPS_ROOT_PATH."/modules/".$GLOBALS['songlistModule']->getVar("dirname")."/include/functions.php";
-	include_once XOOPS_ROOT_PATH."/modules/".$GLOBALS['songlistModule']->getVar("dirname")."/include/songlist.objects.php";
-	include_once XOOPS_ROOT_PATH."/modules/".$GLOBALS['songlistModule']->getVar("dirname")."/include/songlist.forms.php";
+	include_once XOOPS_ROOT_PATH."/modules/".$GLOBALS['songlistModule']->getVar("dirname")."/include/songlist.object.php";
+	include_once XOOPS_ROOT_PATH."/modules/".$GLOBALS['songlistModule']->getVar("dirname")."/include/songlist.form.php";
 
 	xoops_loadLanguage('main', 'songlist');
 	
+	$GLOBALS['file']=isset($_REQUEST['file'])?$_REQUEST['file']:substr(basename($_SERVER['PHP_SELF']),0,strlen(basename($_SERVER['PHP_SELF']))-4);
+	$GLOBALS['op']=isset($_REQUEST['op'])?$_REQUEST['op']:'item';
+	$GLOBALS['fct']=isset($_REQUEST['fct'])?$_REQUEST['fct']:'list';
+	$GLOBALS['id']=isset($_REQUEST['id'])?$_REQUEST['id']:0;
+	$GLOBALS['value']=isset($_REQUEST['value'])?$_REQUEST['value']:'%';
+	$GLOBALS['gid']=isset($_REQUEST['gid'])?$_REQUEST['gid']:0;
+	$GLOBALS['cid']=(((isset($_POST['cid'])?$_POST['cid']:isset($_GET['cid']))?$_GET['cid']:isset($_SESSION['cid']))?$_SESSION['cid']:0);
+	$GLOBALS['singer']=isset($_REQUEST['singer'])?$_REQUEST['singer']:'_ENUM_SONGLIST_SOLO';
+	$GLOBALS['start']=isset($_REQUEST['start'])?$_REQUEST['start']:0;
+	$GLOBALS['limit']=isset($_REQUEST['limit'])?$_REQUEST['limit']:$GLOBALS['songlistModuleConfig']['cols']*$GLOBALS['songlistModuleConfig']['rows'];
+	
+	print_r($_POST);
+	print_r($_GET);
+	
+	if (!isset($_SESSION['cid']))
+		$_SESSION['cid'] = $GLOBALS['cid'];
+		
 ?>

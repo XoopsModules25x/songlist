@@ -7,8 +7,8 @@
 <form action="<{$php_self}>" method='post'>
 <table>
 	<tr class="head">
-		<th><{$cid_th}></th>
-		<th><{$pid_th}></th>
+		<th><{$aid_th}></th>
+		<th><{$singer_th}></th>
 		<th><{$name_th}></th>
 		<th><{$albums_th}></th>
 		<th><{$songs_th}></th>
@@ -20,7 +20,7 @@
 	</tr>
 	<tr class="filter">
 		<th>&nbsp;</th>
-		<th><{$filter_pid_th}></th>
+		<th><{$filter_singer_th}></th>
 		<th><{$filter_name_th}></th>
 		<th><{$filter_albums_th}></th>
 		<th><{$filter_songs_th}></th>
@@ -32,19 +32,20 @@
 	</tr>
 	<{foreach item=item from=$artists}>
 	<tr class="<{cycle values="even,odd"}>">
-		<td align='center'><{$item.abid}><{$item.form.id}></td>
-		<td align='center'><{$item.form.pid}></td>
+		<td align='center'><{$item.aid}><{$item.form.id}></td>
+		<td align='center'><{$item.form.singer}></td>
 		<td align='center'><{$item.form.name}></td>
+		<td align='center'><{$item.albums}></td>		
 		<td align='center'><{$item.songs}></td>
 		<td align='center'><{$item.hits}></td>
 		<td align='center'><{$item.rank}></td>
 		<td align='right'><{$item.form.created}></td>
 		<td align='right'><{$item.form.updated}></td>
-		<td align='right'><a href="<{$php_self}>?op=artists&fct=edit&id=<{$item.abid}>&start=<{$start}>&limit=<{$limit}>&order=<{$order}>&sort=<{$sort}>&filter=<{$filter}>"><{$smarty.const._EDIT}></a>&nbsp;|&nbsp;<a href="<{$php_self}>?op=artists&fct=delete&id=<{$item.abid}>&start=<{$start}>&limit=<{$limit}>&order=<{$order}>&sort=<{$sort}>&filter=<{$filter}>"><{$smarty.const._DELETE}></a></td>
+		<td align='right'><a href="<{$php_self}>?op=artists&fct=edit&id=<{$item.aid}>&start=<{$start}>&limit=<{$limit}>&order=<{$order}>&sort=<{$sort}>&filter=<{$filter}>"><{$smarty.const._EDIT}></a>&nbsp;|&nbsp;<a href="<{$php_self}>?op=artists&fct=delete&id=<{$item.aid}>&start=<{$start}>&limit=<{$limit}>&order=<{$order}>&sort=<{$sort}>&filter=<{$filter}>"><{$smarty.const._DELETE}></a></td>
 	</tr>
 	<{/foreach}>
 	<tr class="foot">
-		<td colspan="9"><input type='submit' name='submit' value='<{$smarty.const._SUBMIT}>'/></td>
+		<td colspan="11"><input type='submit' name='submit' value='<{$smarty.const._SUBMIT}>'/></td>
 	</tr>
 </table>
 <input type='hidden' name='op' value='artists'/>

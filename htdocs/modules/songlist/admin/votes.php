@@ -1,131 +1,184 @@
 <?php
-
-// $Id: admin_votedata.php,v 4.03 2008/06/05 15:58:12 wishcraft Exp $
-// ------------------------------------------------------------------------ //
-// XOOPS - PHP Content Management System                      //
-// Copyright (c) 2000 XOOPS.org                           //
-// <http://www.chronolabs.org/>                             //
-// ------------------------------------------------------------------------ //
-// This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License 2.0 as published by //
-// the Free Software Foundation; either version 2 of the License, or        //
-// (at your option) any later version.                                      //
-// //
-// You may not change or alter any portion of this comment or credits       //
-// of supporting developers from this source code or any supporting         //
-// source code which is considered copyrighted (c) material of the          //
-// original comment or credit authors.                                      //
-// //
-// This program is distributed in the hope that it will be useful,          //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-// GNU General Public License for more details.                             //
-// //
-// You should have received a copy of the GNU General Public License        //
-// along with this program; if not, write to the Free Software              //
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-// ------------------------------------------------------------------------ //
-// Author: Kazumi Ono (AKA onokazu)                                          //
-// URL: http://www.myweb.ne.jp/, http://www.chronolabs.org/, http://jp.xoops.org/ //
-// Project: The XOOPS Project                                                //
-// ------------------------------------------------------------------------- //
-include 'admin_header.php';
-
-$op = !empty($_GET['op'])? $_GET['op'] : (!empty($_POST['op'])?$_POST['op']:"");
-
-switch ($op)
-{
-    case "delvotes":
-        $rid = intval($_GET['rid']);
-        $topic_id = intval($_GET['topic_id']);
-        $sql = $GLOBALS['xoopsDB']->queryF("DELETE FROM " . $GLOBALS['xoopsDB']->prefix('xf_votedata') . " WHERE ratingid = $rid");
-        $GLOBALS['xoopsDB']->query($sql);
-        forum_updaterating($topic_id);
-        redirect_header("admin_votedata.php", 1, _AM_XFORUM_VOTEDELETED);
-        break;
-
-    case 'main':
-    default:
-
-		$GLOBALS['start'] = isset($_GET['start']) ? intval($_GET['start']) : 0;
-        $useravgrating = '0';
-        $uservotes = '0';
-
-		$sql = "SELECT * FROM " . $GLOBALS['xoopsDB']->prefix('xf_votedata') . " ORDER BY ratingtimestamp DESC";
-        $results = $GLOBALS['xoopsDB']->query($sql, 20, $GLOBALS['start']);
-		$votes = $GLOBALS['xoopsDB']->getRowsNum($results);
-
-        $sql = "SELECT rating FROM " . $GLOBALS['xoopsDB']->prefix('xf_votedata') . "";
-        $result2 = $GLOBALS['xoopsDB']->query($sql, 20, $GLOBALS['start']);
-		$uservotes = $GLOBALS['xoopsDB']->getRowsNum($result2);
-        $useravgrating = 0;
-
-        while (list($rating2) = $GLOBALS['xoopsDB']->fetchRow($result2))
-        {
-            $useravgrating = $useravgrating + $rating2;
-        }
-        if ($useravgrating > 0)
-        {
-            $useravgrating = $useravgrating / $uservotes;
-            $useravgrating = number_format($useravgrating, 2);
-        }
-
-        xoops_cp_header();
-		$indexAdmin = new ModuleAdmin();
-		echo $indexAdmin->addNavigation(basename(__FILE__));
-        
-
-	echo "
-		<fieldset><legend style='font-weight: bold; color: #900;'>" . _AM_XFORUM_VOTE_DISPLAYVOTES . "</legend>\n
-		<div style='padding: 8px;'>\n
-		<div><strong>" . _AM_XFORUM_VOTE_USERAVG . ": </strong>$useravgrating</div>\n
-		<div><strong>" . _AM_XFORUM_VOTE_TOTALRATE . ": </strong>$uservotes</div>\n
-		<div style='padding: 8px;'>\n
-		<ul><li>".forum_displayImage($GLOBALS['xforumImage']['delete'], _DELETE)." " . _AM_XFORUM_VOTE_DELETEDSC . "</li></ul>
-		<div>\n
-		</fieldset>\n
-		<br />\n
-
-		<table width='100%' cellspacing='1' cellpadding='2' class='outer'>\n
-		<tr>\n
-		<th align='center'>" . _AM_XFORUM_VOTE_ID . "</th>\n
-		<th align='center'>" . _AM_XFORUM_VOTE_USER . "</th>\n
-		<th align='center'>" . _AM_XFORUM_VOTE_IP . "</th>\n
-		<th align='center'>" . _AM_XFORUM_VOTE_FILETITLE . "</th>\n
-		<th align='center'>" . _AM_XFORUM_VOTE_RATING . "</th>\n
-		<th align='center'>" . _AM_XFORUM_VOTE_DATE . "</th>\n
-		<th align='center'>" . _AM_XFORUM_ACTION . "</th></tr>\n";
-
-        if ($votes == 0)
-        {
-            echo "<tr><td align='center' colspan='7' class='head'>" . _AM_XFORUM_VOTE_NOVOTES . "</td></tr>";
-        }
-        while (list($ratingid, $topic_id, $ratinguser, $rating, $ratinghostname, $ratingtimestamp) = $GLOBALS['xoopsDB']->fetchRow($results))
-        {
-            $sql = "SELECT topic_title FROM " . $GLOBALS['xoopsDB']->prefix('xf_topics') . " WHERE topic_id=" . $topic_id . "";
-            $down_array = $GLOBALS['xoopsDB']->fetchArray($GLOBALS['xoopsDB']->query($sql));
-
-            $formatted_date = formatTimestamp($ratingtimestamp, _DATESTRING);
-            $ratinguname = forum_getUnameFromId($ratinguser, $GLOBALS['xforumModuleConfig']['show_realname']);
-	echo "
-		<tr>\n
-		<td class='head' align='center'>$ratingid</td>\n
-		<td class='even' align='center'>$ratinguname</td>\n
-		<td class='even' align='center' >$ratinghostname</td>\n
-		<td class='even' align='left'><a href='".XOOPS_URL."/modules/xforum/viewtopic.php?topic_id=".$topic_id."' target='topic'>".$GLOBALS['myts']->htmlSpecialChars($down_array['topic_title'])."</a></td>\n
-		<td class='even' align='center'>$rating</td>\n
-		<td class='even' align='center'>$formatted_date</td>\n
-		<td class='even' align='center'><strong><a href='admin_votedata.php?op=delvotes&amp;topic_id=$topic_id&amp;rid=$ratingid'>".forum_displayImage($GLOBALS['xforumImage']['delete'], _DELETE)."</a></strong></td>\n
-		</tr>\n";
-        }
-        echo "</table>";
-		//Include page navigation
-		include_once XOOPS_ROOT_PATH . '/class/pagenav.php';
-        $page = ($votes > 20) ? _AM_XFORUM_MINDEX_PAGE : '';
-        $pagenav = new XoopsPageNav($page, 20, $GLOBALS['start'], 'start');
-        echo '<div align="right" style="padding: 8px;">' . $page . '' . $pagenav->renderImageNav(4) . '</div>';
-        break;
-}
-echo chronolabs_inline(false);
-xoops_cp_footer();
+	
+	include('header.php');
+		
+	xoops_loadLanguage('admin', 'songlist');
+	
+	xoops_cp_header();
+	
+	$op = isset($_REQUEST['op'])?$_REQUEST['op']:"votes";
+	$fct = isset($_REQUEST['fct'])?$_REQUEST['fct']:"";
+	$limit = !empty($_REQUEST['limit'])?intval($_REQUEST['limit']):30;
+	$start = !empty($_REQUEST['start'])?intval($_REQUEST['start']):0;
+	$order = !empty($_REQUEST['order'])?$_REQUEST['order']:'DESC';
+	$sort = !empty($_REQUEST['sort'])?''.$_REQUEST['sort'].'':'created';
+	$filter = !empty($_REQUEST['filter'])?''.$_REQUEST['filter'].'':'1,1';
+	
+	switch($op) {
+	default:
+	case "votes":
+		switch ($fct)
+		{
+			default:
+			case "list":				
+				$indexAdmin = new ModuleAdmin();
+				echo $indexAdmin->addNavigation(basename(__FILE__));
+				
+				$votes_handler =& xoops_getmodulehandler('votes', 'songlist');
+					
+				$criteria = $votes_handler->getFilterCriteria($GLOBALS['filter']);
+				$ttl = $votes_handler->getCount($criteria);
+				$GLOBALS['sort'] = !empty($_REQUEST['sort'])?''.$_REQUEST['sort'].'':'created';
+									
+				$pagenav = new XoopsPageNav($ttl, $GLOBALS['limit'], $GLOBALS['start'], 'start', 'limit='.$GLOBALS['limit'].'&sort='.$GLOBALS['sort'].'&order='.$GLOBALS['order'].'&op='.$GLOBALS['op'].'&fct='.$GLOBALS['fct'].'&filter='.$GLOBALS['filter']);
+				$GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
+		
+				foreach ($votes_handler->filterFields() as $id => $key) {
+					$GLOBALS['xoopsTpl']->assign(strtolower(str_replace('-','_',$key).'_th'), '<a href="'.$_SERVER['PHP_SELF'].'?start='.$GLOBALS['start'].'&limit='.$GLOBALS['limit'].'&sort='.$key.'&order='.(($key==$GLOBALS['sort'])?($GLOBALS['order']=='DESC'?'ASC':'DESC'):$GLOBALS['order']).'&op='.$GLOBALS['op'].'&filter='.$GLOBALS['filter'].'">'.(defined('_AM_SONGLIST_TH_'.strtoupper(str_replace('-','_',$key)))?constant('_AM_SONGLIST_TH_'.strtoupper(str_replace('-','_',$key))):'_AM_SONGLIST_TH_'.strtoupper(str_replace('-','_',$key))).'</a>');
+					$GLOBALS['xoopsTpl']->assign('filter_'.strtolower(str_replace('-','_',$key)).'_th', $votes_handler->getFilterForm($GLOBALS['filter'], $key, $GLOBALS['sort'], $GLOBALS['op'], $GLOBALS['fct']));
+				}
+				
+				$GLOBALS['xoopsTpl']->assign('limit', $GLOBALS['limit']);
+				$GLOBALS['xoopsTpl']->assign('start', $GLOBALS['start']);
+				$GLOBALS['xoopsTpl']->assign('order', $GLOBALS['order']);
+				$GLOBALS['xoopsTpl']->assign('sort', $GLOBALS['sort']);
+				$GLOBALS['xoopsTpl']->assign('filter', $GLOBALS['filter']);
+				$GLOBALS['xoopsTpl']->assign('xoConfig', $GLOBALS['songlistModuleConfig']);
+									
+				$criteria->setStart($GLOBALS['start']);
+				$criteria->setLimit($GLOBALS['limit']);
+				$criteria->setSort('`'.$GLOBALS['sort'].'`');
+				$criteria->setOrder($GLOBALS['order']);
+					
+				$votess = $votes_handler->getObjects($criteria, true);
+				foreach($votess as $cid => $votes) {
+					if (is_object($votes))					
+						$GLOBALS['xoopsTpl']->append('categories', $votes->toArray());
+				}
+				//$GLOBALS['xoopsTpl']->assign('form', songlist_votes_get_form(false));
+				$GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['PHP_SELF']);
+				$GLOBALS['xoopsTpl']->display('db:songlist_cpanel_votes_list.html');
+				break;		
+				
+			case "new":
+			case "edit":
+				
+				$indexAdmin = new ModuleAdmin();
+				echo $indexAdmin->addNavigation(basename(__FILE__));
+								
+				$votes_handler =& xoops_getmodulehandler('votes', 'songlist');
+				if (isset($_REQUEST['id'])) {
+					$votes = $votes_handler->get(intval($_REQUEST['id']));
+				} else {
+					$votes = $votes_handler->create();
+				}
+				
+				$GLOBALS['xoopsTpl']->assign('form', $votes->getForm());
+				$GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['PHP_SELF']);
+				$GLOBALS['xoopsTpl']->display('db:songlist_cpanel_votes_edit.html');
+				break;
+			case "save":
+				
+				$votes_handler =& xoops_getmodulehandler('votes', 'songlist');
+				$id=0;
+				if ($id=intval($_REQUEST['id'])) {
+					$votes = $votes_handler->get($id);
+				} else {
+					$votes = $votes_handler->create();
+				}
+				$votes->setVars($_POST[$id]);
+				
+				if (!$id=$votes_handler->insert($votes)) {
+					redirect_header($_SERVER['PHP_SELF'].'?op='.$GLOBALS['op'].'&fct=list&limit='.$GLOBALS['limit'].'&start='.$GLOBALS['start'].'&order='.$GLOBALS['order'].'&sort='.$GLOBALS['sort'].'&filter='.$GLOBALS['filter'], 10, _AM_SONGLIST_MSG_VOTES_FAILEDTOSAVE);
+					exit(0);
+				} else {
+					
+					if (isset($_FILES['image'])&&!empty($_FILES['image']['name'])) {
+						
+						if (!is_dir($GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas']))) {
+							foreach(explode('\\', $GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas'])) as $folders)
+								foreach(explode('/', $folders) as $folder) {
+									$path .= DS . $folder;
+									mkdir($path, 0777);
+								}
+						}
+						
+						include_once($GLOBALS['xoops']->path('modules/songlist/include/uploader.php'));
+						$votes = $votes_handler->get($id);
+						$uploader = new SonglistMediaUploader($GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas']), explode('|', $GLOBALS['songlistModuleConfig']['allowed_mimetype']), $GLOBALS['songlistModuleConfig']['filesize_upload'], 0, 0, explode('|', $GLOBALS['songlistModuleConfig']['allowed_extensions']));
+						$uploader->setPrefix(substr(md5(microtime(true)), mt_rand(0,20), 13));
+						
+						if ($uploader->fetchMedia('image')) {
+						  	if (!$uploader->upload()) {
+						  		
+						    	songlist_adminMenu(1);
+						    	echo $uploader->getErrors();
+								songlist_footer_adminMenu();
+								xoops_cp_footer();
+								exit(0);
+					  	    } else {
+					  	    	
+						      	if (strlen($votes->getVar('image')))
+						      		unlink($GLOBALS['xoops']->path($votes->getVar('path')).$votes->getVar('image'));
+						      	
+						      	$votes->setVar('path', $GLOBALS['songlistModuleConfig']['upload_areas']);
+						      	$votes->setVar('image', $uploader->getSavedFileName());
+						      	@$votes_handler->insert($votes);
+						      	
+						    }      	
+					  	} else {
+					  		
+					  		songlist_adminMenu(1);
+					       	echo $uploader->getErrors();
+							songlist_footer_adminMenu();
+							xoops_cp_footer();
+							exit(0);
+					   	}
+					}
+					
+					if ($_REQUEST['state'][$_REQUEST['id']]=='new')
+						redirect_header($_SERVER['PHP_SELF'].'?op='.$GLOBALS['op'].'&fct=edit&id='.$_REQUEST['id'] . '&limit='.$GLOBALS['limit'].'&start='.$GLOBALS['start'].'&order='.$GLOBALS['order'].'&sort='.$GLOBALS['sort'].'&filter='.$GLOBALS['filter'], 10, _AM_SONGLIST_MSG_VOTES_SAVEDOKEY);
+					else 
+						redirect_header($_SERVER['PHP_SELF'].'?op='.$GLOBALS['op'].'&fct=list&limit='.$GLOBALS['limit'].'&start='.$GLOBALS['start'].'&order='.$GLOBALS['order'].'&sort='.$GLOBALS['sort'].'&filter='.$GLOBALS['filter'], 10, _AM_SONGLIST_MSG_VOTES_SAVEDOKEY);
+					exit(0);
+				}
+				break;
+			case "savelist":
+				
+				$votes_handler =& xoops_getmodulehandler('votes', 'songlist');
+				foreach($_REQUEST['id'] as $id) {
+					$votes = $votes_handler->get($id);
+					$votes->setVars($_POST[$id]);
+					if (!$votes_handler->insert($votes)) {
+						redirect_header($_SERVER['PHP_SELF'].'?op='.$GLOBALS['op'].'&fct=list&limit='.$GLOBALS['limit'].'&start='.$GLOBALS['start'].'&order='.$GLOBALS['order'].'&sort='.$GLOBALS['sort'].'&filter='.$GLOBALS['filter'], 10, _AM_SONGLIST_MSG_VOTES_FAILEDTOSAVE);
+						exit(0);
+					} 
+				}
+				redirect_header($_SERVER['PHP_SELF'].'?op='.$GLOBALS['op'].'&fct=list&limit='.$GLOBALS['limit'].'&start='.$GLOBALS['start'].'&order='.$GLOBALS['order'].'&sort='.$GLOBALS['sort'].'&filter='.$GLOBALS['filter'], 10, _AM_SONGLIST_MSG_VOTES_SAVEDOKEY);
+				exit(0);
+				break;				
+			case "delete":	
+							
+				$votes_handler =& xoops_getmodulehandler('votes', 'songlist');
+				$id=0;
+				if (isset($_POST['id'])&&$id=intval($_POST['id'])) {
+					$votes = $votes_handler->get($id);
+					if (!$votes_handler->delete($votes)) {
+						redirect_header($_SERVER['PHP_SELF'].'?op='.$GLOBALS['op'].'&fct=list&limit='.$GLOBALS['limit'].'&start='.$GLOBALS['start'].'&order='.$GLOBALS['order'].'&sort='.$GLOBALS['sort'].'&filter='.$GLOBALS['filter'], 10, _AM_SONGLIST_MSG_VOTES_FAILEDTODELETE);
+						exit(0);
+					} else {
+						redirect_header($_SERVER['PHP_SELF'].'?op='.$GLOBALS['op'].'&fct=list&limit='.$GLOBALS['limit'].'&start='.$GLOBALS['start'].'&order='.$GLOBALS['order'].'&sort='.$GLOBALS['sort'].'&filter='.$GLOBALS['filter'], 10, _AM_SONGLIST_MSG_VOTES_DELETED);
+						exit(0);
+					}
+				} else {
+					$votes = $votes_handler->get(intval($_REQUEST['id']));
+					xoops_confirm(array('id'=>$_REQUEST['id'], 'op'=>$_REQUEST['op'], 'fct'=>$_REQUEST['fct'], 'limit'=>$_REQUEST['limit'], 'start'=>$_REQUEST['start'], 'order'=>$_REQUEST['order'], 'sort'=>$_REQUEST['sort'], 'filter'=>$_REQUEST['filter']), $_SERVER['PHP_SELF'], sprintf(_AM_SONGLIST_MSG_VOTES_DELETE, $votes->getVar('name')));
+				}
+				break;
+		}
+		break;
+				
+	}
+	
+	xoops_cp_footer();
 ?>

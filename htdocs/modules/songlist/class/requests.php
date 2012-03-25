@@ -31,6 +31,7 @@ class SonglistRequests extends XoopsObject
 	function toArray() {
 		$ret = parent::toArray();
 		$form = $this->getForm(true);
+		$form['songid'] = new XoopsFormText('', $this->getVar('rid').'[songid]', 11, 32);
 		foreach($form as $key => $element) {
 			$ret['form'][$key] = $form[$key]->render();	
 		}
@@ -94,10 +95,117 @@ class SonglistRequestsHandler extends XoopsPersistableObjectHandler
 	function insert($obj, $force=true) {
     	if ($obj->isNew()) {
     		$obj->setVar('created', time());	
-    	} else {
+    		$new = true;
+    		$sendmail = true;
+       	} else {
     		$obj->setVar('updated', time());
+    		$new = false;
+    		if ($obj->vars['songid']['changed']==true) {
+    			$songs_handler = xoops_getmodulehandler('songs', 'songlist');
+    			$criteria = new Criteria('songid', $obj->getVar('songid'));
+    			$songs = $songs_handler->getObjects($criteria, false);
+    			if (is_object($songs[0])) {
+    				foreach($songs[0]->getVar('aids') as $aid)
+    					$ad[] = $aid;
+    				$obj->setVar('sid', $songs[0]->getVar('sid'));
+    				$obj->setVar('aid', $ad[0]);
+    				$sendmail = true;
+    			}
+    		}
     	}
-    	return parent::insert($obj, $force);
+    	if ($rid = parent::insert($obj, $force)) {
+    		if ($sendmail==true) {
+    			if ($new==true) {
+    				xoops_loadLanguage('email', 'songlist');
+    				$xoopsMailer =& getMailer();
+					$xoopsMailer->setHTML(true);
+					$xoopsMailer->setTemplateDir($GLOBALS['xoops']->path('/modules/songlist/language/'.$GLOBALS['xoopsConfig']['language'].'/mail_templates/'));
+					$xoopsMailer->setTemplate('songlist_request_created.html');
+					$xoopsMailer->setSubject(sprintf(_MN_SONGLIST_SUBJECT_REQUESTMADE, $rid));
+					
+					foreach(explode('|', $GLOBALS['songlistModuleConfig']['email']) as $email)
+						$xoopsMailer->setToEmails($email);
+					
+					$xoopsMailer->setToEmails($obj->getVar('email'));
+					
+					$xoopsMailer->assign("SITEURL", XOOPS_URL);
+					$xoopsMailer->assign("SITENAME", $GLOBALS['xoopsConfig']['sitename']);
+					$xoopsMailer->assign("RID", $rid);
+					$xoopsMailer->assign("TITLE", $obj->getVar('title'));
+					$xoopsMailer->assign("ALBUM", $obj->getVar('album'));
+					$xoopsMailer->assign("ARTIST", $obj->getVar('artist'));
+					$xoopsMailer->assign("EMAIL", $obj->getVar('email'));	
+					$xoopsMailer->assign("NAME", $obj->getVar('name'));
+					
+					if(!$xoopsMailer->send() ){
+						xoops_error($xoopsMailer->getErrors(true), 'Email Send Error');
+					}
+    			} else {
+    				xoops_loadLanguage('email', 'songlist');
+    				$songs_handler = xoops_getmodulehandler('songs', 'songlist');
+    				$artists_handler = xoops_getmodulehandler('artists', 'songlist');
+    				$albums_handler = xoops_getmodulehandler('albums', 'songlist');
+    				$genre_handler = xoops_getmodulehandler('genre', 'songlist');
+    				
+    				$song = $songs_handler->get($obj->getVar('sid'));
+    				if (is_object($song)) {
+    					$sng = $genre->getVar('title');
+    				}
+    				$album = $album_handler->get($song->getVar('abid'));
+    				if (is_object($album)) {
+    					$alb = $genre->getVar('title');
+    					$alb_img = $genre->getImage();
+    				}
+    				$genre = $genre_handler->get($song->getVar('abid'));
+    				if (is_object($genre)) {
+    					$gen = $genre->getVar('name');
+    				}
+    				$artists = $artists_handler->getObjects(new Criteria('aid', '('.implode(',', $song->getVar('aid')).')', 'IN'), false);
+    				$art = '';
+    				foreach($artists as $id => $artist) {
+    					$art .= $artist->getVar('name') . ($id<sizeof($artists)-1?', ':'');
+    				}
+    				$xoopsMailer =& getMailer();
+					$xoopsMailer->setHTML(true);
+					$xoopsMailer->setTemplateDir($GLOBALS['xoops']->path('/modules/songlist/language/'.$GLOBALS['xoopsConfig']['language'].'/mail_templates/'));
+					$xoopsMailer->setTemplate('songlist_request_updated.html');
+					$xoopsMailer->setSubject(sprintf(_MN_SONGLIST_SUBJECT_REQUESTFOUND, $rid));
+					
+					$xoopsMailer->setToEmails($obj->getVar('email'));
+					
+					$xoopsMailer->assign("SITEURL", XOOPS_URL);
+					$xoopsMailer->assign("SITENAME", $GLOBALS['xoopsConfig']['sitename']);
+					$xoopsMailer->assign("RID", $rid);
+					$xoopsMailer->assign("TITLE", $obj->getVar('title'));
+					$xoopsMailer->assign("ALBUM", $obj->getVar('album'));
+					$xoopsMailer->assign("ARTIST", $obj->getVar('artist'));
+					$xoopsMailer->assign("EMAIL", $obj->getVar('email'));	
+					$xoopsMailer->assign("NAME", $obj->getVar('name'));
+					$xoopsMailer->assign("SONGID", $song->getVar('songid'));
+					$xoopsMailer->assign("SONGURL", $song->getURL());
+					$xoopsMailer->assign("FOUNDTITLE", $sng);
+					$xoopsMailer->assign("FOUNDALBUM", $alb);
+					$xoopsMailer->assign("FOUNDARTIST", $art);
+					$xoopsMailer->assign("FOUNDGENRE", $gen);
+					$xoopsMailer->assign("EMAIL", $obj->getVar('email'));	
+					$xoopsMailer->assign("NAME", $obj->getVar('name'));
+					
+					if(!$xoopsMailer->send() ){
+						xoops_error($xoopsMailer->getErrors(true), 'Email Send Error');
+					}
+    			}		
+    		}
+    	}
+    	return $rid;
+    }
+    
+    function getURL() {
+    	global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit;
+    	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
+    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseurl'].'/'.$file.'/'.$op.'-'.$fct.$GLOBALS['songlistModuleConfig']['endofurl'];
+    	} else {
+    		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op='.$op.'&fct='.$fct;
+    	}
     }
 }
 ?>
