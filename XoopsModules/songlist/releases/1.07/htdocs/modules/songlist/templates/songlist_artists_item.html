@@ -1,0 +1,27 @@
+<div class="sl_mainartist">
+	<a href="<{$artist.url}>"><{$artist.name}></a>
+</div>
+<{if $artist.songs}>
+<div class="sl_subtitle">
+	<{$smarty.const._MN_SONGLIST_SONGS}>
+</div>
+<div class="sl_subartist">
+	<{assign item=songs value=0}>
+	<{foreach from=$artist.songs item=song}>
+	<{assign item=songs value=$songs+1}>
+	<a href="<{$song.url}>"><{$song.name}> [<{$song.songid}>]</a><{if not $songs < count($artist.songs)}>,&nbsp;<{/if}>
+	<{/foreach}> 
+</div>
+<{/if}>
+<{if $artist.albums}>
+<div class="sl_subtitle">
+	<{$smarty.const._MN_SONGLIST_ALBUMS}>
+</div>
+<div class="sl_subartist">
+	<{assign item=albums value=0}>
+	<{foreach from=$artist.albums item=album}>
+	<{assign item=albums value=$albums+1}>
+	<a href="<{$album.url}>"><{$album.name}></a><{if not $albums < count($artist.albums)}>,&nbsp;<{/if}>
+	<{/foreach}> 
+</div>
+<{/if}>
