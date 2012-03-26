@@ -6,9 +6,15 @@
 	
 	$category_handler = xoops_getmodulehandler('category', 'songlist');
 	$criteria_cat = new CriteriaCompo();
-	foreach($category_handler->GetCatAndSubCat($_SESSION['cid']) as $cid) {
-		$criteria_cat->add(new Criteria('`cids`', '%"'.$cid.'"%', 'LIKE'), 'OR');	
+	$cids = $category_handler->GetCatAndSubCat($_SESSION['cid']);
+	if (count($cids)>0) {
+		foreach($cids as $cid) {
+			$criteria_cat->add(new Criteria('`cids`', '%"'.$cid.'"%', 'LIKE'), 'OR');	
+		}	
+	} else { 
+		$criteria_cat->add(new Criteria('1', '1'), 'OR');
 	}
+	
 	$criteria_cat->setSort('`created`');
 	$criteria_cat->setOrder('ASC');
 	

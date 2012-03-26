@@ -50,10 +50,10 @@
 				$criteria->setSort('`'.$GLOBALS['sort'].'`');
 				$criteria->setOrder($GLOBALS['order']);
 					
-				$artistss = $artists_handler->getObjects($criteria, true);
-				foreach($artistss as $cid => $artists) {
-					if (is_object($artists))					
-						$GLOBALS['xoopsTpl']->append('artists', $artists->toArray());
+				$artists = $artists_handler->getObjects($criteria, true);
+				foreach($artists as $cid => $artist) {
+					if (is_object($artist))					
+						$GLOBALS['xoopsTpl']->append('artists', $artist->toArray());
 				}
 				$GLOBALS['xoopsTpl']->assign('form', songlist_artists_get_form(false));
 				$GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['PHP_SELF']);
