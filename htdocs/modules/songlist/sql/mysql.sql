@@ -77,7 +77,7 @@ CREATE TABLE `songlist_requests` (
   `sid` INT(12) UNSIGNED DEFAULT '0',
   `created` INT(12) UNSIGNED DEFAULT '0',
   `updated` INT(12) UNSIGNED DEFAULT '0',
-  PRIMARY KEY (`rid`)
+  PRIMARY KEY (`rid`),
   KEY `SORT` (`songid`(10),`sid`,`created`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
