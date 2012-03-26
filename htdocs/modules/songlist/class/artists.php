@@ -4,6 +4,9 @@ if (!defined('XOOPS_ROOT_PATH')) {
 	exit();
 }
 
+include_once(dirname(dirname(__FILE__)).'/include/songlist.object.php');
+include_once(dirname(dirname(__FILE__)).'/include/songlist.form.php');
+
 class SonglistArtists extends XoopsObject
 {
 
@@ -40,8 +43,12 @@ class SonglistArtists extends XoopsObject
 			}
 		}
 
-		$ret['rank'] = number_format($this->getVar('rank')/$this->getVar('votes'),2)._MI_SONGLIST_OFTEN;
+		$ret['rank'] = number_format(($this->getVar('rank')>0&&$this->getVar('votes')>0?$this->getVar('rank')/$this->getVar('votes'):0),2)._MI_SONGLIST_OFTEN;
 		$ret['url'] = $this->getURL();
+		
+		xoops_loadLanguage('enum', 'songlist');
+		if (!empty($ret['singer']))
+			$ret['singer'] = constant($ret['singer']); 
 		
 		if ($extra==false)
     		return $ret;
@@ -50,7 +57,7 @@ class SonglistArtists extends XoopsObject
     		$categories_handler = xoops_getmodulehandler('category', 'songlist');
     		foreach($this->getVar('cids') as $aid) {
     			$category = $categories_handler->get($aid);
-    			$ret['category'][$aid] = $category->toArray(false);
+    			$ret['categories_array'][$aid] = $category->toArray(false);
     		} 	
     	}
     		
@@ -59,7 +66,7 @@ class SonglistArtists extends XoopsObject
     		$artists_handler = xoops_getmodulehandler('artists', 'songlist');
     		foreach($this->getVar('aids') as $aid) {
     			$artist = $artists_handler->get($aid);
-    			$ret['artists'][$aid] = $artist->toArray(false);
+    			$ret['artists_array'][$aid] = $artist->toArray(false);
     		} 	
     	}
     	
@@ -67,7 +74,7 @@ class SonglistArtists extends XoopsObject
 		if (count($this->getVar('sids'))!=0) {
     		$songs_handler = xoops_getmodulehandler('songs', 'songlist');
     		foreach($songs_handler->getObjects(new Criteria('`aids`', '%"'.$this->getVar('aid').'"%', 'LIKE'), true) as $sid => $song) {
-    			$ret['songs'][$sid] = $song->toArray(false);
+    			$ret['songs_array'][$sid] = $song->toArray(false);
     		} 	
     	}
     	
@@ -186,7 +193,7 @@ class SonglistArtistsHandler extends XoopsPersistableObjectHandler
     	return parent::insert($obj, $force);
     }
      
-	var $_objects = array();
+	var $_objects = array('object'=>array(), 'array'=>array());
     
     function get($id, $fields = '*') {
     	if (!isset($this->_objects['object'][$id])) {

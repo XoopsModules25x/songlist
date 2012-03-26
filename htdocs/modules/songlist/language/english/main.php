@@ -7,7 +7,10 @@
 	define('_MN_SONGLIST_TITLE', 'Song title:-');
 	define('_MN_SONGLIST_SONGID', 'Song Reference ID:-');
 	define('_MN_SONGLIST_TAGS', 'Tags:-');
-		
+	define('_MN_SONGLIST_SONGS', 'Song\'s');
+	define('_MN_SONGLIST_ARTISTS', 'Artist\'s');
+	define('_MN_SONGLIST_ALBUMS', 'Album\'s');
+	
 	// Browse By
 	define('_MN_SONGLIST_BROWSEBY', 'Browse by Character');
 	define('_MN_SONGLIST_SELECTBY_TITLE', 'Browse by Title');

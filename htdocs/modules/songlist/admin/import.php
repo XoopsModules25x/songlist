@@ -95,11 +95,13 @@
 				$genre_handler = xoops_getmodulehandler('genre', 'songlist');
 				$category_handler = xoops_getmodulehandler('category', 'songlist');
 				
+				/*
 				$filesize = filesize($GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas'].$_SESSION['xmlfile']));
 				$mb = floor($filesize / 1024 / 1024);
 				if ($mb>32) {
 					set_ini('memory_limit', ($mb+128).'M');	
 				}
+				*/
 				set_time_limit(3600);
 								
 				$xmlarray = songlist_xml2array(file_get_contents($GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas'].$_SESSION['xmlfile'])), false, 'tag');

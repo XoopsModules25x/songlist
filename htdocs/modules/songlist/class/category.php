@@ -43,7 +43,7 @@ class SonglistCategory extends XoopsObject
 			}
 		}
 		$ret['picture'] = $this->getImage('image', false);
-		$ret['rank'] = number_format($this->getVar('rank')/$this->getVar('votes'),2)._MI_SONGLIST_OFTEN;
+		$ret['rank'] = number_format(($this->getVar('rank')>0&&$this->getVar('votes')>0?$this->getVar('rank')/$this->getVar('votes'):0),2)._MI_SONGLIST_OFTEN;
     	$ret['url'] = $this->getURL();
     	
 		return $ret;
@@ -126,11 +126,9 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
 	
 	private function TreeIDs($langs_array, $categories, $level) {
 		foreach($categories as $catid => $category) {
-			if ($catid!=$ownid) {
-				$langs_array[$catid] = $catid;
-				if ($categoriesb = $this->getObjects(new Criteria('pid', $catid), true)){
-					$langs_array = $this->TreeIDs($langs_array, $categoriesb, $level);
-				}
+			$langs_array[$catid] = $catid;
+			if ($categoriesb = $this->getObjects(new Criteria('pid', $catid), true)){
+				$langs_array = $this->TreeIDs($langs_array, $categoriesb, $level);
 			}
 		}
 		return ($langs_array);
@@ -147,7 +145,7 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
     	return parent::insert($obj, $force);
     }
 
-    var $_objects = array();
+    var $_objects = array('object'=>array(), 'array'=>array());
     
     function get($id, $fields = '*') {
     	if (!isset($this->_objects['object'][$id])) {
