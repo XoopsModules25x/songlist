@@ -17,6 +17,15 @@
 	width: 100%; 
 }
 
+.sl_outersep {
+	clear:both;
+	height: 6px; 
+	text-align:center;
+	width: 100%; 
+	border-bottom: 2px dashed #000;
+	margin-bottom: 6px;
+}
+
 .sl_breadcrumb {
 	clear:both;
 	text-align:left;

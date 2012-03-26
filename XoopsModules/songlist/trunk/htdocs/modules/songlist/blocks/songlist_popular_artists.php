@@ -1,6 +1,7 @@
 <?php
 
-function b_songlist_popular_artists_show($options) {
+	function b_songlist_popular_artists_show($options) {
+		xoops_loadLanguage('blocks', 'songlist');
 		$handler = xoops_getmodulehandler('artists', 'songlist');
 		$objects = $handler->getTop($options[0]);
 		if (count($objects)>0) {

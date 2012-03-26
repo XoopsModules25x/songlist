@@ -1,4 +1,4 @@
-<{if $albums}>
+<{if $results}>
 <{if not $pagenav eq ''}> 
 <div style='width:100%; clear:both; height:25px;'>
 	<div style='float:right;'>
@@ -7,14 +7,12 @@
 </div>
 <{/if}>
 <table>
-	<{foreach from=$albums key=rowkey item=row}>
-	<{if not $rowkey eq 'pagenav'}> 
+	<{foreach from=$results item=row}>
 	<tr>
-		<{foreach from=$row item=album}>
-		<td width="<{$album.width}>%"><{includeq file="db:songlist_albums_item.html" album=$album}></td>
+		<{foreach from=$row item=result}>
+		<td width="<{$result.width}>%"><{includeq file="db:songlist_albums_item.html" album=$result}></td>
 		<{/foreach}>
 	</tr>
-	<{/if}>
 	<{/foreach}>
 </table>
 <{if not $pagenav eq ''}> 

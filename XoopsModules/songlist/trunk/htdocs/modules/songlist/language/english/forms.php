@@ -51,7 +51,11 @@
 	define('_FRM_SONGLIST_FORM_SONGS_RANK', 'Ranking');
 	define('_FRM_SONGLIST_FORM_SONGS_CREATED', 'Created');
 	define('_FRM_SONGLIST_FORM_SONGS_UPDATED', 'Updated');
-
+	define('_FRM_SONGLIST_FORM_SONGS_GENRE', 'Song Genre');
+	define('_FRM_SONGLIST_FORM_SONGS_GENRE_DESC', '');
+	define('_FRM_SONGLIST_FORM_SONGS_ALBUM', 'Song Album');
+	define('_FRM_SONGLIST_FORM_SONGS_ALBUM_DESC', '');
+	
 	// UTF8 Mapping Form
 	define('_FRM_SONGLIST_FORM_ISNEW_UTF8MAP', 'New Chracter replacement mapping');
 	define('_FRM_SONGLIST_FORM_EDIT_UTF8MAP', 'Edit Chracter replacement mapping');

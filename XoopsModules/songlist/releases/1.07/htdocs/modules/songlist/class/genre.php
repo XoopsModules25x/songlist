@@ -4,6 +4,9 @@ if (!defined('XOOPS_ROOT_PATH')) {
 	exit();
 }
 
+include_once(dirname(dirname(__FILE__)).'/include/songlist.object.php');
+include_once(dirname(dirname(__FILE__)).'/include/songlist.form.php');
+
 class SonglistGenre extends XoopsObject
 {
 
@@ -37,7 +40,7 @@ class SonglistGenre extends XoopsObject
 				$ret[$key] = date(_DATESTRING, $this->getVar($key));
 			}
 		}
-		$ret['rank'] = number_format($this->getVar('rank')/$this->getVar('votes'),2)._MI_SONGLIST_OFTEN;
+		$ret['rank'] = number_format(($this->getVar('rank')>0&&$this->getVar('votes')>0?$this->getVar('rank')/$this->getVar('votes'):0),2)._MI_SONGLIST_OFTEN;
     		
 		return $ret;
 	}
@@ -112,7 +115,7 @@ class SonglistGenreHandler extends XoopsPersistableObjectHandler
     	return parent::insert($obj, $force);
     }
      
-	var $_objects = array();
+	var $_objects = array('object'=>array(), 'array'=>array());
     
     function get($id, $fields = '*') {
     	if (!isset($this->_objects['object'][$id])) {

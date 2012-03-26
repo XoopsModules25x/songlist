@@ -76,5 +76,10 @@
 	define('_MI_SONGLIST_TAGS_DESC', '');
 	define('_MI_SONGLIST_FORCE_JQUERY', 'For JQuery Loading');
 	define('_MI_SONGLIST_FORCE_JQUERY_DESC', 'For themes without JQuery!');
+	define('_MI_SONGLIST_COLS', 'Columns in table');
+	define('_MI_SONGLIST_COLS_DESC', 'Columns in table before pagination.');
+	define('_MI_SONGLIST_ROWS', 'Rows in table');
+	define('_MI_SONGLIST_ROWS_DESC', 'Rows in table before pagination.');
 	
-?>
+	
+	?>

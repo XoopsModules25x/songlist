@@ -4,6 +4,9 @@ if (!defined('XOOPS_ROOT_PATH')) {
 	exit();
 }
 
+include_once(dirname(dirname(__FILE__)).'/include/songlist.object.php');
+include_once(dirname(dirname(__FILE__)).'/include/songlist.form.php');
+
 class SonglistSongs extends XoopsObject
 {
 
@@ -44,7 +47,7 @@ class SonglistSongs extends XoopsObject
 		
 		$ret['url'] = $this->getURL();
 		
-		$ret['rank'] = number_format($this->getVar('rank')/$this->getVar('votes'),2)._MI_SONGLIST_OFTEN;
+		$ret['rank'] = number_format(($this->getVar('rank')>0&&$this->getVar('votes')>0?$this->getVar('rank')/$this->getVar('votes'):0),2)._MI_SONGLIST_OFTEN;
 		
 		if (file_exists($GLOBALS['xoops']->path("/modules/tag/include/tagbar.php"))&&$GLOBALS['songlistModuleConfig']['tags']) {
 			include_once XOOPS_ROOT_PATH."/modules/tag/include/tagbar.php";
@@ -55,26 +58,27 @@ class SonglistSongs extends XoopsObject
 		$field_handler = xoops_getmodulehandler('field', 'songlist');
 		$visibility_handler = xoops_getmodulehandler('visibility', 'songlist');		
 
-		$extras = $extras_handler->get($post_id);
-
-		if (is_object($GLOBALS['xoopsUser']))
-			$fields_id = $visibility_handler->getVisibleFields(array(), $GLOBALS['xoopsUser']->getGroups());
-		elseif (!is_object($GLOBALS['xoopsUser']))
-			$fields_id = $visibility_handler->getVisibleFields(array(), array());
-
-		$criteria = new Criteria('field_id', '('.implode(',',$fields_id).')', 'IN');
-		$criteria->setSort('field_weight');
-		$fields = $field_handler->getObjects($criteria, true);
-		foreach($fields as $id => $field) {
-			if (in_array($this->getVar('cid'), $field->getVar('cids'))) {
-				$ret['fields'][$id]['title'] = $field->getVar('field_title');
-				if (is_object($GLOBALS['xoopsUser']))
-					$ret['fields'][$id]['value'] = htmlspecialchars_decode($field->getOutputValue($GLOBALS['xoopsUser'], $extras));
-				elseif (!is_object($GLOBALS['xoopsUser']))
-					$ret['fields'][$id]['value'] = htmlspecialchars_decode($extras->getVar($field->getVar('field_name')));			
+		if ($extras = $extras_handler->get($this->getVar('sid'))) {
+	
+			if (is_object($GLOBALS['xoopsUser']))
+				$fields_id = $visibility_handler->getVisibleFields(array(), $GLOBALS['xoopsUser']->getGroups());
+			elseif (!is_object($GLOBALS['xoopsUser']))
+				$fields_id = $visibility_handler->getVisibleFields(array(), array());
+	
+			$criteria = new Criteria('field_id', '('.implode(',',$fields_id).')', 'IN');
+			$criteria->setSort('field_weight');
+			$fields = $field_handler->getObjects($criteria, true);
+			foreach($fields as $id => $field) {
+				if (in_array($this->getVar('cid'), $field->getVar('cids'))) {
+					$ret['fields'][$id]['title'] = $field->getVar('field_title');
+					if (is_object($GLOBALS['xoopsUser']))
+						$ret['fields'][$id]['value'] = htmlspecialchars_decode($field->getOutputValue($GLOBALS['xoopsUser'], $extras));
+					elseif (!is_object($GLOBALS['xoopsUser']))
+						$ret['fields'][$id]['value'] = htmlspecialchars_decode($extras->getVar($field->getVar('field_name')));			
+				}
 			}
 		}
-		
+				
     	if ($extra==false)
     		return $ret;
     		
@@ -94,7 +98,7 @@ class SonglistSongs extends XoopsObject
     		$artists_handler = xoops_getmodulehandler('artists', 'songlist');
     		foreach($this->getVar('aids') as $aid) {
     			$artist = $artists_handler->get($aid);
-    			$ret['artists'][$aid] = $artist->toArray(false);
+    			$ret['artists_array'][$aid] = $artist->toArray(false);
     		} 	
     	}
     	
@@ -260,7 +264,7 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
     	return $sid;
     }
      
-	var $_objects = array();
+	var $_objects = array('object'=>array(), 'array'=>array());
     
     function get($id, $fields = '*') {
     	if (!isset($this->_objects['object'][$id])) {
@@ -310,9 +314,9 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
     function getSearchURL() {
     	global $file, $op, $fct, $id, $value, $gid, $cid, $singer, $start, $limit;
     	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
-    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseurl'].'/search/'.$start.'-'.$op.'-'.$fct.'-'.urlencode($value).'-'.(isset($_GET['cid'])?($_GET['cid']):$cid).'-'.$gid.'-'.$singer.$GLOBALS['songlistModuleConfig']['endofurl'];
+    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseurl'].'/'.$file.'/'.$start.'-'.$op.'-'.$fct.'-'.urlencode($value).'-'.(isset($_GET['cid'])?($_GET['cid']):$cid).'-'.$gid.'-'.$singer.$GLOBALS['songlistModuleConfig']['endofurl'];
     	} else {
-    		return XOOPS_URL.'/modules/songlist/search.php?op='.$op.'&fct='.$fct.'&value='.urlencode($value).'&cid='.(isset($_GET['cid'])?($_GET['cid']):$cid).'&gid='.$gid.'&singer='.$singer;
+    		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op='.$op.'&fct='.$fct.'&value='.urlencode($value).'&cid='.(isset($_GET['cid'])?($_GET['cid']):$cid).'&gid='.$gid.'&singer='.$singer;
     	}
     }
 

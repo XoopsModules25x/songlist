@@ -1,6 +1,7 @@
 <?php
 
 	function b_songlist_popular_songs_show($options) {
+		xoops_loadLanguage('blocks', 'songlist');
 		$handler = xoops_getmodulehandler('songs', 'songlist');
 		$objects = $handler->getTop($options[0]);
 		if (count($objects)>0) {

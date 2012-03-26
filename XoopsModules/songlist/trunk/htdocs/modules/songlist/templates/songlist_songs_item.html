@@ -11,9 +11,9 @@
 </div>
 <{/if}>
 <{/if}>
-<{if $song.album.artists}>
+<{if $song.artists_array}>
 <div class="sl_subtitle">
-	<{if count($song.album.artists) > 1}>
+	<{if count($song.artists_array) > 1}>
 	<{$smarty.const._MN_SONGLIST_ARTISTS}>
 	<{else}>
 	<{$smarty.const._MN_SONGLIST_ARTIST}>
@@ -21,7 +21,7 @@
 </div>
 <div class="sl_mainsong">
 	<{assign var=artists value=0}>
-	<{foreach from=$song.album.artists item=artist}>
+	<{foreach from=$song.artists_array item=artist}>
 	<{assign var=artists value=$artists+1}>
 	<a href="<{$artist.url}>"><{$artist.name}></a><{if not $artists < count($song.album.artists)}>,&nbsp;<{/if}>
 	<{/foreach}> 

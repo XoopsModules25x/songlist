@@ -12,7 +12,7 @@
 			$criteria_cat->add(new Criteria('`cids`', '%"'.$cid.'"%', 'LIKE'), 'OR');	
 		}	
 	} else { 
-		$criteria_cat->add(new Criteria('1', '1'), 'OR');
+		$criteria_cat->add(new Criteria('1', 1), 'OR');
 	}
 	
 	$criteria_cat->setSort('`created`');
@@ -42,11 +42,6 @@
 			$cat[$row][$j]['width'] = floor(100/$GLOBALS['songlistModuleConfig']['cols']).'%';
 		}
 	}
-	
-	$category_element = new SonglistFormSelectCategory('', 'cid', $cid);
-	$genre_element = new SonglistFormSelectGenre('', 'gid', $gid);
-	$singer_element = new SonglistFormSelectSinger('', 'singer', $singer);
-	
 		
 	$artists_handler = xoops_getmodulehandler('artists', 'songlist');
 	switch ("{$GLOBALS['op']}") {
@@ -75,7 +70,6 @@
 					}
 				}
 				if ($col!=1) {
-					$col--;
 					for($j=$col;$j<=$GLOBALS['songlistModuleConfig']['cols'];$j++) {
 						$ret[$row][$j][$artists_handler->keyName] = 0;
 						$ret[$row][$j]['width'] = floor(100/$GLOBALS['songlistModuleConfig']['cols']).'%';
@@ -98,13 +92,9 @@
 				$GLOBALS['xoTheme']->addStylesheet(XOOPS_URL._MI_SONGLIST_STYLESHEET, array('type'=>'text/css'));		
 				$GLOBALS['xoopsTpl']->assign('xoConfig', $GLOBALS['songlistModuleConfig']);
 				$GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['PHP_SELF']);
-				$GLOBALS['xoopsTpl']->assign('artists', $ret);
-				$GLOBALS['xoopsTpl']->assign('songs', false);
+				$GLOBALS['xoopsTpl']->assign('results', $ret);
 				$GLOBALS['xoopsTpl']->assign('categories', $cat);
 				$GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
-				$GLOBALS['xoopsTpl']->assign('category_element', $category_element->render());
-				$GLOBALS['xoopsTpl']->assign('genre_element', $genre_element->render());
-				$GLOBALS['xoopsTpl']->assign('singer_element', $singer_element->render());
 				$GLOBALS['xoopsTpl']->assign('cid', $_SESSION['cid']);
 				if ($_SESSION['cid']!=0) {
 					$category = $category_handler->get($_SESSION['cid']);
@@ -133,9 +123,6 @@
 				$GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['PHP_SELF']);
 				$GLOBALS['xoopsTpl']->assign('songs', false);
 				$GLOBALS['xoopsTpl']->assign('artist', $artist->toArray(true));
-				$GLOBALS['xoopsTpl']->assign('category_element', $category_element->render());
-				$GLOBALS['xoopsTpl']->assign('genre_element', $genre_element->render());
-				$GLOBALS['xoopsTpl']->assign('singer_element', $singer_element->render());
 				$GLOBALS['xoopsTpl']->assign('categories', $cat);
 				$GLOBALS['xoopsTpl']->assign('uri', $_SERVER['REQUEST_URI']);
 				include($GLOBALS['xoops']->path('/footer.php'));
@@ -210,12 +197,8 @@
 			$GLOBALS['xoTheme']->addStylesheet(XOOPS_URL._MI_SONGLIST_STYLESHEET, array('type'=>'text/css'));
 			$GLOBALS['xoopsTpl']->assign('xoConfig', $GLOBALS['songlistModuleConfig']);
 			$GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['PHP_SELF']);
-			$GLOBALS['xoopsTpl']->assign('artists', $ret);
-			$GLOBALS['xoopsTpl']->assign('songs', false);
+			$GLOBALS['xoopsTpl']->assign('results', $ret);
 			$GLOBALS['xoopsTpl']->assign('categories', $cat);
-			$GLOBALS['xoopsTpl']->assign('category_element', $category_element->render());
-			$GLOBALS['xoopsTpl']->assign('genre_element', $genre_element->render());
-			$GLOBALS['xoopsTpl']->assign('singer_element', $singer_element->render());
 			$GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
 			$GLOBALS['xoopsTpl']->assign('cid', $_SESSION['cid']);
 			if ($_SESSION['cid']!=0) {

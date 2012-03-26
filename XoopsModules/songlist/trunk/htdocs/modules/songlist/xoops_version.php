@@ -322,6 +322,24 @@ $modversion['config'][$i]['default'] = (mt_rand(0,4)!=2?chr(mt_rand(32,190)):'')
 $modversion['config'][$i]['options'] = array();
 
 $i++;
+$modversion['config'][$i]['name'] = 'cols';
+$modversion['config'][$i]['title'] = "_MI_SONGLIST_COLS";
+$modversion['config'][$i]['description'] = "_MI_SONGLIST_COLS_DESC";
+$modversion['config'][$i]['formtype'] = 'textarea';
+$modversion['config'][$i]['valuetype'] = 'text';
+$modversion['config'][$i]['default'] = 4;
+$modversion['config'][$i]['options'] = array();
+
+$i++;
+$modversion['config'][$i]['name'] = 'rows';
+$modversion['config'][$i]['title'] = "_MI_SONGLIST_ROWS";
+$modversion['config'][$i]['description'] = "_MI_SONGLIST_ROWS_DESC";
+$modversion['config'][$i]['formtype'] = 'textarea';
+$modversion['config'][$i]['valuetype'] = 'text';
+$modversion['config'][$i]['default'] = 4;
+$modversion['config'][$i]['options'] = array();
+
+$i++;
 $modversion['config'][$i]['name'] = 'email';
 $modversion['config'][$i]['title'] = "_MI_SONGLIST_EMAIL";
 $modversion['config'][$i]['description'] = "_MI_SONGLIST_EMAIL_DESC";

@@ -4,6 +4,9 @@ if (!defined('XOOPS_ROOT_PATH')) {
 	exit();
 }
 
+include_once(dirname(dirname(__FILE__)).'/include/songlist.object.php');
+include_once(dirname(dirname(__FILE__)).'/include/songlist.form.php');
+
 class SonglistAlbums extends XoopsObject
 {
 
@@ -42,7 +45,7 @@ class SonglistAlbums extends XoopsObject
 			}
 		}
 		$ret['picture'] = $this->getImage('image', false);
-		$ret['rank'] = number_format($this->getVar('rank')/$this->getVar('votes'),2)._MI_SONGLIST_OFTEN;
+		$ret['rank'] = number_format(($this->getVar('rank')>0&&$this->getVar('votes')>0?$this->getVar('rank')/$this->getVar('votes'):0),2)._MI_SONGLIST_OFTEN;
     	$ret['url'] = $this->getURL();
     	
 		if ($extra==false)
@@ -59,7 +62,7 @@ class SonglistAlbums extends XoopsObject
     		$artists_handler = xoops_getmodulehandler('artists', 'songlist');
     		foreach($this->getVar('aids') as $aid) {
     			$artist = $artists_handler->get($aid);
-    			$ret['artists'][$aid] = $artist->toArray(false);
+    			$ret['artists_array'][$aid] = $artist->toArray(false);
     		} 	
     	}
     	
@@ -68,7 +71,7 @@ class SonglistAlbums extends XoopsObject
     		$songs_handler = xoops_getmodulehandler('songs', 'songlist');
     		foreach($this->getVar('sids') as $sid) {
     			$song = $songs_handler->get($sid);
-    			$ret['songs'][$sid] = $song->toArray(false);
+    			$ret['songs_array'][$sid] = $song->toArray(false);
     		} 	
     	}
     	
@@ -204,7 +207,7 @@ class SonglistAlbumsHandler extends XoopsPersistableObjectHandler
     	return parent::insert($obj, $force);
     }
      
-	var $_objects = array();
+	var $_objects = array('object'=>array(), 'array'=>array());
     
     function get($id, $fields = '*') {
     	if (!isset($this->_objects['object'][$id])) {
@@ -245,9 +248,9 @@ class SonglistAlbumsHandler extends XoopsPersistableObjectHandler
     function getURL() {
     	global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit;
     	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
-    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseurl'].'/albums/'.$start.'-item-item-'.$id.'-'.urlencode($value).'-'.$gid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
+    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseurl'].'/albums/'.$start.'-'.$op.'-'.$fct.'-'.$id.'-'.urlencode($value).'-'.$gid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
     	} else {
-    		return XOOPS_URL.'/modules/songlist/albums.php?op=item&fct='.$fct.'&id='.$id.'&value='.urlencode($value).'&gid='.$gid.'&cid='.$cid;
+    		return XOOPS_URL.'/modules/songlist/albums.php?op='.$op.'&fct='.$fct.'&id='.$id.'&value='.urlencode($value).'&gid='.$gid.'&cid='.$cid;
     	}
     }
     

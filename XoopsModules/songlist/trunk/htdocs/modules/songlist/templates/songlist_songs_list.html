@@ -6,20 +6,20 @@
 <table class="sl_resulttable" cellpadding="3">
 	<thead>
 		<tr>
+			<td><{$smarty.const._MN_SONGLIST_RESULTS_SONGID}></td>
+			<td><{$smarty.const._MN_SONGLIST_RESULTS_TITLE}></td>
 			<td><{$smarty.const._MN_SONGLIST_RESULTS_ARTIST}></td>
-			<{if not $wurlf_mobile}>
-			<{if $xoConfig.album}>
-			<td><{$smarty.const._MN_SONGLIST_RESULTS_ALBUM}></td>
+			<{if !isset($wurlf_mobile) or not $wurlf_mobile}>
+			<{if $xoConfig.singer}>
+			<td><{$smarty.const._MN_SONGLIST_RESULTS_SINGER}></td>
 			<{/if}>
 			<{if $xoConfig.genre}>
 			<td><{$smarty.const._MN_SONGLIST_RESULTS_GENRE}></td>
 			<{/if}>
-			<{if $xoConfig.singer}>
-			<td><{$smarty.const._MN_SONGLIST_RESULTS_SINGER}></td>
+			<{if $xoConfig.album}>
+			<td><{$smarty.const._MN_SONGLIST_RESULTS_ALBUM}></td>
 			<{/if}>
 			<{/if}>
-			<td><{$smarty.const._MN_SONGLIST_RESULTS_TITLE}></td>
-			<td><{$smarty.const._MN_SONGLIST_RESULTS_SONGID}></td>
 			<{if $xoConfig.tags}>
 			<td><{$smarty.const._MN_SONGLIST_RESULTS_TAGS}></td>
 			<{/if}>
@@ -29,20 +29,28 @@
 	<tbody>
 		<{foreach item=result from=$results}>
 		<tr class="<{cycle values="even,odd"}>">
-			<td><a href="<{$result.url}>"><{$result.artist}></a></td>
+			<td><a href="<{$result.url}>"><{$result.songid}></a></td>
+			<td><a href="<{$result.url}>"><{$result.title}></a></td>		
+			<td>
+				<{foreach from=$result.artists_array key=number item=artist}>
+					<a href="<{$artist.url}>"><{$artist.name}></a><{if $number<sizeof($result.artists)-1}>,&nbsp;<{/if}>
+				<{/foreach}>
+			</td>
 			<{if !isset($wurlf_mobile) or not $wurlf_mobile}>
-			<{if $xoConfig.album}>
-			<td><a href="<{$result.url}>"><{$result.album}></a></td>
+			<{if $xoConfig.singer}>
+			<td>
+				<{foreach from=$result.artists_array key=number item=artist}>
+					<{if $artist.singer}><{$artist.singer}><{if $number<sizeof($result.artists)-1}>,&nbsp;<{/if}><{/if}>
+				<{/foreach}>
+			</td>
 			<{/if}>
 			<{if $xoConfig.genre}>
-			<td><a href="<{$result.url}>"><{$result.genre}></a></td>
+			<td><a href="<{$result.url}>"><{$result.genre.name}></a></td>
 			<{/if}>
-			<{if $xoConfig.singer}>
-			<td><a href="<{$result.url}>"><{$result.singer}></a></td>
+			<{if $xoConfig.album}>
+			<td><a href="<{$result.url}>"><{$result.album.title}></a></td>
 			<{/if}>
 			<{/if}>
-			<td><a href="<{$result.url}>"><{$result.title}></a></td>
-			<td><a href="<{$result.url}>"><{$result.songid}></a></td>
 			<{if $xoConfig.tags}>
 			<td><{include file="db:tag_bar.html" tagbar=$result.tagbar}></a></td>
 			<{/if}>

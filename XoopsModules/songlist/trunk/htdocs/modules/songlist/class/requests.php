@@ -4,6 +4,9 @@ if (!defined('XOOPS_ROOT_PATH')) {
 	exit();
 }
 
+include_once(dirname(dirname(__FILE__)).'/include/songlist.object.php');
+include_once(dirname(dirname(__FILE__)).'/include/songlist.form.php');
+
 class SonglistRequests extends XoopsObject
 {
 
