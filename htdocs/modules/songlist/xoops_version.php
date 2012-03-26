@@ -10,14 +10,14 @@ if (is_object($GLOBALS['songlistModule']))
 // $Id: xoops_version.php,v 4.04 2008/06/05 15:35:59 wishcraft Exp $
 
 $modversion['name'] = _MI_SONGLIST_NAME;
-$modversion['version'] = 1.07;
+$modversion['version'] = 1.09;
 $modversion['description'] = _MI_SONGLIST_DESC;
 $modversion['credits'] = "Orginally Based on Newbb by phppp - adaption by (wishcraft)";
 $modversion['author'] = "Simon Roberts (wishcraft)";
 $modversion['license'] = "GNU General Public License (GPL) see LICENSE";
 $modversion['image'] = "images/songlist_slogo.png";
 $modversion['dirname'] = "songlist";
-$modversion['releasedate'] = "Sunday, 26th March 03, 2012";
+$modversion['releasedate'] = "Sunday, 27th March 03, 2012";
 $modversion['module_status'] = "Stable";
 $modversion['website'] = "www.chronolabs.coop";
 
@@ -25,9 +25,9 @@ $modversion['dirmoduleadmin'] = 'Frameworks/moduleclasses';
 $modversion['icons16'] = 'Frameworks/moduleclasses/icons/16';
 $modversion['icons32'] = 'Frameworks/moduleclasses/icons/32';
 
-$modversion['release_info'] = "Stable 2012/03/26";
+$modversion['release_info'] = "Stable 2012/03/27";
 $modversion['release_file'] = XOOPS_URL."/modules/xforum/docs/changelog.txt";
-$modversion['release_date'] = "2012/03/26";
+$modversion['release_date'] = "2012/03/27";
 
 $modversion['author_realname'] = "Wishcraft";
 $modversion['author_website_url'] = "http://www.chronolabs.coop";
@@ -325,8 +325,8 @@ $i++;
 $modversion['config'][$i]['name'] = 'cols';
 $modversion['config'][$i]['title'] = "_MI_SONGLIST_COLS";
 $modversion['config'][$i]['description'] = "_MI_SONGLIST_COLS_DESC";
-$modversion['config'][$i]['formtype'] = 'textarea';
-$modversion['config'][$i]['valuetype'] = 'text';
+$modversion['config'][$i]['formtype'] = 'text';
+$modversion['config'][$i]['valuetype'] = 'int';
 $modversion['config'][$i]['default'] = 4;
 $modversion['config'][$i]['options'] = array();
 
@@ -334,8 +334,8 @@ $i++;
 $modversion['config'][$i]['name'] = 'rows';
 $modversion['config'][$i]['title'] = "_MI_SONGLIST_ROWS";
 $modversion['config'][$i]['description'] = "_MI_SONGLIST_ROWS_DESC";
-$modversion['config'][$i]['formtype'] = 'textarea';
-$modversion['config'][$i]['valuetype'] = 'text';
+$modversion['config'][$i]['formtype'] = 'text';
+$modversion['config'][$i]['valuetype'] = 'int';
 $modversion['config'][$i]['default'] = 4;
 $modversion['config'][$i]['options'] = array();
 
@@ -379,7 +379,7 @@ $modversion['config'][$i]['title'] = "_MI_SONGLIST_UPLOADAREAS";
 $modversion['config'][$i]['description'] = "_MI_SONGLIST_UPLOADAREAS_DESC";
 $modversion['config'][$i]['formtype'] = 'select';
 $modversion['config'][$i]['valuetype'] = 'text';
-$modversion['config'][$i]['default'] = 'uploads'.DS.'vod'.DS;
+$modversion['config'][$i]['default'] = 'uploads'.DS.'songlist'.DS;
 $modversion['config'][$i]['options'] = array(
 												'uploads'.DS => 'uploads'.DS,
 												'uploads'.DS.'songlist'.DS => 'uploads'.DS.'songlist'.DS

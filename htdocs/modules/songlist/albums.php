@@ -47,7 +47,7 @@
 			switch ($fct) {
 			default:
 			case "list":
-				$pagenav = new XoopsPageNav($albums_handler->getCount($criteria_cat), $limit, $start, 'start', "?op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
+				$pagenav = new XoopsPageNav($albums_handler->getCount($criteria_cat), $limit, $start, 'start', "op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
 
 				$criteria_cat->setLimit($limit);
 				$criteria_cat->setStart($start);
@@ -152,7 +152,7 @@
 				
 			}
 			
-			$pagenav = new XoopsPageNav($albums_handler->getCount($criteria), $limit, $start, 'start', "?op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
+			$pagenav = new XoopsPageNav($albums_handler->getCount($criteria), $limit, $start, 'start', "op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
 
 			$criteria->setLimit($limit);
 			$criteria->setStart($start);

@@ -95,8 +95,9 @@ class SonglistFormSelectSong extends XoopsFormElement
      * @param int $size Number or rows. "1" makes a drop-down-list
      * @param bool $multiple Allow multiple selections?
      */
-    function SonglistFormSelectSong($caption, $name, $value = null, $size = 1, $multiple = false, $cid=-1)
+    function SonglistFormSelectSong($caption, $name, $value = null, $size = 1, $multiple = false, $id=-1, $field = 'cid')
     {
+    	global $_form_object_options;
     	xoops_loadLanguage('modinfo', 'songlist');
     	
         $this->setCaption($caption);
@@ -107,14 +108,22 @@ class SonglistFormSelectSong extends XoopsFormElement
             $this->setValue($value);
         }
 		$this->addOption(0, _MI_SONGLIST_NONE);
-		$songs_handler =& xoops_getmodulehandler('songs', 'songlist');
-		if ($cid==-1) {
-			foreach($songs_handler->getObjects(NULL, true) as $id => $obj) 
-				$this->addOption($id, $obj->getVar('title'));
+		if ($id==-1) {
+			if (!isset($_form_object_options['songs'][$field][$id])) {
+				$songs_handler =& xoops_getmodulehandler('songs', 'songlist');
+				foreach($songs_handler->getObjects(NULL, true) as $id => $obj) { 
+					$_form_object_options['songs'][$field][$id][$id] = $obj->getVar('title');
+				}
+			}
 		} else {
-			foreach($songs_handler->getObjects(new Criteria('cid', $cid), true) as $id => $obj) 
-				$this->addOption($id, $obj->getVar('title'));
+			if (!isset($_form_object_options['songs'][$id])) {
+				$songs_handler =& xoops_getmodulehandler('songs', 'songlist');
+				foreach($songs_handler->getObjects(new Criteria('`'.$field.'`', $id)) as $id => $obj) { 
+					$_form_object_options['songs'][$field][$id][$id] = $obj->getVar('title');
+				}
+			}
 		}
+		$this->addOptions($_form_object_options['songs'][$field][$id]);
     }
 
     /**

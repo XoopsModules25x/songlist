@@ -175,6 +175,8 @@
 	define('_FRM_SONGLIST_FORM_EDIT_IMPORT', 'Edit Import Task');
 	define('_FRM_SONGLIST_FORM_IMPORT_UPLOAD_XML', 'XML File to import');
 	define('_FRM_SONGLIST_FORM_IMPORT_UPLOAD_XML_DESC', 'Select the XML File you wish to import from your system.');
+	define('_FRM_SONGLIST_FORM_IMPORT_EXISTING_XML', 'Use Existing File instead of Uploading');
+	define('_FRM_SONGLIST_FORM_IMPORT_EXISTING_XML_DESC', 'Upload Existing XML file to: '.$GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas']));
 	
 	//Import Wizard B
 	define('_FRM_SONGLIST_FORM_ISNEW_ELEMENTS', 'Set XML Elements to Import');
@@ -204,4 +206,11 @@
 	define('_FRM_SONGLIST_FORM_ELEMENT_TITLE_DESC', 'Song title is contained in this element');
 	define('_FRM_SONGLIST_FORM_ELEMENT_LYRICS', 'Song Lyrics Element Is');
 	define('_FRM_SONGLIST_FORM_ELEMENT_LYRICS_DESC', 'Lyrics data is contained in this element');
-?>
+	define('_FRM_SONGLIST_FORM_IMPORT_LIMITING', 'Import Sessioning Limitations?');
+	define('_FRM_SONGLIST_FORM_IMPORT_LIMITING_DESC', 'If this is enabled every number of records the process will sleep for a certain amount of seconds.');
+	define('_FRM_SONGLIST_FORM_IMPORT_RECORDS', 'Import Sessioning Record Count');
+	define('_FRM_SONGLIST_FORM_IMPORT_RECORDS_DESC', 'This is how many records to pause on and sleep');
+	define('_FRM_SONGLIST_FORM_IMPORT_WAIT', 'Import Sessioning Seconds Waited');
+	define('_FRM_SONGLIST_FORM_IMPORT_WAIT_DESC', 'This is the number of seconds to limit and sleep to when the number of records are reached!');
+	
+	?>

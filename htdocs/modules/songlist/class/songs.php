@@ -19,7 +19,7 @@ class SonglistSongs extends XoopsObject
         $this->initVar('abid', XOBJ_DTYPE_INT, 0, false);
 		$this->initVar('songid', XOBJ_DTYPE_TXTBOX, null, false, 32);
 		$this->initVar('title', XOBJ_DTYPE_TXTBOX, null, false, 128);
-		$this->initVar('lyrics', XOBJ_DTYPE_OTHER, null, false);		
+		$this->initVar('lyrics', XOBJ_DTYPE_TXTBOX, null, false, 650);		
 		$this->initVar('hits', XOBJ_DTYPE_INT, 0, false);
 		$this->initVar('rank', XOBJ_DTYPE_DECIMAL, 0, false);
 		$this->initVar('votes', XOBJ_DTYPE_INT, 0, false);
@@ -279,7 +279,7 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
     
     function getObjects($criteria = NULL, $id_as_key = false, $as_object = true) {
     	$ret = parent::getObjects($criteria, $id_as_key, $as_object);
-    	if (!isset($GLOBALS['songlistAdmin'])) {
+    	/*if (!isset($GLOBALS['songlistAdmin'])) {
 	    	foreach($ret as $data) {
 	    		$id = array();
 	    		if ($as_object==true) {
@@ -298,7 +298,7 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
     	if (!isset($GLOBALS['songlistAdmin'])&&count($id)>0) {
 	    	$sql = 'UPDATE `'.$this->table.'` set hits=hits+1 where `'.$this->keyName.'` IN ('.implode(',', $id).')';
 	    	$GLOBALS['xoopsDB']->queryF($sql);
-    	}
+    	}*/
     	return $ret;
     }   
     
@@ -307,7 +307,7 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
     	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
     		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseurl'].'/'.$file.'/'.$start.'-'.$op.'-'.$fct.'-'.$id.'-'.urlencode($value).'-'.$gid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
     	} else {
-    		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op='.$op.'&fct='.$fct.'&id='.$id.'&value='.urlencode($value).'&gid='.$gid.'&cid='.$cid;
+    		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op='.$op.'&fct='.$fct.'&id='.$id.'&value='.urlencode($value).'&gid='.$gid.'&cid='.$cid.'&start='.$start;
     	}
     }
 
@@ -316,7 +316,7 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
     	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
     		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseurl'].'/'.$file.'/'.$start.'-'.$op.'-'.$fct.'-'.urlencode($value).'-'.(isset($_GET['cid'])?($_GET['cid']):$cid).'-'.$gid.'-'.$singer.$GLOBALS['songlistModuleConfig']['endofurl'];
     	} else {
-    		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op='.$op.'&fct='.$fct.'&value='.urlencode($value).'&cid='.(isset($_GET['cid'])?($_GET['cid']):$cid).'&gid='.$gid.'&singer='.$singer;
+    		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op='.$op.'&fct='.$fct.'&value='.urlencode($value).'&cid='.(isset($_GET['cid'])?($_GET['cid']):$cid).'&gid='.$gid.'&singer='.$singer.'&start='.$start;
     	}
     }
 

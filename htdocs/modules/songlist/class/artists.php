@@ -208,7 +208,7 @@ class SonglistArtistsHandler extends XoopsPersistableObjectHandler
     
     function getObjects($criteria = NULL, $id_as_key = false, $as_object = true) {
     	$ret = parent::getObjects($criteria, $id_as_key, $as_object);
-    	if (!isset($GLOBALS['songlistAdmin'])) {
+    	/*if (!isset($GLOBALS['songlistAdmin'])) {
 	    	$id = array();
 	    	foreach($ret as $data) {
 	    		if ($as_object==true) {
@@ -227,7 +227,7 @@ class SonglistArtistsHandler extends XoopsPersistableObjectHandler
     	if (!isset($GLOBALS['songlistAdmin'])&&count($id)>0) {
 	    	$sql = 'UPDATE `'.$this->table.'` set hits=hits+1 where `'.$this->keyName.'` IN ('.implode(',', $id).')';
 	    	$GLOBALS['xoopsDB']->queryF($sql);
-    	}
+    	}*/
     	return $ret;
     }
     
@@ -236,7 +236,7 @@ class SonglistArtistsHandler extends XoopsPersistableObjectHandler
     	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
     		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseurl'].'/'.$file.'/'.$start.'-'.$op.'-'.$fct.'-'.$id.'-'.urlencode($value).'-'.$gid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
     	} else {
-    		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op='.$op.'&fct='.$fct.'&id='.$id.'&value='.urlencode($value).'&gid='.$gid.'&cid='.$cid;
+    		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op='.$op.'&fct='.$fct.'&id='.$id.'&value='.urlencode($value).'&gid='.$gid.'&cid='.$cid.'&start='.$start;
     	}
     }
     

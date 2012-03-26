@@ -97,6 +97,7 @@ class SonglistFormSelectCategory extends XoopsFormElement
      */
     function SonglistFormSelectCategory($caption, $name, $value = null, $size = 1, $multiple = false, $ownid=0)
     {
+    	global $_form_object_options;
     	xoops_loadLanguage('modinfo', 'songlist');
     	
         $this->setCaption($caption);
@@ -107,8 +108,18 @@ class SonglistFormSelectCategory extends XoopsFormElement
             $this->setValue($value);
         }
 		$this->addOption(0, _MI_SONGLIST_NONE);
-		foreach($this->GetCategory($ownid) as $id => $lang) 
-			$this->addOption($id, ($lang));
+		if (!isset($_form_object_options['category'])) {
+			$_form_object_options['category'] = $this->GetCategory(0);
+		} 
+		foreach($_form_object_options['category'] as $previd => $cats) {
+			if ($previd!=$ownid) {
+				foreach($cats as $catid => $title) {
+					if ($catid!=$ownid) {
+						$this->addOption($catid, $title);
+					}		
+				}
+			} 
+		}
     }
 
 	function GetCategory($ownid){
@@ -119,14 +130,14 @@ class SonglistFormSelectCategory extends XoopsFormElement
 		return $langs_array;
 	}
 	
-	function TreeMenu($langs_array, $categories, $level, $ownid) {
+	function TreeMenu($langs_array, $categories, $level, $ownid, $previd=0) {
 		$level++;
 		$category_handler =& xoops_getmodulehandler('category', 'songlist');
 		foreach($categories as $catid => $category) {
 			if ($catid!=$ownid) {
-				$langs_array[$catid] = str_repeat('--', $level).$category->getVar('name');
+				$langs_array[$previd][$catid] = str_repeat('--', $level).$category->getVar('name');
 				if ($categoriesb = $category_handler->getObjects(new Criteria('pid', $catid), true)){
-					$langs_array = $this->TreeMenu($langs_array, $categoriesb, $level, $ownid);
+					$langs_array = $this->TreeMenu($langs_array, $categoriesb, $level, $ownid, $catid);
 				}
 			}
 		}

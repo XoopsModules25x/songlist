@@ -160,7 +160,7 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
     
     function getObjects($criteria = NULL, $id_as_key = false, $as_object = true) {
     	$ret = parent::getObjects($criteria, $id_as_key, $as_object);
-    	if (!isset($GLOBALS['songlistAdmin'])) {
+    	/*if (!isset($GLOBALS['songlistAdmin'])) {
 	    	$id = array();
 	    	foreach($ret as $data) {
 	    		if ($as_object==true) {
@@ -179,7 +179,7 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
     	if (!isset($GLOBALS['songlistAdmin'])&&count($id)>0) {
 	    	$sql = 'UPDATE `'.$this->table.'` set hits=hits+1 where `'.$this->keyName.'` IN ('.implode(',', $id).')';
 	    	$GLOBALS['xoopsDB']->queryF($sql);
-    	}
+    	}*/
     	return $ret;
     }
     

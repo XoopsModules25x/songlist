@@ -231,7 +231,8 @@
 	define('_AM_SONGLIST_IMPORT_ACTIONB_H1', 'Specify Element Names');
 	define('_AM_SONGLIST_IMPORT_ACTIONB_P', 'You have to specify from the example the elements that exists in this XML file to import, may vary from file to file and also if you specify no element name the field type is ignored..');
 	define('_AM_SONGLIST_XMLFILE_COMPLETE', 'XML File Import and Comparison Complete!');
-	
+	define('_AM_SONGLIST_XMLFILE_COPIED', 'The source XML File has been copied for importing!');
+		
 	// About Box
 	define('_AM_SONGLIST_ABOUT_MAKEDONATE', 'Make Song List Better Donate Today!');
 	

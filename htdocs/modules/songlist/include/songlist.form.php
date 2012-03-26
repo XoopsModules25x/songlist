@@ -343,11 +343,20 @@
 		
 		$ele['op'] = new XoopsFormHidden('op', 'import');
 		$ele['fct'] = new XoopsFormHidden('fct', 'upload');
-		$ele['xmlfile'] = new XoopsFormFile(($as_array==false?_FRM_SONGLIST_FORM_IMPORT_UPLOAD_XML:''), 'xmlfile', (1024*1024*1024*128));
+		$ele['xmlfile'] = new XoopsFormFile(($as_array==false?_FRM_SONGLIST_FORM_IMPORT_UPLOAD_XML:''), 'xmlfile', (1024*1024*1024*32));
 		$ele['xmlfile']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_IMPORT_UPLOAD_XML_DESC:''));
+		$ele['file'] = new XoopsFormSelect(($as_array==false?_FRM_SONGLIST_FORM_IMPORT_EXISTING_XML:''), 'file');
+		$ele['file']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_IMPORT_EXISTING_XML_DESC:''));
+		$ele['file']->addOption('', '*********');
+		xoops_load('XoopsLists');
+		foreach(XoopsLists::getFileListAsArray($GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas'])) as $file) {
+			if (substr($file, strlen($file)-3, 3)=='xml') {
+				$ele['file']->addOption($file, $file);
+			}
+		}
 		$ele['submit'] = new XoopsFormButton('', 'submit', _SUBMIT, 'submit');
 		
-		$required = array('xmlfile');
+		$required = array();
 		
 		foreach($ele as $id => $obj)			
 			if (in_array($id, $required))
@@ -408,6 +417,12 @@
 		$ele['title']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_TITLE_DESC:''));
 		$ele['lyrics'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_LYRICS:''), 'lyrics', 32, 128, 'lyric');
 		$ele['lyrics']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_LYRICS_DESC:''));
+		$ele['limiting'] = new XoopsFormRadioYN(($as_array==false?_FRM_SONGLIST_FORM_IMPORT_LIMITING:''), 'limiting', true);
+		$ele['limiting']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_IMPORT_LIMITING_DESC:''));
+		$ele['records'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_IMPORT_RECORDS:''), 'records', 10, 10, '250');
+		$ele['records']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_IMPORT_RECORDS_DESC:''));
+		$ele['wait'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_IMPORT_WAIT:''), 'wait', 10, 10, '40');
+		$ele['wait']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_IMPORT_WAIT_DESC:''));
 		
 		$ele['submit'] = new XoopsFormButton('', 'submit', _SUBMIT, 'submit');
 		
