@@ -160,7 +160,6 @@
 	define('_FRM_SONGLIST_FIELDS_TEXTBOX', 'Text-box');
 	define('_FRM_SONGLIST_FIELDS_TIMEZONE', 'Timezone Select');
 	define('_FRM_SONGLIST_FIELDS_YESNO', 'Yes/No Radio');
-	define('_FRM_SONGLIST_FIELDS_DATE', 'Date');
 	define('_FRM_SONGLIST_FIELDS_DATETIME', 'Date Time');
 	define('_FRM_SONGLIST_FIELDS_LONGDATE', 'Long Date');
 	define('_FRM_SONGLIST_FIELDS_THEME', 'Theme Select');

@@ -18,6 +18,9 @@ case "list":
 	$module_handler = xoops_gethandler('module');
 	$modules = $module_handler->getObjects(null, true);
 
+	$categories = array();
+	$weights = array();
+	
 	$GLOBALS['categoryHandler'] = xoops_getmodulehandler('category');
 	$criteria = new CriteriaCompo();
 	$criteria->setSort('weight');
@@ -32,7 +35,7 @@ case "list":
 		}
 		$GLOBALS['xoopsTpl']->assign('categories', $categories);
 	}
-	unset($categories);
+	
 	$valuetypes = array(XOBJ_DTYPE_ARRAY => _AM_SONGLIST_FIELDS_ARRAY,
 						XOBJ_DTYPE_EMAIL => _AM_SONGLIST_FIELDS_EMAIL,
 						XOBJ_DTYPE_INT => _AM_SONGLIST_FIELDS_INT,

@@ -8,11 +8,11 @@
 	
 	$op = isset($_REQUEST['op'])?$_REQUEST['op']:"import";
 	$fct = isset($_REQUEST['fct'])?$_REQUEST['fct']:"actiona";
-	$limit = strlen($_REQUEST['limit'])?intval($_REQUEST['limit']):30;
-	$start = strlen($_REQUEST['start'])?intval($_REQUEST['start']):0;
-	$order = strlen($_REQUEST['order'])?$_REQUEST['order']:'DESC';
-	$sort = strlen($_REQUEST['sort'])?''.$_REQUEST['sort'].'':'created';
-	$filter = strlen($_REQUEST['filter'])?''.$_REQUEST['filter'].'':'1,1';
+	$limit = isset($_REQUEST['limit'])?intval($_REQUEST['limit']):30;
+	$start = isset($_REQUEST['start'])?intval($_REQUEST['start']):0;
+	$order = isset($_REQUEST['order'])?$_REQUEST['order']:'DESC';
+	$sort = isset($_REQUEST['sort'])?''.$_REQUEST['sort'].'':'created';
+	$filter = isset($_REQUEST['filter'])?''.$_REQUEST['filter'].'':'1,1';
 	
 	switch($op) {
 	default:

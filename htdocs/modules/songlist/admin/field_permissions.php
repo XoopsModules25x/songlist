@@ -76,14 +76,15 @@ if ( $op == "access" ) {
 	
 } else {
 	$extras_handler = xoops_getmodulehandler('extras');
-	$fields = $extras_handler->loadFields();
-
+	$fields = array_merge(array(), $extras_handler->loadFields());
+	
 	if ( $op != "search" ) {
-		foreach (array_keys($fields) as $i ) {
-			if ( $restriction == "" || $fields[$i]->getVar($restriction)  ) {
-				$form->addItem($fields[$i]->getVar('field_id'), xoops_substr($fields[$i]->getVar('field_title'), 0, 25) );
+		if (is_array($fields)&&count($fields)>0)
+			foreach (array_keys($fields) as $i ) {
+				if ( $restriction == "" || $fields[$i]->getVar($restriction)  ) {
+					$form->addItem($fields[$i]->getVar('field_id'), xoops_substr($fields[$i]->getVar('field_title'), 0, 25) );
+				}
 			}
-		}
 	} else {
 		$searchable_types = array('textbox',
 		'select',
@@ -93,11 +94,12 @@ if ( $op == "access" ) {
 		'datetime',
 		'timezone',
 		'language');
-		foreach (array_keys($fields) as $i ) {
-			if ( in_array($fields[$i]->getVar('field_type'), $searchable_types)  ) {
-				$form->addItem($fields[$i]->getVar('field_id'), xoops_substr($fields[$i]->getVar('field_title'), 0, 25) );
+		if (is_array($fields)&&count($fields)>0)
+			foreach (array_keys($fields) as $i ) {
+				if ( in_array($fields[$i]->getVar('field_type'), $searchable_types)  ) {
+					$form->addItem($fields[$i]->getVar('field_id'), xoops_substr($fields[$i]->getVar('field_title'), 0, 25) );
+				}
 			}
-		}
 	}
 }
 $form->display();
