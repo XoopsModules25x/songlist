@@ -13,6 +13,7 @@ CREATE TABLE `songlist_albums` (
   `votes` int(10) unsigned DEFAULT '0',  
   `created` int(12) unsigned DEFAULT '0',
   `updated` int(12) unsigned DEFAULT '0'
+  PRIMARY KEY (`abid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `songlist_artists` (
@@ -28,6 +29,7 @@ CREATE TABLE `songlist_artists` (
   `hits` int(12) unsigned DEFAULT '0',
   `created` int(12) unsigned DEFAULT '0',
   `updated` int(12) unsigned DEFAULT '0'
+  PRIMARY KEY (`aid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `songlist_category` (

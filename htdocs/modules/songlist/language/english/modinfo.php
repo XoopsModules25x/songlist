@@ -2,7 +2,7 @@
 
 	// XOOPS Version
 	define('_MI_SONGLIST_NAME', 'Songlist');
-	define('_MI_SONGLIST_DESCRIPTION', 'Songlist is a module for keeping karioki song lists and ranking of them.');
+	define('_MI_SONGLIST_DESC', 'Karioki Songlist - a module for keeping karioki song lists and ranking of them.');
 	define('_MI_SONGLIST_DIRNAME', 'songlist');
 	
 	// Form langauges
