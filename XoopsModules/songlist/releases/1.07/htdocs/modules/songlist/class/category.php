@@ -162,19 +162,21 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
     
     function getObjects($criteria = NULL, $id_as_key = false, $as_object = true) {
     	$ret = parent::getObjects($criteria, $id_as_key, $as_object);
-    	$id = array();
-    	foreach($ret as $data) {
-    		if ($as_object==true) {
-    			if (!in_array($data->getVar($this->keyName), array_keys($this->_objects['object']))) {
-    				$this->_objects['object'][$data->getVar($this->keyName)] = $data;
-    				$id[$data->getVar($this->keyName)] = $data->getVar($this->keyName);
-    			}
-    		} else {
-    			if (!in_array($data[$this->keyName], array_keys($this->_objects['array']))) {
-    				$this->_objects['array'][$data[$this->keyName]] = $data;
-    				$id[$data[$this->keyName]] = $data[$this->keyName];;
-    			}
-    		}
+    	if (!isset($GLOBALS['songlistAdmin'])) {
+	    	$id = array();
+	    	foreach($ret as $data) {
+	    		if ($as_object==true) {
+	    			if (!in_array($data->getVar($this->keyName), array_keys($this->_objects['object']))) {
+	    				$this->_objects['object'][$data->getVar($this->keyName)] = $data;
+	    				$id[$data->getVar($this->keyName)] = $data->getVar($this->keyName);
+	    			}
+	    		} else {
+	    			if (!in_array($data[$this->keyName], array_keys($this->_objects['array']))) {
+	    				$this->_objects['array'][$data[$this->keyName]] = $data;
+	    				$id[$data[$this->keyName]] = $data[$this->keyName];;
+	    			}
+	    		}
+	    	}
     	}
     	if (!isset($GLOBALS['songlistAdmin'])&&count($id)>0) {
 	    	$sql = 'UPDATE `'.$this->table.'` set hits=hits+1 where `'.$this->keyName.'` IN ('.implode(',', $id).')';

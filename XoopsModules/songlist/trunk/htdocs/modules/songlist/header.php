@@ -68,8 +68,8 @@
 	$GLOBALS['start']=isset($_REQUEST['start'])?$_REQUEST['start']:0;
 	$GLOBALS['limit']=isset($_REQUEST['limit'])?$_REQUEST['limit']:$GLOBALS['songlistModuleConfig']['cols']*$GLOBALS['songlistModuleConfig']['rows'];
 	
-	print_r($_POST);
-	print_r($_GET);
+	set_time_limit('320');
+	ini_set('memory_limit', '128M');
 	
 	if (!isset($_SESSION['cid']))
 		$_SESSION['cid'] = $GLOBALS['cid'];
