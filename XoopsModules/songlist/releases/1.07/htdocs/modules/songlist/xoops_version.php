@@ -201,10 +201,12 @@ $i=0;
 $modversion['sub'][$i]['name'] = _MI_SONGLIST_MENU_ARTISTS;
 $modversion['sub'][$i]['url'] = "artists.php";
 $i++;
-if ($GLOBALS['songlistModuleConfig']['album']) {
-	$modversion['sub'][$i]['name'] = _MI_SONGLIST_MENU_ALBUMS;
-	$modversion['sub'][$i]['url'] = "albums.php";
-	$i++;
+if (isset($GLOBALS['songlistModuleConfig']['album'])) {
+	if ($GLOBALS['songlistModuleConfig']['album']) {
+		$modversion['sub'][$i]['name'] = _MI_SONGLIST_MENU_ALBUMS;
+		$modversion['sub'][$i]['url'] = "albums.php";
+		$i++;
+	}
 }		
 $modversion['sub'][$i]['name'] = _MI_SONGLIST_MENU_SEARCH;
 $modversion['sub'][$i]['url'] = "search.php";
