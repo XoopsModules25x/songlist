@@ -1,0 +1,10 @@
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^songlist/([a-zA-Z0-9]+)/(.*?)/([a-zA-Z0-9]+)-([a-zA-Z0-9]+)-([0-9]+)-(.*?)-([0-9]+)-([0-9]+).html 					modules/songlist/$1.php?op=$4&fct=$5&id=$6&value=$7&gid=$8&cid=$9  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/([0-9]+)-([a-zA-Z0-9]+)-([a-zA-Z0-9]+)-([0-9]+)-(.*?)-([0-9]+)-([0-9]+).html 				modules/songlist/$1.php?start=$2&op=$3&fct=$4&id=$5&value=$6&gid=$7&cid=$7  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/([0-9]+)-([a-zA-Z0-9]+)-([a-zA-Z0-9]+)-(.*?)-([0-9]+)-([0-9]+)-(.*?).html 					modules/songlist/$1.php?start=$2&op=$3&fct=$4&value=$5&gid=$6&cid=$7&singer=$8  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)-([a-zA-Z0-9]+)-([0-9]+).html 												modules/songlist/$1.php?op=$2&fct=$3&id=$4  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)-([a-zA-Z0-9]+).html 														modules/songlist/$1.php?op=$2&fct=$3  [L,NC,QSA]
