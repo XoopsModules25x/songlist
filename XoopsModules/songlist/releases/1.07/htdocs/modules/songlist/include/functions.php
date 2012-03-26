@@ -101,7 +101,7 @@ if (!function_exists('songlist_getFilterElement')) {
 	function songlist_getFilterElement($filter, $field, $sort='created', $op = '', $fct = '') {
 		$components = songlist_getFilterURLComponents($filter, $field, $sort);
 		$ele = false;
-		include_once('formobjects.songlist.php');
+		include_once('songlist.object.php');
 		switch ($field) {
 		    case 'cid':
 				if ($op!='category') {

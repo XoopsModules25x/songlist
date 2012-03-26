@@ -334,7 +334,7 @@
 		return $form;
 	}
 	
-	function songlist_import_get_form() {
+	function songlist_import_get_form($as_array = false) {
 		
 		xoops_loadLanguage('forms', 'songlist');
 		
@@ -359,7 +359,7 @@
 		
 	}
 	
-	function songlist_importb_get_form($file) {
+	function songlist_importb_get_form($file, $as_array = false) {
 		
 		xoops_loadLanguage('forms', 'songlist');
 		
@@ -464,7 +464,7 @@
 		$ele['artists'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_GENRE_ARTISTS:''), $object->getVar('artists'));
 		$ele['songs'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_GENRE_SONGS:''), $object->getVar('songs'));
 		$ele['hits'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_GENRE_HITS:''), $object->getVar('hits'));
-		$ele['rank'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_GENRE_RANK:''), number_format($object->getVar('rank')/$object->getVar('votes'),2). ' of 10');
+		$ele['rank'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_GENRE_RANK:''), number_format(($object->getVar('rank')>0&&$object->getVar('votes')>0?$object->getVar('rank')/$object->getVar('votes'):0),2). ' of 10');
 		if ($object->getVar('created')>0) {
 			$ele['created'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_GENRE_CREATED:''), date(_DATESTRING, $object->getVar('created')));
 		}
@@ -537,7 +537,7 @@
 		$ele['artists'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_ARTISTS:''), $object->getVar('artists'));
 		$ele['songs'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_SONGS:''), $object->getVar('songs'));
 		$ele['hits'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_HITS:''), $object->getVar('hits'));
-		$ele['rank'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_RANK:''), number_format($object->getVar('rank')/$object->getVar('votes'),2). ' of 10');
+		$ele['rank'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_RANK:''), number_format(($object->getVar('rank')>0&&$object->getVar('votes')>0?$object->getVar('rank')/$object->getVar('votes'):0),2). ' of 10');
 		if ($object->getVar('created')>0) {
 			$ele['created'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ALBUMS_CREATED:''), date(_DATESTRING, $object->getVar('created')));
 		}
@@ -604,7 +604,7 @@
 		$ele['albums'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_ALBUMS:''), $object->getVar('albums'));
 		$ele['songs'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_SONGS:''), $object->getVar('songs'));
 		$ele['hits'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_HITS:''), $object->getVar('hits'));
-		$ele['rank'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_RANK:''), number_format($object->getVar('rank')/$object->getVar('votes'),2). ' of 10');
+		$ele['rank'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_RANK:''), number_format(($object->getVar('rank')>0&&$object->getVar('votes')>0?$object->getVar('rank')/$object->getVar('votes'):0),2). ' of 10');
 		if ($object->getVar('created')>0) {
 			$ele['created'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_CREATED:''), date(_DATESTRING, $object->getVar('created')));
 		}
@@ -686,7 +686,7 @@
 		$ele['artists'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_CATEGORY_ARTISTS:''), $object->getVar('artists'));
 		$ele['songs'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_CATEGORY_SONGS:''), $object->getVar('songs'));
 		$ele['hits'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_CATEGORY_HITS:''), $object->getVar('hits'));
-		$ele['rank'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_CATEGORY_RANK:''), number_format($object->getVar('rank')/$object->getVar('votes'),2). ' of 10');
+		$ele['rank'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_CATEGORY_RANK:''), number_format(($object->getVar('rank')>0&&$object->getVar('votes')>0?$object->getVar('rank')/$object->getVar('votes'):0),2). ' of 10');
 		if ($object->getVar('created')>0) {
 			$ele['created'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_CATEGORY_CREATED:''), date(_DATESTRING, $object->getVar('created')));
 		}
@@ -938,7 +938,8 @@
 		$fields = $extras_handler->loadFields();
 		
 		$required = array();
-		
+		$elements = array();
+		$weights = array();
 		if ($object->getVar('sid')>0)
 			$extra = $extras_handler->get($object->getVar('sid'));
 		else
@@ -984,7 +985,7 @@
 		}
 		
 		$ele['hits'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_SONGS_HITS:''), $object->getVar('hits'));
-		$ele['rank'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_SONGS_RANK:''), number_format($object->getVar('rank')/$object->getVar('votes'),2). ' of 10');
+		$ele['rank'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_SONGS_RANK:''), number_format(($object->getVar('rank')>0&&$object->getVar('votes')>0?$object->getVar('rank')/$object->getVar('votes'):0),2). ' of 10');
 		if ($object->getVar('created')>0) {
 			$ele['created'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_SONGS_CREATED:''), date(_DATESTRING, $object->getVar('created')));
 		}

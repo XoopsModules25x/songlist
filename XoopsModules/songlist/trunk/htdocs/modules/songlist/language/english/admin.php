@@ -41,8 +41,7 @@
 	define('_AM_SONGLIST_TH_UTFID', 'Map ID');
 	define('_AM_SONGLIST_TH_FROM', 'From');
 	define('_AM_SONGLIST_TH_TO', 'To');
-	define('_AM_SONGLIST_TH_ABID', 'Album ID');
-		
+			
 	// Category
 	define('_AM_SONGLIST_CATEGORY_H1', 'Categories');
 	define('_AM_SONGLIST_CATEGORY_P', 'These are the categories and child categories you have on the system.');
@@ -207,7 +206,6 @@
 	define('_AM_SONGLIST_FIELDS_TEXTBOX', 'Text-box');
 	define('_AM_SONGLIST_FIELDS_TIMEZONE', 'Timezone Select');
 	define('_AM_SONGLIST_FIELDS_YESNO', 'Yes/No Radio');
-	define('_AM_SONGLIST_FIELDS_DATE', 'Date');
 	define('_AM_SONGLIST_FIELDS_DATETIME', 'Date Time');
 	define('_AM_SONGLIST_FIELDS_LONGDATE', 'Long Date');
 	define('_AM_SONGLIST_FIELDS_THEME', 'Theme Select');
@@ -232,6 +230,7 @@
 	define('_AM_SONGLIST_IMPORT_ACTIONA_P', 'Select an XML File you have exported from Excel or other platform to import.');
 	define('_AM_SONGLIST_IMPORT_ACTIONB_H1', 'Specify Element Names');
 	define('_AM_SONGLIST_IMPORT_ACTIONB_P', 'You have to specify from the example the elements that exists in this XML file to import, may vary from file to file and also if you specify no element name the field type is ignored..');
+	define('_AM_SONGLIST_XMLFILE_COMPLETE', 'XML File Import and Comparison Complete!');
 	
 	// About Box
 	define('_AM_SONGLIST_ABOUT_MAKEDONATE', 'Make Song List Better Donate Today!');

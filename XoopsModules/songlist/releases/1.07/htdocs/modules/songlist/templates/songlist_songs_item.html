@@ -20,9 +20,9 @@
 	<{/if}>
 </div>
 <div class="sl_mainsong">
-	<{assign item=artists value=0}>
+	<{assign var=artists value=0}>
 	<{foreach from=$song.album.artists item=artist}>
-	<{assign item=artists value=$artists+1}>
+	<{assign var=artists value=$artists+1}>
 	<a href="<{$artist.url}>"><{$artist.name}></a><{if not $artists < count($song.album.artists)}>,&nbsp;<{/if}>
 	<{/foreach}> 
 </div>
