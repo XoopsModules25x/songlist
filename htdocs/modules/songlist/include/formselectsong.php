@@ -123,7 +123,8 @@ class SonglistFormSelectSong extends XoopsFormElement
 				}
 			}
 		}
-		$this->addOptions($_form_object_options['songs'][$field][$id]);
+		foreach($_form_object_options['songs'][$field][$id] as $id => $value)
+			$this->addOption($id, $value);
     }
 
     /**
