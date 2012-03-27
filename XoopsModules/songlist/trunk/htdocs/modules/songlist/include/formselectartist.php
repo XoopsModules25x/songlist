@@ -113,7 +113,9 @@ class SonglistFormSelectArtist extends XoopsFormElement
 			foreach($artists_handler->getObjects(NULL, true) as $id => $obj)
 			$_form_object_options['artists'][$id] = $obj->getVar('name');
 		}
-		$this->addOptions($_form_object_options['artists']);
+		foreach($_form_object_options['artists'] as $id => $value)
+			$this->addOption($id, $value);
+		
     }
 
     /**

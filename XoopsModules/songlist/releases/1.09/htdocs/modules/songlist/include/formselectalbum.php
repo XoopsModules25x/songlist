@@ -114,7 +114,8 @@ class SonglistFormSelectAlbum extends XoopsFormElement
 				$_form_object_options['albums'][$id] = $obj->getVar('title');
 			}
 		} 
-		$this->addOptions($_form_object_options['albums']);
+		foreach($_form_object_options['albums'] as $id => $value)
+			$this->addOption($id, $value);
     }
 
     /**
