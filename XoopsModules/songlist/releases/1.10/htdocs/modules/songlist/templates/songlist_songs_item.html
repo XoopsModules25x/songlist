@@ -1,0 +1,57 @@
+<{if $song.album}>
+<div class="sl_subtitle">
+	<{$smarty.const._MN_SONGLIST_ALBUM}>
+</div>
+<div class="sl_mainsong">
+	<{$song.album.name}>
+</div>
+<{if $song.album.picture}>
+<div class="sl_artsong">
+	<img src='<{$song.album.picture}>' width="95%" border="0" />
+</div>
+<{/if}>
+<{/if}>
+<{if $song.artists_array}>
+<div class="sl_subtitle">
+	<{if count($song.artists_array) > 1}>
+	<{$smarty.const._MN_SONGLIST_ARTISTS}>
+	<{else}>
+	<{$smarty.const._MN_SONGLIST_ARTIST}>
+	<{/if}>
+</div>
+<div class="sl_mainsong">
+	<{assign var=artists value=0}>
+	<{foreach from=$song.artists_array item=artist}>
+	<{assign var=artists value=$artists+1}>
+	<a href="<{$artist.url}>"><{$artist.name}></a><{if not $artists < count($song.album.artists)}>,&nbsp;<{/if}>
+	<{/foreach}> 
+</div>
+<{/if}>
+<div class="sl_subtitle">
+	<{$smarty.const._MN_SONGLIST_TITLE}>
+</div>
+<div class="sl_mainsong">
+	<{$song.title}> 
+</div>
+<div class="sl_subtitle">
+	<{$smarty.const._MN_SONGLIST_SONGID}>
+</div>
+<div class="sl_mainsong">
+	<{$song.songid}> 
+</div>
+<{if $xoConfig.tags}>
+<div class="sl_subtitle">
+	<{$smarty.const._MN_SONGLIST_TAGS}>
+</div>
+<div class="sl_mainsong">
+	<{include file="db:tag_bar.html" tagbar=$song.tagbar}> 
+</div>
+<{/if}>
+<{foreach from=$song.fields item=field}>
+<div class="sl_subtitle">
+	<{$field.title}>
+</div>
+<div class="sl_mainsong">
+	<{$field.value}> 
+</div>
+<{/foreach}> 
