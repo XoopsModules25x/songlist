@@ -130,7 +130,7 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
     }
 
 	function filterFields() {
-		return array('sid', 'cid', 'aids', 'abid', 'songid', 'title', 'lyrics', 'hits', 'rank', 'votes', 'tags', 'created', 'updated');
+		return array('sid', 'cid', 'gid', 'aids', 'abid', 'songid', 'title', 'lyrics', 'hits', 'rank', 'votes', 'tags', 'created', 'updated');
 	}
 	
     function getFilterCriteria($filter) {
@@ -184,12 +184,12 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
 		$category_handler = xoops_getmodulehandler('category', 'songlist');
 
 		if ($obj->vars['gid']['changed']==true) {
-    		if ($new==true||($old->getVar('gid')!=$obj->vars['gid']['value']&&$obj->vars['gid']['value']!=0)) {
+    		if ($new==true||($obj->vars['gid']['value']!=0)) {
     			$genre = $genre_handler->get($obj->vars['gid']['value']);
     			$genre->setVar('songs', $genre->getVar('songs')+1);
     			$genre_handler->insert($genre, true, $obj);
     		} 
-    		if (!$old->isNew()&&$old->getVar('gid')>0&&$old->getVar('gid')!=$obj->vars['gid']['value']) {
+    		if (!$old->isNew()&&$old->getVar('gid')>0) {
     			$genre = $genre_handler->get($old->vars['gid']['value']);
     			$genre->setVar('songs', $genre->getVar('songs')-1);
     			$genre_handler->insert($genre, true, null);
@@ -197,20 +197,37 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
     	}
     	
 		if ($obj->vars['cid']['changed']==true) {
-    		if ($new==true||($old->getVar('cid')!=$obj->vars['cid']['value']&&$obj->vars['cid']['value']!=0)) {
+    		if ($new==true||($obj->vars['cid']['value']!=0)) {
     			$category = $category_handler->get($obj->vars['cid']['value']);
     			$category->setVar('songs', $category->getVar('songs')+1);
     			$category_handler->insert($category, true, $obj);
+    		    foreach($obj->getVar('aids') as $aid) {
+	    			$artists = $artists_handler->get($aid);
+	    			$cids = $artists->getVar('cids');
+	    			$cids[$obj->getVar('cid')] = $obj->getVar('cid');
+	    			$artists->setVar('cids', $cids);
+	    			$artists_handler->insert($artists, true, null);
+    			}
     		}
-			if (!$old->isNew()&&$old->getVar('cid')>0&&$old->getVar('cid')!=$obj->vars['cid']['value']) {
+			if (!$old->isNew()&&$old->getVar('cid')>0) {
 				$category = $category_handler->get($old->vars['cid']['value']);
     			$category->setVar('songs', $category->getVar('songs')-1);
     			$category_handler->insert($category, true, null);
+				foreach($obj->getVar('aids') as $aid) {
+	    			$artists = $artists_handler->get($aid);
+	    			$cids=array();
+	    			foreach($artists->getVar('cids') as $cid) {
+	    				if($cid!=$old->getVar('cid')||$cid==$obj->getVar('cid'))
+	    					$cids[$cid] = $cid;
+	    			}
+	    			$artists->setVar('cids', $cids);
+	    			$artists_handler->insert($artists, true, null);
+    			}
     		}
     	}
     	
     	if ($obj->vars['aids']['changed']==true&&count($obj->vars['aids']['value'])!=0) {
-    		if ($new==true||$old->getVar('aids')!=$obj->vars['aids']['value']) {
+    		if ($new==true||count($obj->vars['aids']['value'])!=0) {
     			foreach($obj->vars['aids']['value'] as $aid) {
     				if (!in_array($aid, $old->vars['aids']['value'])) {
 		    			$artists = $artists_handler->get($aid);
@@ -231,12 +248,12 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
     	}
     	
     	if ($obj->vars['abid']['changed']==true) {
-    		if ($new==true||($old->getVar('abid')!=$obj->vars['abid']['value']&&$obj->vars['abid']['value']!=0)) {
+    		if ($new==true||($obj->vars['abid']['value']!=0)) {
     			$album = $albums_handler->get($obj->vars['abid']['value']);
     			$album->setVar('songs', $album->getVar('songs')+1);
     			$albums_handler->insert($album, true, $obj);
     		}
-    		if (!$old->isNew()&&$old->getVar('abid')>0&&$old->getVar('abid')!=$obj->vars['abid']['value']) {
+    		if (!$old->isNew()&&$old->getVar('abid')>0) {
     			$album = $albums_handler->get($obj->vars['abid']['value']);
     			$album->setVar('songs', $album->getVar('songs')-1);
     			$albums_handler->insert($album, true, null);

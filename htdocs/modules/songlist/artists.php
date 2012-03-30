@@ -7,7 +7,9 @@
 	$category_handler = xoops_getmodulehandler('category', 'songlist');
 	$criteria_cat = new CriteriaCompo();
 	$cids = $category_handler->GetCatAndSubCat($_SESSION['cid']);
-	if (count($cids)>0) {
+	if ($_SESSION['cid']>0)
+		$cids[$_SESSION['cid']] = $_SESSION['cid'];
+	if (count($cids)>0&&$_SESSION['cid']!=0) {
 		foreach($cids as $cid) {
 			$criteria_cat->add(new Criteria('`cids`', '%"'.$cid.'"%', 'LIKE'), 'OR');	
 		}	

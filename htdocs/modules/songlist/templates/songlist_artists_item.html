@@ -9,7 +9,7 @@
 	<{assign var=songs value=0}>
 	<{foreach from=$artist.songs_array item=song}>
 	<{assign var=songs value=$songs+1}>
-	<a href="<{$song.url}>"><{$song.name}> [<{$song.songid}>]</a><{if not $songs < count($artist.songs)}>,&nbsp;<{/if}>
+	<a href="<{$song.url}>"><{$song.title}> [<{$song.songid}>]</a><{if not $songs < count($artist.songs)}>,&nbsp;<{/if}>
 	<{/foreach}> 
 </div>
 <{/if}>

@@ -114,8 +114,9 @@ class SonglistFormSelectGenre extends XoopsFormElement
 				$_form_object_options['genre'][$id] = $obj->getVar('name'); 
 			}
 		}
-		foreach($_form_object_options['genre'] as $id => $value)
-			$this->addOption($id, $value);
+		if (isset($_form_object_options['genre']))
+			foreach($_form_object_options['genre'] as $id => $value)
+				$this->addOption($id, $value);
 		
 
     }

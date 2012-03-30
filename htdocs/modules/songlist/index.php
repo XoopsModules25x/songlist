@@ -2,12 +2,14 @@
 
 	include (dirname(__FILE__).'/header.php');
 	
-	global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit;
+	global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit, $singer;
 	
 	$category_handler = xoops_getmodulehandler('category', 'songlist');
 	$criteria_cat = new CriteriaCompo();
 	$cids = $category_handler->GetCatAndSubCat($_SESSION['cid']);
-	if (count($cids)>0) {
+	if ($_SESSION['cid']>0)
+		$cids[$_SESSION['cid']] = $_SESSION['cid'];
+	if (count($cids)>0&&$_SESSION['cid']!=0) {
 		$criteria_cat->add(new Criteria('`cid`', '('.implode(',',  $cids).')', 'IN'), 'OR');	
 	} else { 
 		$criteria_cat->add(new Criteria('1', '1'), 'OR');
@@ -91,7 +93,8 @@
 				$GLOBALS['xoopsTpl']->assign('cid', $_SESSION['cid']);
 				if ($_SESSION['cid']!=0) {
 					$category = $category_handler->get($_SESSION['cid']);
-					$GLOBALS['xoopsTpl']->assign('category', $category->toArray(true));
+					if (is_object($category))
+						$GLOBALS['xoopsTpl']->assign('category', $category->toArray(true));
 				}				
 				$GLOBALS['xoopsTpl']->assign('uri', $_SERVER['REQUEST_URI']);
 				include($GLOBALS['xoops']->path('/footer.php'));
@@ -247,7 +250,8 @@
 			$GLOBALS['xoopsTpl']->assign('cid', $_SESSION['cid']);
 			if ($_SESSION['cid']!=0) {
 				$category = $category_handler->get($_SESSION['cid']);
-				$GLOBALS['xoopsTpl']->assign('category', $category->toArray(true));
+				if (is_object($category))
+					$GLOBALS['xoopsTpl']->assign('category', $category->toArray(true));
 			}
 			$GLOBALS['xoopsTpl']->assign('uri', $_SERVER['REQUEST_URI']);
 			include($GLOBALS['xoops']->path('/footer.php'));
@@ -295,13 +299,15 @@
 				$criteria->add(new Criteria('`gid`', $gid));
 			}
 			
-			if ($singer != 0 && $GLOBALS['songlistModuleConfig']['singer']) {
+			if (!empty($singer) && $GLOBALS['songlistModuleConfig']['singer']) {
 				$criteria->add(new Criteria('`sid`', '('.implode(',', $artists_handler->getSIDs(new Criteria('`singer`', $singer))).')', 'IN'));
 			}
 
-			if ($cid != 0) {
+			if ((isset($_GET['cid'])?($_GET['cid']):$cid) != 0) {
 				$criteria->add(new Criteria('`cid`',  (isset($_GET['cid'])?($_GET['cid']):$cid)));
 			}
+			
+			echo $criteria->renderWhere();
 			
 			$pagenav = new XoopsPageNav($songs_handler->getCount($criteria), $limit, $start, 'start', "op=$op&fct=$fct&gid=$gid&singer=$singer&value=$value&limit=$limit");
 

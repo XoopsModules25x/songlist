@@ -10,7 +10,7 @@ if (is_object($GLOBALS['songlistModule']))
 // $Id: xoops_version.php,v 4.04 2008/06/05 15:35:59 wishcraft Exp $
 
 $modversion['name'] = _MI_SONGLIST_NAME;
-$modversion['version'] = 1.09;
+$modversion['version'] = 1.10;
 $modversion['description'] = _MI_SONGLIST_DESC;
 $modversion['credits'] = "Orginally Based on Newbb by phppp - adaption by (wishcraft)";
 $modversion['author'] = "Simon Roberts (wishcraft)";

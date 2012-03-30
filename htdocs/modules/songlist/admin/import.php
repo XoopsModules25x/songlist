@@ -120,7 +120,10 @@
 								if (intval($_POST['limiting'])==true) {
 									$record++;
 									if ($record>intval($_POST['records'])) {
-										sleep(intval($_POST['wait']));
+										$start = time();
+										while(time()-$start<intval($_POST['wait'])) {
+											
+										}
 										$records = 0;
 									}
 								}
@@ -171,7 +174,7 @@
 													$object->setVar('singer', '_ENUM_SONGLIST_SOLO');
 													break;
 											}
-											$object->setVar('cid', $cid);
+											$object->setVar('cids', array_merge(array($cid=>$cid), $this->getVar('cids')));
 											$object->setVar('name', trim($data[$_POST['artist']]));
 											$aid = $artists_handler->insert($object);
 											$aids[$aid] = $aid;
@@ -230,7 +233,10 @@
 								if (intval($_POST['limiting'])==true) {
 									$record++;
 									if ($record>intval($_POST['records'])) {
-										sleep(intval($_POST['wait']));
+										$start = time();
+										while(time()-$start<intval($_POST['wait'])) {
+											
+										}
 										$records = 0;
 									}
 								}
@@ -342,7 +348,10 @@
 							if (intval($_POST['limiting'])==true) {
 								$record++;
 								if ($record>intval($_POST['records'])) {
-									sleep(intval($_POST['wait']));
+									$start = time();
+									while(time()-$start<intval($_POST['wait'])) {
+										
+									}
 									$records = 0;
 								}
 							}

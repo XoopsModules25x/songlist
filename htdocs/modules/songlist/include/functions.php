@@ -103,31 +103,37 @@ if (!function_exists('songlist_getFilterElement')) {
 		$ele = false;
 		include_once('songlist.object.php');
 		switch ($field) {
-		    case 'cid':
+		    case 'gid':
+				if ($op!='genre') {
+					$ele = new SonglistFormSelectGenre('', 'filter_'.$field.'', $components['value'], 1, false);
+			    	$ele->setExtra('onchange="window.open(\''.$_SERVER['PHP_SELF'].'?'.$components['extra'].'&filter='.$components['filter'].(!empty($components['filter'])?'|':'').$field.',\'+this.options[this.selectedIndex].value'.(!empty($components['operator'])?'+\','.$components['operator'].'\'':'').',\'_self\')"');
+				}
+				break;
+			case 'cid':
 				if ($op!='category') {
-					$ele = new SonglistFormSelectCategory('', 'filter_'.$field.'', $components['value'], 1, false, true, false);
+					$ele = new SonglistFormSelectCategory('', 'filter_'.$field.'', $components['value'], 1, false);
 			    	$ele->setExtra('onchange="window.open(\''.$_SERVER['PHP_SELF'].'?'.$components['extra'].'&filter='.$components['filter'].(!empty($components['filter'])?'|':'').$field.',\'+this.options[this.selectedIndex].value'.(!empty($components['operator'])?'+\','.$components['operator'].'\'':'').',\'_self\')"');
 				}
 				break;
 		    case 'pid':
-				$ele = new SonglistFormSelectCategory('', 'filter_'.$field.'', $components['value'], 1, false, true, false);
+				$ele = new SonglistFormSelectCategory('', 'filter_'.$field.'', $components['value'], 1, false);
 			    $ele->setExtra('onchange="window.open(\''.$_SERVER['PHP_SELF'].'?'.$components['extra'].'&filter='.$components['filter'].(!empty($components['filter'])?'|':'').$field.',\'+this.options[this.selectedIndex].value'.(!empty($components['operator'])?'+\','.$components['operator'].'\'':'').',\'_self\')"');
 				break;
 			case 'abid':
 				if ($op!='albums') {
-					$ele = new SonglistFormSelectAlbum('', 'filter_'.$field.'', $components['value'], 1, false, true);
+					$ele = new SonglistFormSelectAlbum('', 'filter_'.$field.'', $components['value'], 1, false);
 			    	$ele->setExtra('onchange="window.open(\''.$_SERVER['PHP_SELF'].'?'.$components['extra'].'&filter='.$components['filter'].(!empty($components['filter'])?'|':'').$field.',\'+this.options[this.selectedIndex].value'.(!empty($components['operator'])?'+\','.$components['operator'].'\'':'').',\'_self\')"');
 				}
 				break;
 			case 'aid':
 				if ($op!='artists') {
-					$ele = new SonglistFormSelectArtist('', 'filter_'.$field.'', $components['value'], 1, false, true);
+					$ele = new SonglistFormSelectArtist('', 'filter_'.$field.'', $components['value'], 1, false);
 			    	$ele->setExtra('onchange="window.open(\''.$_SERVER['PHP_SELF'].'?'.$components['extra'].'&filter='.$components['filter'].(!empty($components['filter'])?'|':'').$field.',\'+this.options[this.selectedIndex].value'.(!empty($components['operator'])?'+\','.$components['operator'].'\'':'').',\'_self\')"');
 				}
 				break;				
 			case 'sid':
 				if ($op!='songs') {
-					$ele = new SonglistFormSelectSong('', 'filter_'.$field.'', $components['value'], 1, false, true);
+					$ele = new SonglistFormSelectSong('', 'filter_'.$field.'', $components['value'], 1, false);
 			    	$ele->setExtra('onchange="window.open(\''.$_SERVER['PHP_SELF'].'?'.$components['extra'].'&filter='.$components['filter'].(!empty($components['filter'])?'|':'').$field.',\'+this.options[this.selectedIndex].value'.(!empty($components['operator'])?'+\','.$components['operator'].'\'':'').',\'_self\')"');
 				}
 				break;				
@@ -141,6 +147,7 @@ if (!function_exists('songlist_getFilterElement')) {
 		    case 'votes':
 		    case 'description':
 		    case 'lyrics':
+		    case 'songid':
 		    case 'tags':
 		    	$ele = new XoopsFormElementTray('');
 				$ele->addElement(new XoopsFormText('', 'filter_'.$field.'', 11, 40, $components['value']));

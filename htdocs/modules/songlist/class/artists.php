@@ -155,9 +155,10 @@ class SonglistArtistsHandler extends XoopsPersistableObjectHandler
 		$category_handler = xoops_getmodulehandler('category', 'songlist');
    	
 		if (is_a($object, 'SonglistSongs')) {
-			if ($obj->vars['cids']['changed']==true) {
+			if ($object->vars['cid']['changed']==true) {
 				foreach($obj->vars['cids']['value'] as $cid) {
-					if (!in_array($cid, $old->getVar('cids'))&&$cid!=0) {
+					if (!in_array($cid, $object->getVar('cid'))&&$cid!=0) {
+						$obj->setVar('cids', array_merge($obj->getVar('cids'), array($object->getVar('cid')=>$object->getVar('cid'))));
 						$category = $category_handler->get($cid);
 		    			$category->setVar('artists', $category->getVar('artists')+1);
 		    			$category_handler->insert($category, true, $obj);	

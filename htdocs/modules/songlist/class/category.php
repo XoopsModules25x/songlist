@@ -45,7 +45,12 @@ class SonglistCategory extends XoopsObject
 		$ret['picture'] = $this->getImage('image', false);
 		$ret['rank'] = number_format(($this->getVar('rank')>0&&$this->getVar('votes')>0?$this->getVar('rank')/$this->getVar('votes'):0),2)._MI_SONGLIST_OFTEN;
     	$ret['url'] = $this->getURL();
-    	
+		$category_handler = xoops_getmodulehandler('category', 'songlist');
+		if ($category_handler->getCount(new Criteria('pid', $this->getVar('cid')))) {
+			foreach($category_handler->getObjects(new Criteria('pid', $this->getVar('cid')), true) as $cid => $cat) {
+				$ret['subcategories'][$cid] = $cat->toArray();
+			}
+		}
 		return $ret;
 	}
     
@@ -151,7 +156,7 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
     	if (!isset($this->_objects['object'][$id])) {
 	    	$this->_objects['object'][$id] = parent::get($id, $fields);
 	    	if (!isset($GLOBALS['songlistAdmin'])) {
-		    	$sql = 'UPDATE `'.$this->table.'` set hits=hits+1 where `'.$this->keyName.'` = '.$this->_objects['object'][$id]->getVar($this->keyName);
+		    	$sql = 'UPDATE `'.$this->table.'` set hits=hits+1 where `'.$this->keyName.'` = '.$id;
 		    	$GLOBALS['xoopsDB']->queryF($sql);
 	    	}
     	}

@@ -1,3 +1,8 @@
+<{if $category.picture}>
+<div class="sl_maincatpic">
+	<a href="<{$category.url}>"><img src="<{$category.picture}>" width='90%' /></a>
+</div>
+<{/if}>
 <div class="sl_maincat">
 	<a href="<{$category.url}>"><{$category.name}></a><{if $category.parenturl}> <a href="<{$category.parenturl}>"><em><{$smarty.const._MN_SONGLIST_GOTOPARENT}></em></a><{/if}>
 </div>

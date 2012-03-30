@@ -116,15 +116,16 @@ class SonglistFormSelectSong extends XoopsFormElement
 				}
 			}
 		} else {
-			if (!isset($_form_object_options['songs'][$id])) {
+			if (!isset($_form_object_options['songs'][$field][$id])) {
 				$songs_handler =& xoops_getmodulehandler('songs', 'songlist');
 				foreach($songs_handler->getObjects(new Criteria('`'.$field.'`', $id)) as $id => $obj) { 
 					$_form_object_options['songs'][$field][$id][$id] = $obj->getVar('title');
 				}
 			}
 		}
-		foreach($_form_object_options['songs'][$field][$id] as $id => $value)
-			$this->addOption($id, $value);
+		if (isset($_form_object_options['songs'][$field][$id]))
+			foreach($_form_object_options['songs'][$field][$id] as $id => $value)
+				$this->addOption($id, $value);
     }
 
     /**

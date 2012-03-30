@@ -2,7 +2,7 @@
 
 	include (dirname(__FILE__).'/header.php');
 	
-	global $file, $op, $fct, $id, $value, $gid, $cid, $singer, $start, $limit;
+	global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit, $singer;
 	
 	$category_element = new SonglistFormSelectCategory('', 'cid', (isset($_GET['cid'])?($_GET['cid']):$cid));
 	$genre_element = new SonglistFormSelectGenre('', 'gid', $gid);
@@ -50,11 +50,11 @@
 				$criteria->add(new Criteria('`gid`', $gid));
 			}
 			
-			if ($singer != 0 && $GLOBALS['songlistModuleConfig']['singer']) {
+			if (!empty($singer) && $GLOBALS['songlistModuleConfig']['singer']) {
 				$criteria->add(new Criteria('`sid`', '('.implode(',', $artists_handler->getSIDs(new Criteria('`singer`', $singer))).')', 'IN'));
 			}
 
-			if ($cid != 0) {
+			if ((isset($_GET['cid'])?($_GET['cid']):$cid) != 0) {
 				$criteria->add(new Criteria('`cid`',  (isset($_GET['cid'])?($_GET['cid']):$cid)));
 			}
 			
