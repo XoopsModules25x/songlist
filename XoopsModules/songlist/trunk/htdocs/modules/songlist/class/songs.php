@@ -19,7 +19,7 @@ class SonglistSongs extends XoopsObject
         $this->initVar('abid', XOBJ_DTYPE_INT, 0, false);
 		$this->initVar('songid', XOBJ_DTYPE_TXTBOX, null, false, 32);
 		$this->initVar('title', XOBJ_DTYPE_TXTBOX, null, false, 128);
-		$this->initVar('lyrics', XOBJ_DTYPE_TXTBOX, null, false, 650);		
+		$this->initVar('lyrics', XOBJ_DTYPE_OTHER, null, false, 650);		
 		$this->initVar('hits', XOBJ_DTYPE_INT, 0, false);
 		$this->initVar('rank', XOBJ_DTYPE_DECIMAL, 0, false);
 		$this->initVar('votes', XOBJ_DTYPE_INT, 0, false);
@@ -34,6 +34,9 @@ class SonglistSongs extends XoopsObject
 
 	function toArray($extra = true) {
 		$ret = parent::toArray();
+		
+		$ret['lyrics'] = $GLOBALS['myts']->displayTarea($this->getVar('lyrics'), true, true, true, true, true);
+		
 		$form = $this->getForm(true);
 		foreach($form as $key => $element) {
 			$ret['form'][$key] = $form[$key]->render();	
@@ -271,12 +274,14 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
     		$album->setVar('sids', $arry);
     		$albums_handler->insert($album);
     	}
-		if ($obj->vars['aid']['value']>0) {
-    		$artist = $artists_handler->get($obj->vars['aid']['value']);
-    		$arry = $artist->getVar('sids');
-    		$arry[$sid] = $sid;
-    		$artist->setVar('sids', $arry);
-    		$artists_handler->insert($artist);
+		if (count($obj->getVar('aids'))>0) {
+    		foreach($obj->getVar('aids') as $aid) {
+				$artist = $artists_handler->get($aid);
+	    		$arry = $artist->getVar('sids');
+	    		$arry[$sid] = $sid;
+	    		$artist->setVar('sids', $arry);
+	    		$artists_handler->insert($artist);
+    		}
     	}
     	return $sid;
     }
