@@ -113,7 +113,7 @@ class SonglistSongs extends XoopsObject
 	function getURL() {
     	global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit;
     	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
-    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseurl'].'/index/'.urlencode(str_replace(array(' ', chr(9)), '-', $this->getVar('title'))).'/item-item-'.$this->getVar('sid').'-'.urlencode($value).'-'.$gid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
+    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseofurl'].'/index/'.urlencode(str_replace(array(' ', chr(9)), '-', $this->getVar('title'))).'/item-item-'.$this->getVar('sid').'-'.urlencode($value).'-'.$gid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
     	} else {
     		return XOOPS_URL.'/modules/songlist/index.php?op=item&fct=item&id='.$this->getVar('sid').'&value='.urlencode($value).'&gid='.$gid.'&cid='.$cid;
     	}
@@ -322,7 +322,7 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
     function getURL() {
     	global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit;
     	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
-    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseurl'].'/'.$file.'/'.$start.'-'.$op.'-'.$fct.'-'.$id.'-'.urlencode($value).'-'.$gid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
+    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseofurl'].'/'.$file.'/'.$start.'-'.$op.'-'.$fct.'-'.$id.'-'.urlencode($value).'-'.$gid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
     	} else {
     		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op='.$op.'&fct='.$fct.'&id='.$id.'&value='.urlencode($value).'&gid='.$gid.'&cid='.$cid.'&start='.$start;
     	}
@@ -331,7 +331,7 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
     function getSearchURL() {
     	global $file, $op, $fct, $id, $value, $gid, $cid, $singer, $start, $limit;
     	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
-    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseurl'].'/'.$file.'/'.$start.'-'.$op.'-'.$fct.'-'.urlencode($value).'-'.(isset($_GET['cid'])?($_GET['cid']):$cid).'-'.$gid.'-'.$singer.$GLOBALS['songlistModuleConfig']['endofurl'];
+    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseofurl'].'/'.$file.'/'.$start.'-'.$op.'-'.$fct.'-'.urlencode($value).'-'.(isset($_GET['cid'])?($_GET['cid']):$cid).'-'.$gid.'-'.$singer.$GLOBALS['songlistModuleConfig']['endofurl'];
     	} else {
     		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op='.$op.'&fct='.$fct.'&value='.urlencode($value).'&cid='.(isset($_GET['cid'])?($_GET['cid']):$cid).'&gid='.$gid.'&singer='.$singer.'&start='.$start;
     	}

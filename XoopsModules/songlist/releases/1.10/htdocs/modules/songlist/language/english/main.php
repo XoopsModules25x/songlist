@@ -37,6 +37,7 @@
 	define('_MN_SONGLIST_RESULTS_TITLE', 'Title');
 	define('_MN_SONGLIST_RESULTS_SONGID', 'Song ID');
 	define('_MN_SONGLIST_RESULTS_ACTIONS', 'Actions');
+	define('_MN_SONGLIST_RESULTS_TAGS', 'Tags');
 	
 	// Voting
 	define('_MN_SONGLIST_10STARS', '10 Stars');
