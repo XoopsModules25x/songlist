@@ -152,6 +152,7 @@
 	clear:both;
 	margin-left: 35px;
 	margin-top: 3px;
+	margin-bottom: 10px;
 }
 
 .sl_subsong {
@@ -166,4 +167,5 @@
 	border-style: dotted;
 	border-width: 1px;
 	clear:both;
+	width:320px;
 }
