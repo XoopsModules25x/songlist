@@ -174,7 +174,6 @@
 													$object->setVar('singer', '_ENUM_SONGLIST_SOLO');
 													break;
 											}
-											$object->setVar('cids', array_merge(array($cid=>$cid), $this->getVar('cids')));
 											$object->setVar('name', trim($data[$_POST['artist']]));
 											$aid = $artists_handler->insert($object);
 											$aids[$aid] = $aid;
