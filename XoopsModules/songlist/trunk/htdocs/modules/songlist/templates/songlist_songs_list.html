@@ -52,7 +52,7 @@
 			<{/if}>
 			<{/if}>
 			<{if $xoConfig.tags}>
-			<td><{include file="db:tag_bar.html" tagbar=$result.tagbar}></a></td>
+			<td><{includeq file="db:tag_bar.html" tagbar=$result.tagbar}></a></td>
 			<{/if}>
 			<td><form action="<{$xoops_url}>/modules/songlist/index.php" method='post'>
 				<input type="hidden" name='id' value='<{$result.sid}>'/>

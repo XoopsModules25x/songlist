@@ -996,7 +996,7 @@
 		if (!class_exists('XoopsFormTag')) {
 			$ele['tags'] = new XoopsFormHidden('tags', $object->getVar('tags'));
 		} else {
-			$ele['tags'] = new XoopsFormTag('tags', 60, 255, $object->getVar('sid'));
+			$ele['tags'] = new XoopsFormTag('tags', 60, 255, $object->getVar('sid'), $object->getVar('cid'));
 		}
 		
 		$ele['hits'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_SONGS_HITS:''), $object->getVar('hits'));

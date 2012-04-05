@@ -6,18 +6,18 @@
 		<{$block.name}>
 		<{/if}>
 	</div>
-	<{if count($block.categories)>0}>
+	<{if count($block.categories_array)>0}>
 	<div style='font-size:0.85em; clear:both;'>
-		<{$smary.const._BL_SONGLIST_CATEGORIES}>
+		<{$smarty.const._BL_SONGLIST_CATEGORIES}>
 	</div>
 	<div style='font-size:0.65em; clear:both;'>
-		<{foreach from=$block.categories key=number item=category}>
-			<{$category.name}><{if $number<sizeof($block.categories)-1}>,&nbsp;<{/if}>
+		<{foreach from=$block.categories_array key=number item=category}>
+			<{$category.name}><{if $number<sizeof($block.categories_array)-1}>,&nbsp;<{/if}>
 		<{/foreach}>
 	</div>
 	<{elseif $block.category}>
 	<div style='font-size:0.85em; clear:both;'>
-		<{$smary.const._BL_SONGLIST_CATEGORY}>
+		<{$smarty.const._BL_SONGLIST_CATEGORY}>
 	</div>
 	<div style='font-size:0.65em; clear:both;'>
 		<{$block.category.title}>
@@ -25,7 +25,7 @@
 	<{/if}>
 	<{if count($block.genres)>0}>
 	<div style='font-size:0.85em; clear:both;'>
-		<{$smary.const._BL_SONGLIST_GENRES}>
+		<{$smarty.const._BL_SONGLIST_GENRES}>
 	</div>
 	<div style='font-size:0.65em; clear:both;'>
 		<{foreach from=$block.genres key=number item=genre}>
@@ -34,58 +34,58 @@
 	</div>
 	<{elseif $block.genre}>
 	<div style='font-size:0.85em; clear:both;'>
-		<{$smary.const._BL_SONGLIST_GENRE}>
+		<{$smarty.const._BL_SONGLIST_GENRE}>
 	</div>
 	<div style='font-size:0.65em; clear:both;'>
 		<{$block.genre.name}></a>
 	</div>
 	<{/if}>
-	<{if count($block.artists)>0}>
+	<{if count($block.artists_array)>0}>
 	<div style='font-size:0.85em; clear:both;'>
-		<{$smary.const._BL_SONGLIST_ARTISTS}>
+		<{$smarty.const._BL_SONGLIST_ARTISTS}>
 	</div>
 	<div style='font-size:0.65em; clear:both;'>
-		<{foreach from=$block.artists key=number item=artist}>
-			<a href="<{$artist.url}>"><{$artist.name}></a><{if $number<sizeof($block.artists)-1}>,&nbsp;<{/if}>
+		<{foreach from=$block.artists_array key=number item=artist}>
+			<a href="<{$artist.url}>"><{$artist.name}></a><{if $number<sizeof($block.artists_array)-1}>,&nbsp;<{/if}>
 		<{/foreach}>
 	</div>
 	<{elseif isset($block.artist)}>
 	<div style='font-size:0.85em; clear:both;'>
-		<{$smary.const._BL_SONGLIST_ARTIST}>
+		<{$smarty.const._BL_SONGLIST_ARTIST}>
 	</div>
 	<div style='font-size:0.65em; clear:both;'>
 		<a href="<{$block.artist.url}>"><{$block.artist.title}></a>
 	</div>
 	<{/if}>
-	<{if count($block.albums)>0}>
+	<{if count($block.albums_array)>0}>
 	<div style='font-size:0.85em; clear:both;'>
-		<{$smary.const._BL_SONGLIST_ALBUMS}>
+		<{$smarty.const._BL_SONGLIST_ALBUMS}>
 	</div>
 	<div style='font-size:0.65em; clear:both;'>
-		<{foreach from=$block.albums key=number item=album}>
-			<a href="<{$album.url}>"><{$album.title}></a><{if $number<sizeof($block.albums)-1}>,&nbsp;<{/if}>
+		<{foreach from=$block.albums_array key=number item=album}>
+			<a href="<{$album.url}>"><{$album.title}></a><{if $number<sizeof($block.albums_array)-1}>,&nbsp;<{/if}>
 		<{/foreach}>
 	</div>
 	<{elseif isset($block.album)}>
 	<div style='font-size:0.85em; clear:both;'>
-		<{$smary.const._BL_SONGLIST_ALBUM}>
+		<{$smarty.const._BL_SONGLIST_ALBUM}>
 	</div>
 	<div style='font-size:0.65em; clear:both;'>
 		<a href="<{$block.album.url}>"><{$block.album.title}></a>
 	</div>
 	<{/if}>
-	<{if count($block.songs)>0}>
+	<{if count($block.songs_array)>0}>
 	<div style='font-size:0.85em; clear:both;'>
-		<{$smary.const._BL_SONGLIST_SONGS}>
+		<{$smarty.const._BL_SONGLIST_SONGS}>
 	</div>
 	<div style='font-size:0.65em; clear:both;'>
-		<{foreach from=$block.songs key=number item=song}>
-			<a href="<{$song.url}>"><{$song.title}></a><{if $number<sizeof($block.songs)-1}>,&nbsp;<{/if}>
+		<{foreach from=$block.songs_array key=number item=song}>
+			<a href="<{$song.url}>"><{$song.title}></a><{if $number<sizeof($block.songs_array)-1}>,&nbsp;<{/if}>
 		<{/foreach}>
 	</div>
 	<{elseif isset($block.song)}>
 	<div style='font-size:0.85em; clear:both;'>
-		<{$smary.const._BL_SONGLIST_SONG}>
+		<{$smarty.const._BL_SONGLIST_SONG}>
 	</div>
 	<div style='font-size:0.65em; clear:both;'>
 		<a href="<{$block.song.url}>"><{$block.song.title}></a>

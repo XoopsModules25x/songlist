@@ -100,7 +100,7 @@
 					
 					if ($GLOBALS['songlistModuleConfig']['tag']&&file_exists(XOOPS_ROOT_PATH . '/modules/tag/class/tag.php')) {
 						$tag_handler = xoops_getmodulehandler('tag', 'tag');
-						$tag_handler->updateByItem($_POST['tags'], $id, $GLOBALS['songlistModule']->getVar("dirname"));
+						$tag_handler->updateByItem($_POST['tags'], $id, $GLOBALS['songlistModule']->getVar("mid"), $songs->getVar('cid'));
 					}
 					
 					redirect_header($_SERVER['PHP_SELF'].'?op='.$GLOBALS['op'].'&fct=list&limit='.$GLOBALS['limit'].'&start='.$GLOBALS['start'].'&order='.$GLOBALS['order'].'&sort='.$GLOBALS['sort'].'&filter='.$GLOBALS['filter'], 10, _AM_SONGLIST_MSG_SONGS_FAILEDTOSAVE);

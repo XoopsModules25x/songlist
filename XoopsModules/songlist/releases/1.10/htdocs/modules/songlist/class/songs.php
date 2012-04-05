@@ -35,6 +35,8 @@ class SonglistSongs extends XoopsObject
 	function toArray($extra = true) {
 		$ret = parent::toArray();
 		
+		$GLOBALS['myts'] = MyTextSanitizer::getInstance();
+		
 		$ret['lyrics'] = $GLOBALS['myts']->displayTarea($this->getVar('lyrics'), true, true, true, true, true);
 		
 		$form = $this->getForm(true);
@@ -54,7 +56,7 @@ class SonglistSongs extends XoopsObject
 		
 		if (file_exists($GLOBALS['xoops']->path("/modules/tag/include/tagbar.php"))&&$GLOBALS['songlistModuleConfig']['tags']) {
 			include_once XOOPS_ROOT_PATH."/modules/tag/include/tagbar.php";
-			$ret['tagbar'] = tagBar($this->getVar('sid'), $catid = 0);
+			$ret['tagbar'] = tagBar($this->getVar('sid'), $this->getVar('cid'), $GLOBALS['songlistModule']->getVar('mid'));
 		}
 		
 		$extras_handler = xoops_getmodulehandler('extras', 'songlist');
@@ -129,6 +131,11 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
 {
     function __construct(&$db) 
     {
+    	$module_handler = xoops_gethandler('module');
+		$config_handler = xoops_gethandler('config');
+		$GLOBALS['songlistModule'] = $module_handler->getByDirname('songlist');
+		$GLOBALS['songlistModuleConfig'] = $config_handler->getConfigList($GLOBALS['songlistModule']->getVar('mid')); 
+			
         parent::__construct($db, "songlist_songs", 'SonglistSongs', "sid", "title");
     }
 

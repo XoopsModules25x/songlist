@@ -70,15 +70,15 @@ case "list":
 		$fields[$i]['canDelete'] = $fields[$i]['field_config'];
 		$fields[$i]['fieldtype'] = $fieldtypes[$fields[$i]['field_type']];
 		$fields[$i]['valuetype'] = $valuetypes[$fields[$i]['field_valuetype']];
-		$categories[$i][] = $fields[$i];
+		$fieldcategories[$i][] = $fields[$i];
 		$weights[$i] = $fields[$i]['field_weight'];
 	}
 	//sort fields order in categories
 	foreach (array_keys($fields) as $i ) {
-		array_multisort($weights[$i], SORT_ASC, array_keys($categories[$i]), SORT_ASC, $categories[$i]);
+		array_multisort($weights[$i], SORT_ASC, array_keys($fieldcategories[$i]), SORT_ASC, $categories[$i]);
 	}
 	ksort($categories);
-	$GLOBALS['xoopsTpl']->assign('fieldcategories', $categories);
+	$GLOBALS['xoopsTpl']->assign('fieldcategories', $fieldcategories);
 	$GLOBALS['xoopsTpl']->assign('token', $GLOBALS['xoopsSecurity']->getTokenHTML() );
 	$template_main = "songlist_cpanel_fieldlist.html";
 	break;
