@@ -12,12 +12,12 @@ if (is_object($GLOBALS['songlistModule']))
 $modversion['name'] = _MI_SONGLIST_NAME;
 $modversion['version'] = 1.10;
 $modversion['description'] = _MI_SONGLIST_DESC;
-$modversion['credits'] = "Orginally Based on Newbb by phppp - adaption by (wishcraft)";
+$modversion['credits'] = "Orginally Written by wishcraft, Testing Phil and Michael Beck";
 $modversion['author'] = "Simon Roberts (wishcraft)";
 $modversion['license'] = "GNU General Public License (GPL) see LICENSE";
 $modversion['image'] = "images/songlist_slogo.png";
 $modversion['dirname'] = "songlist";
-$modversion['releasedate'] = "Sunday, 27th March 03, 2012";
+$modversion['releasedate'] = "Thursday, 05th April, 2012";
 $modversion['module_status'] = "Stable";
 $modversion['website'] = "www.chronolabs.coop";
 
@@ -25,9 +25,9 @@ $modversion['dirmoduleadmin'] = 'Frameworks/moduleclasses';
 $modversion['icons16'] = 'Frameworks/moduleclasses/icons/16';
 $modversion['icons32'] = 'Frameworks/moduleclasses/icons/32';
 
-$modversion['release_info'] = "Stable 2012/03/27";
+$modversion['release_info'] = "Stable 2012/04/05";
 $modversion['release_file'] = XOOPS_URL."/modules/xforum/docs/changelog.txt";
-$modversion['release_date'] = "2012/03/27";
+$modversion['release_date'] = "2012/04/05";
 
 $modversion['author_realname'] = "Wishcraft";
 $modversion['author_website_url'] = "http://www.chronolabs.coop";
