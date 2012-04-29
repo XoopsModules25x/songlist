@@ -33,7 +33,7 @@
 			$fieldcid = array(1=>0);
 		}
 		$category_handler = xoops_getmodulehandler('category', 'songlist');
-		$cat_select = new XoopsFormSelect(_FRM_SONGLIST_FIELDS_CATEGORY, 'cids[]', $fieldcid, 7, true);
+		$cat_select = new XoopsFormSelect(_FRM_SONGLIST_FIELDS_CATEGORY, 'cids', $fieldcid, 7, true);
 		$cat_select->addOption(0, _FRM_SONGLIST_FIELDS_DEFAULT);
 		foreach($category_handler->getObjects(NULL, true) as $cid => $category)
 			$cat_select->addOption($cid, $category->getVar('name'));

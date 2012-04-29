@@ -68,7 +68,7 @@ class SonglistCategory extends XoopsObject
     function getURL() {
     	global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit;
     	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
-    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseurl'].'/'.$file.'/'.urlencode(str_replace(array(' ', chr(9)), '-', $this->getVar('name'))).'/category-set-'.$this->getVar('cid').'-'.urlencode($file).'-'.$gid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
+    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseofurl'].'/'.$file.'/'.urlencode(str_replace(array(' ', chr(9)), '-', $this->getVar('name'))).'/category-set-'.$this->getVar('cid').'-'.urlencode($file).'-'.$gid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
     	} else {
     		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op=category&fct=set&id='.$this->getVar('cid').'&value='.urlencode($file).'&gid='.$gid.'&cid='.$cid;
     	}

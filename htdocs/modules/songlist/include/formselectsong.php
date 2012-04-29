@@ -107,7 +107,7 @@ class SonglistFormSelectSong extends XoopsFormElement
         if (isset($value)) {
             $this->setValue($value);
         }
-		$this->addOption(0, _MI_SONGLIST_NONE);
+		$this->addOption('0', _MI_SONGLIST_NONE);
 		if ($id==-1) {
 			if (!isset($_form_object_options['songs'][$field][$id])) {
 				$songs_handler =& xoops_getmodulehandler('songs', 'songlist');

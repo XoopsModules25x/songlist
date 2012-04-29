@@ -106,7 +106,7 @@ class SonglistFormSelectSinger extends XoopsFormElement
         if (isset($value)) {
             $this->setValue($value);
         }
-		$this->addOption('', _MI_SONGLIST_NONE);
+		$this->addOption('_', _MI_SONGLIST_NONE);
 		foreach(array('_ENUM_SONGLIST_SOLO','_ENUM_SONGLIST_DUET') as $enum) 
 			$this->addOption($enum, constant($enum));
 

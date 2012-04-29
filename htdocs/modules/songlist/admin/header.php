@@ -46,6 +46,9 @@
 	$GLOBALS['songlistModule'] = $module_handler->getByDirname('songlist');
 	$GLOBALS['songlistModuleConfig'] = $config_handler->getConfigList($GLOBALS['songlistModule']->getVar('mid')); 
 		
+	ini_set('memory_limit', $GLOBALS['songlistModuleConfig']['memory_admin'].'M');
+	set_time_limit($GLOBALS['songlistModuleConfig']['time_admin']);
+	
 	xoops_load('pagenav');	
 	xoops_load('xoopslists');
 	xoops_load('xoopsformloader');

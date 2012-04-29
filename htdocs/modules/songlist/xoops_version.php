@@ -10,7 +10,7 @@ if (is_object($GLOBALS['songlistModule']))
 // $Id: xoops_version.php,v 4.04 2008/06/05 15:35:59 wishcraft Exp $
 
 $modversion['name'] = _MI_SONGLIST_NAME;
-$modversion['version'] = 1.10;
+$modversion['version'] = 1.11;
 $modversion['description'] = _MI_SONGLIST_DESC;
 $modversion['credits'] = "Orginally Written by wishcraft, Testing Phil and Michael Beck";
 $modversion['author'] = "Simon Roberts (wishcraft)";
@@ -25,9 +25,9 @@ $modversion['dirmoduleadmin'] = 'Frameworks/moduleclasses';
 $modversion['icons16'] = 'Frameworks/moduleclasses/icons/16';
 $modversion['icons32'] = 'Frameworks/moduleclasses/icons/32';
 
-$modversion['release_info'] = "Stable 2012/04/05";
+$modversion['release_info'] = "Stable 2012/04/29";
 $modversion['release_file'] = XOOPS_URL."/modules/xforum/docs/changelog.txt";
-$modversion['release_date'] = "2012/04/05";
+$modversion['release_date'] = "2012/04/29";
 
 $modversion['author_realname'] = "Wishcraft";
 $modversion['author_website_url'] = "http://www.chronolabs.coop";
@@ -449,4 +449,39 @@ $modversion['config'][$i]['formtype'] = 'yesno';
 $modversion['config'][$i]['valuetype'] = 'int';
 $modversion['config'][$i]['default'] = true;
 
+$i++;
+$modversion['config'][$i]['name'] = 'memory_admin';
+$modversion['config'][$i]['title'] = "_MI_SONGLIST_MEMORY_ADMIN";
+$modversion['config'][$i]['description'] = "_MI_SONGLIST_MEMORY_ADMIN_DESC";
+$modversion['config'][$i]['formtype'] = 'text';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = 128;
+$modversion['config'][$i]['options'] = array();
+
+$i++;
+$modversion['config'][$i]['name'] = 'memory_user';
+$modversion['config'][$i]['title'] = "_MI_SONGLIST_MEMORY_USER";
+$modversion['config'][$i]['description'] = "_MI_SONGLIST_MEMORY_USER_DESC";
+$modversion['config'][$i]['formtype'] = 'text';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = 128;
+$modversion['config'][$i]['options'] = array();
+
+$i++;
+$modversion['config'][$i]['name'] = 'time_admin';
+$modversion['config'][$i]['title'] = "_MI_SONGLIST_TIME_ADMIN";
+$modversion['config'][$i]['description'] = "_MI_SONGLIST_TIME_ADMIN_DESC";
+$modversion['config'][$i]['formtype'] = 'text';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = 360;
+$modversion['config'][$i]['options'] = array();
+
+$i++;
+$modversion['config'][$i]['name'] = 'time_user';
+$modversion['config'][$i]['title'] = "_MI_SONGLIST_TIME_USER";
+$modversion['config'][$i]['description'] = "_MI_SONGLIST_TIME_USER_DESC";
+$modversion['config'][$i]['formtype'] = 'text';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = 360;
+$modversion['config'][$i]['options'] = array();
 ?>

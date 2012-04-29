@@ -118,7 +118,7 @@ class SonglistSongs extends XoopsObject
 	function getURL() {
     	global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit;
     	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
-    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseofurl'].'/index/'.urlencode(str_replace(array(' ', chr(9)), '-', $this->getVar('title'))).'/item-item-'.$this->getVar('sid').'-'.urlencode($value).'-'.$gid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
+    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseofurl'].'/index/'.urlencode(str_replace(array(' ', chr(9)), '-', $this->getVar('title'))).'/item-item-'.$this->getVar('sid').$GLOBALS['songlistModuleConfig']['endofurl'];
     	} else {
     		return XOOPS_URL.'/modules/songlist/index.php?op=item&fct=item&id='.$this->getVar('sid').'&value='.urlencode($value).'&gid='.$gid.'&cid='.$cid;
     	}

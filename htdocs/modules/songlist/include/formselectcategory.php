@@ -107,7 +107,7 @@ class SonglistFormSelectCategory extends XoopsFormElement
         if (isset($value)) {
             $this->setValue($value);
         }
-		$this->addOption(0, _MI_SONGLIST_NONE);
+		$this->addOption('0', _MI_SONGLIST_NONE);
 		if (!isset($_form_object_options['category'])) {
 			$_form_object_options['category'] = $this->GetCategory(0);
 		}

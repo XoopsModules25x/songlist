@@ -46,7 +46,7 @@ class SonglistAlbums extends XoopsObject
 		}
 		$ret['picture'] = $this->getImage('image', false);
 		$ret['rank'] = number_format(($this->getVar('rank')>0&&$this->getVar('votes')>0?$this->getVar('rank')/$this->getVar('votes'):0),2)._MI_SONGLIST_OFTEN;
-    	$ret['url'] = $this->getURL();
+    	$ret['url'] = $this->getURL(true);
     	
 		if ($extra==false)
     		return $ret;
@@ -90,12 +90,23 @@ class SonglistAlbums extends XoopsObject
     		return XOOPS_ROOT_PATH.DS.$this->getVar('path').$this->getVar($field);
     }
 	
-	function getURL() {
+	function getURL($click=false) {
     	global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit;
-    	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
-    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseofurl'].'/'.$file.'/'.urlencode(str_replace(array(' ', chr(9)), '-', $this->getVar('title'))).'/'.$op.'-'.$fct.'-'.$this->getVar('abid').'-'.urlencode($value).'-'.$gid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
+		    if ($click==true) {
+    		$op_tmp = 'item';
+    		$fct_tmp = 'item';
     	} else {
-    		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op='.$op.'&fct='.$fct.'&id='.$this->getVar('abid').'&value='.urlencode($value).'&gid='.$gid.'&cid='.$cid;
+    		$op_tmp = $op;
+    		$fct_tmp = $fct;
+    	}
+    	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
+    		if ($op_tmp == 'item' && $fct_tmp == 'item') {
+    			return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseofurl'].'/'.$file.'/'.urlencode(str_replace(array(' ', chr(9)), '-', $this->getVar('title'))).'/'.$op_tmp.'-'.$fct_tmp.'-'.$this->getVar('abid').$GLOBALS['songlistModuleConfig']['endofurl'];
+    		} else {
+    			return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseofurl'].'/'.$file.'/'.urlencode(str_replace(array(' ', chr(9)), '-', $this->getVar('title'))).'/'.$op_tmp.'-'.$fct_tmp.'-'.$this->getVar('abid').'-'.urlencode($value).'-'.$gid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
+    		}
+    	} else {
+    		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op='.$op_tmp.'&fct='.$fct_tmp.'&id='.$this->getVar('abid').'&value='.urlencode($value).'&gid='.$gid.'&cid='.$cid;
     	}
     }
         

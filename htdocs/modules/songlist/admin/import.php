@@ -174,7 +174,7 @@
 													$object->setVar('singer', '_ENUM_SONGLIST_SOLO');
 													break;
 											}
-											$object->setVar('name', trim($data[$_POST['artist']]));
+											$object->setVar('name', trim($artist));
 											$aid = $artists_handler->insert($object);
 											$aids[$aid] = $aid;
 										}

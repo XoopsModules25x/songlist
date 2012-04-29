@@ -102,7 +102,7 @@
 			case "item":
 				$song = $songs_handler->get($id);
 
-				$url = $song->getURL();
+				$url = $song->getURL(true);
 				if (!strpos($url, $_SERVER['REQUEST_URI'])) {
 					header( "HTTP/1.1 301 Moved Permanently" ); 
 					header('Location: '.$url);
@@ -299,15 +299,13 @@
 				$criteria->add(new Criteria('`gid`', $gid));
 			}
 			
-			if (!empty($singer) && $GLOBALS['songlistModuleConfig']['singer']) {
+			if ($singer!='_' && $GLOBALS['songlistModuleConfig']['singer']) {
 				$criteria->add(new Criteria('`sid`', '('.implode(',', $artists_handler->getSIDs(new Criteria('`singer`', $singer))).')', 'IN'));
 			}
 
 			if ((isset($_GET['cid'])?($_GET['cid']):$cid) != 0) {
 				$criteria->add(new Criteria('`cid`',  (isset($_GET['cid'])?($_GET['cid']):$cid)));
 			}
-			
-			echo $criteria->renderWhere();
 			
 			$pagenav = new XoopsPageNav($songs_handler->getCount($criteria), $limit, $start, 'start', "op=$op&fct=$fct&gid=$gid&singer=$singer&value=$value&limit=$limit");
 

@@ -78,7 +78,7 @@
 					}
 				}
 				
-				$url = $artists_handler->getURL();
+				$url = $artists_handler->getURL(false);
 				if (!strpos($url, $_SERVER['REQUEST_URI'])) {
 					header( "HTTP/1.1 301 Moved Permanently" ); 
 					header('Location: '.$url);
@@ -108,7 +108,7 @@
 			case "item":
 				$artist = $artists_handler->get($id);
 
-				$url = $artist->getURL();
+				$url = $artist->getURL(true);
 				if (!strpos($url, $_SERVER['REQUEST_URI'])) {
 					header( "HTTP/1.1 301 Moved Permanently" ); 
 					header('Location: '.$url);
@@ -120,7 +120,8 @@
 				if ($GLOBALS['songlistModuleConfig']['force_jquery']&&!isset($GLOBALS['loaded_jquery'])) {
 					$GLOBALS['xoTheme']->addScript(XOOPS_URL._MI_SONGLIST_JQUERY, array('type'=>'text/javascript'));
 					$GLOBALS['loaded_jquery']=true;
-				}			
+				}	
+				$GLOBALS['xoTheme']->addStylesheet(XOOPS_URL._MI_SONGLIST_STYLESHEET, array('type'=>'text/css'));			
 				$GLOBALS['xoopsTpl']->assign('xoConfig', $GLOBALS['songlistModuleConfig']);
 				$GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['PHP_SELF']);
 				$GLOBALS['xoopsTpl']->assign('songs', false);
@@ -183,7 +184,7 @@
 				}
 			}
 			
-			$url = $artists_handler->getURL();
+			$url = $artists_handler->getURL(false);
 			if (!strpos($url, $_SERVER['REQUEST_URI'])) {
 				header( "HTTP/1.1 301 Moved Permanently" ); 
 				header('Location: '.$url);
@@ -222,7 +223,7 @@
 				unset($_SESSION['cid']);
 				break;
 			}
-			redirect_header($_SERVER["PHP_SELF"]."?op=$value&fct=list&id=$id&value=&start=$start&limit=$limit&cid=".$_SESSION['cid'], 10, _MN_SONGLIST_MSG_CATEGORYCHANGED);
+			redirect_header($_SERVER["PHP_SELF"]."?op=item&fct=list&id=0&value=%&start=0&limit=$limit&cid=".$_SESSION['cid'], 10, _MN_SONGLIST_MSG_CATEGORYCHANGED);
 			exit;
 	}	
 ?>

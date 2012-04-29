@@ -81,5 +81,15 @@
 	define('_MI_SONGLIST_ROWS', 'Rows in table');
 	define('_MI_SONGLIST_ROWS_DESC', 'Rows in table before pagination.');
 	
+	// Version 1.11
+	// Preferences
+	define('_MI_SONGLIST_MEMORY_ADMIN','Memory Limit for Admin');
+	define('_MI_SONGLIST_MEMORY_ADMIN_DESC','This is the memory limit in megabytes for the admin of songlist, you may have to increase this over a certain amount of records.');
+	define('_MI_SONGLIST_MEMORY_USER','Memory Limit for User Interface');
+	define('_MI_SONGLIST_MEMORY_USER_DESC','This is the memory limit in megabytes for the user interface of songlist, you may have to increase this over a certain amount of records.');
+	define('_MI_SONGLIST_TIME_ADMIN','Second Limit of Execution for Admin');
+	define('_MI_SONGLIST_TIME_ADMIN_DESC','This is the time limit in megabytes for the admin of songlist, you may have to increase this over a certain amount of records.');
+	define('_MI_SONGLIST_TIME_USER','Second Limit of Execution for User Interface');
+	define('_MI_SONGLIST_TIME_USER_DESC','This is the time limit in megabytes for the user interface of songlist, you may have to increase this over a certain amount of records.');
 	
 	?>

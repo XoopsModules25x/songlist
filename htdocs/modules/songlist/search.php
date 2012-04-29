@@ -50,7 +50,7 @@
 				$criteria->add(new Criteria('`gid`', $gid));
 			}
 			
-			if (!empty($singer) && $GLOBALS['songlistModuleConfig']['singer']) {
+			if ($singer!='_' && $GLOBALS['songlistModuleConfig']['singer']) {
 				$criteria->add(new Criteria('`sid`', '('.implode(',', $artists_handler->getSIDs(new Criteria('`singer`', $singer))).')', 'IN'));
 			}
 

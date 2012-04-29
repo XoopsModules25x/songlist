@@ -105,14 +105,16 @@ case "edit":
 	break;
 
 case "reorder":
+	
 	if ( !$GLOBALS['xoopsSecurity']->check()  ) {
 		redirect_header('field.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors() ));
 	}
+
 	if ( isset($_POST['field_ids']) && count($_POST['field_ids']) > 0 ) {
 		$oldweight = $_POST['oldweight'];
 		$oldcat = $_POST['oldcat'];
 		$oldcategories = $_POST['oldcategories'];
-		$categories = $_POST['cids'];
+		$categories = $_POST['categories'];
 		$weight = $_POST['weight'];
 		$ids = array();
 		foreach ($_POST['field_ids'] as $field_id ) {
