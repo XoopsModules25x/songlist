@@ -3,19 +3,21 @@ function set_location_url($uri) {
 	window.location = $uri;
 }
 </script>
-<h2><{$smarty.const._MN_SONGLIST_BROWSEBY}></h2>
+<!--<h2><{$smarty.const._MN_SONGLIST_BROWSEBY}></h2>-->
 <div class="sl_alphadiva">
-	<div class="sl_alphasubdiva">
+	<div class="head">
+	<{$smarty.const._MN_SONGLIST_BROWSEBY1}>&nbsp;
 		<select id='browsetype' name='browsetype'>
-			<option value="title"<{if $smarty.get.fct eq 'title' or $smarty.get.fct eq ''}> selected="selected"<{/if}>><{$smarty.const._MN_SONGLIST_SELECTBY_TITLE}></option>
 			<{if $songs}>
-			<option value="lyrics"<{if $smarty.get.fct eq 'lyrics'}> selected="selected"<{/if}>><{$smarty.const._MN_SONGLIST_SELECTBY_LYRICS}></option>
-			<option value="artist"<{if $smarty.get.fct eq 'artist'}> selected="selected"<{/if}>><{$smarty.const._MN_SONGLIST_SELECTBY_ARTIST}></option>
-			<{if $xoConfig.album}>
-			<option value="album"<{if $smarty.get.fct eq 'album'}> selected="selected"<{/if}>><{$smarty.const._MN_SONGLIST_SELECTBY_ALBUM}></option>
+				<{if $xoConfig.album}>
+					<option value="album"<{if $smarty.get.fct eq 'album'}> selected="selected"<{/if}>><{$smarty.const._MN_SONGLIST_SELECTBY_ALBUM}></option>
+				<{/if}>			
+				<option value="artist"<{if $smarty.get.fct eq 'artist'}> selected="selected"<{/if}>><{$smarty.const._MN_SONGLIST_SELECTBY_ARTIST}></option>			
+				<option value="lyrics"<{if $smarty.get.fct eq 'lyrics'}> selected="selected"<{/if}>><{$smarty.const._MN_SONGLIST_SELECTBY_LYRICS}></option>
 			<{/if}>
-			<{/if}>
+			<option value="title"<{if $smarty.get.fct eq 'title' or $smarty.get.fct eq ''}> selected="selected"<{/if}>><{$smarty.const._MN_SONGLIST_SELECTBY_TITLE}></option>
 		</select>
+	&nbsp;<{$smarty.const._MN_SONGLIST_BROWSEBY2}>
 	</div>
 	<div class="sl_alphasubdivb">
 		<a class='sl_browsebya' onclick="javascript:set_location_url('<{$php_self}>?op=browseby&fct='+$('#browsetype').val()+'&value=A');">A</a>&nbsp;

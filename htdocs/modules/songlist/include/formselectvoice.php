@@ -52,7 +52,7 @@ xoops_load('XoopsFormElement');
  * @subpackage 	form
  * @access 		public
  */
-class SonglistFormSelectCategory extends XoopsFormElement
+class SonglistFormSelectVoice extends XoopsFormElement
 {
     /**
      * Options
@@ -95,7 +95,7 @@ class SonglistFormSelectCategory extends XoopsFormElement
      * @param int $size Number or rows. "1" makes a drop-down-list
      * @param bool $multiple Allow multiple selections?
      */
-    function SonglistFormSelectCategory($caption, $name, $value = null, $size = 1, $multiple = false, $ownid=0)
+    function SonglistFormSelectVoice($caption, $name, $value = null, $size = 1, $multiple = false)
     {
     	global $_form_object_options;
     	xoops_loadLanguage('modinfo', 'songlist');
@@ -108,55 +108,21 @@ class SonglistFormSelectCategory extends XoopsFormElement
             $this->setValue($value);
         }
 		$this->addOption('0', _MI_SONGLIST_ALL);
-		if (!isset($_form_object_options['category'])) {
-			$_form_object_options['category'] = $this->GetCategory(0);
-		}
-		if (isset($_form_object_options['category'])) 
-			$this->populateList($_form_object_options['category'], $ownid);
-    }
-
-    function populateList($vars, $ownid = 0) {
-    	foreach($vars as $previd => $cats) {
-			if ($previd!=$ownid||$ownid==0) {
-				foreach($cats as $catid => $title) {
-					if ($catid!=$ownid||$ownid==0) {
-						$this->addOption($catid, $title['item']);
-						if (isset($title['sub'])) {
-							$this->populateList($title['sub'], $ownid);
-						}
-					}		
-				}
-			} 
-		}
-    }
-	function GetCategory($ownid){
-	
-		$category_handler =& xoops_getmodulehandler('category', 'songlist');
-		$criteria = new Criteria('pid', '0');
-		$criteria->setSort('`name`');
-		$criteria->setOrder('ASC');
-		$categories = $category_handler->getObjects($criteria, true);
-		$langs_array = $this->TreeMenu(array(), $categories, -1, $ownid);
-		return $langs_array;
-	}
-	
-	function TreeMenu($langs_array, $categories, $level, $ownid, $previd=0) {
-		$level++;
-		$category_handler =& xoops_getmodulehandler('category', 'songlist');
-		foreach($categories as $catid => $category) {
-			if ($catid!=$ownid) {
-				$langs_array[$previd][$catid]['item'] = str_repeat('--', $level).$category->getVar('name');
-				$criteria = new Criteria('pid', $catid);
-				$criteria->setSort('`name`');
-				$criteria->setOrder('ASC');
-				if ($categoriesb = $category_handler->getObjects($criteria, true)){
-					$langs_array[$previd][$catid]['sub'] = $this->TreeMenu($langs_array, $categoriesb, $level, $ownid, $catid);
-				}
+		if (!isset($_form_object_options['voice'])) {
+			$voice_handler =& xoops_getmodulehandler('voice', 'songlist');
+			$criteria = new Criteria('1', '1');
+			$criteria->setSort('`name`');
+			$criteria->setOrder('ASC');
+			foreach($voice_handler->getObjects($criteria, true) as $id => $obj) {
+				$_form_object_options['voice'][$id] = $obj->getVar('name'); 
 			}
 		}
-		$level--;
-		return ($langs_array);
-	}
+		if (isset($_form_object_options['voice']))
+			foreach($_form_object_options['voice'] as $id => $value)
+				$this->addOption($id, $value);
+		
+
+    }
 
     /**
      * Are multiple selections allowed?

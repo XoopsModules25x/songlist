@@ -110,7 +110,10 @@ class SonglistFormSelectAlbum extends XoopsFormElement
 		$this->addOption('0', _MI_SONGLIST_NONE);
 		if (!isset($_form_object_options['albums'])) {
 			$albums_handler =& xoops_getmodulehandler('albums', 'songlist');
-			foreach($albums_handler->getObjects(NULL, true) as $id => $obj) {
+			$criteria = new Criteria('1', '1');
+			$criteria->setSort('`title`');
+			$criteria->setOrder('ASC');
+			foreach($albums_handler->getObjects($criteria, true) as $id => $obj) {
 				$_form_object_options['albums'][$id] = $obj->getVar('title');
 			}
 		} 

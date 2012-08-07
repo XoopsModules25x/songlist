@@ -397,26 +397,32 @@
 		$ele['collection']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_COLLECTION_DESC:''));
 		$ele['record'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_RECORD:''), 'record', 32, 128, 'record');
 		$ele['record']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_RECORD_DESC:''));
-		$ele['genre'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_GENRE:''), 'genre', 32, 128, '');
-		$ele['genre']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_GENRE_DESC:''));
-		$ele['category'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_CATEGORY:''), 'category', 32, 128, '');
+		$ele['genre'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_GENRES:''), 'genre', 32, 128, 'genre');
+		$ele['genre']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_GENRES_DESC:''));
+		$ele['voice'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_VOICE:''), 'voice', 32, 128, 'voice');
+		$ele['voice']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_VOICE_DESC:''));		
+		$ele['category'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_CATEGORY:''), 'category', 32, 128, 'category');
 		$ele['category']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_CATEGORY_DESC:''));
 		$ele['artist'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_ARTIST:''), 'artist', 32, 128, 'artist');
 		$ele['artist']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_ARTIST_DESC:''));
-		$ele['singer'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_SINGER:''), 'singer', 32, 128, '');
-		$ele['singer']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_SINGER_DESC:''));
-		$ele['duet'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_DATA_SINGER_DUET:''), 'duet', 32, 128, 'duet');
-		$ele['duet']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_DATA_SINGER_DUET_DESC:''));
-		$ele['solo'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_DATA_SINGER_SOLO:''), 'solo', 32, 128, 'solo');
-		$ele['solo']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_DATA_SINGER_SOLO_DESC:''));
-		$ele['album'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_ALBUM:''), 'album', 32, 128, '');
+		$ele['album'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_ALBUM:''), 'album', 32, 128, 'album');
 		$ele['album']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_ALBUM_DESC:''));
 		$ele['songid'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_SONGID:''), 'songid', 32, 128, 'songid');
 		$ele['songid']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_SONGID_DESC:''));
+		$ele['traxid'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_TRAXID:''), 'traxid', 32, 128, 'trackno');
+		$ele['traxid']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_TRAXID_DESC:''));
 		$ele['title'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_TITLE:''), 'title', 32, 128, 'title');
 		$ele['title']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_TITLE_DESC:''));
 		$ele['lyrics'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_LYRICS:''), 'lyrics', 32, 128, 'lyric');
 		$ele['lyrics']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_LYRICS_DESC:''));
+		$ele['tags'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_TAGS:''), 'tags', 32, 128, 'tags');
+		$ele['tags']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_TAGS_DESC:''));
+		$extras_handler = xoops_getmodulehandler('extras', 'songlist');
+		$fields = $extras_handler->getFields(NULL);
+		foreach($fields as $field) {
+			$ele[$field->getVar('field_name')] = new XoopsFormText(($as_array==false?$field->getVar('field_title'):''), $field->getVar('field_name'), 32, 128, $field->getVar('field_name'));
+			$ele[$field->getVar('field_name')]->setDescription(($as_array==false?$field->getVar('field_description'):''));
+		}
 		$ele['limiting'] = new XoopsFormRadioYN(($as_array==false?_FRM_SONGLIST_FORM_IMPORT_LIMITING:''), 'limiting', true);
 		$ele['limiting']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_IMPORT_LIMITING_DESC:''));
 		$ele['records'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_IMPORT_RECORDS:''), 'records', 10, 10, '250');
@@ -503,7 +509,74 @@
 		return $sform->render();
 		
 	}
-	
+
+	function songlist_voice_get_form($object, $as_array=false) {
+		
+		if (!is_object($object)) {
+			$handler = xoops_getmodulehandler('voice', 'songlist');
+			$object = $handler->create(); 
+		}
+		
+		xoops_loadLanguage('forms', 'songlist');
+		$ele = array();
+		
+		if ($object->isNew()) {
+			$sform = new XoopsThemeForm(_FRM_SONGLIST_FORM_ISNEW_VOICE, 'voice', $_SERVER['PHP_SELF'], 'post');
+			$ele['mode'] = new XoopsFormHidden('mode', 'new');
+		} else {
+			$sform = new XoopsThemeForm(_FRM_SONGLIST_FORM_EDIT_VOICE, 'voice', $_SERVER['PHP_SELF'], 'post');
+			$ele['mode'] = new XoopsFormHidden('mode', 'edit');
+		}
+		
+		$sform->setExtra( "enctype='multipart/form-data'" ) ;
+		
+		$id = $object->getVar('vcid');
+		if (empty($id)) $id = '0';
+		
+		$ele['op'] = new XoopsFormHidden('op', 'voice');
+		$ele['fct'] = new XoopsFormHidden('fct', 'save');
+		if ($as_array==false)
+			$ele['id'] = new XoopsFormHidden('id', $id);
+		else 
+			$ele['id'] = new XoopsFormHidden('id['.$id.']', $id);
+		$ele['sort'] = new XoopsFormHidden('sort', isset($_REQUEST['sort'])?$_REQUEST['sort']:'created');
+		$ele['order'] = new XoopsFormHidden('order', isset($_REQUEST['order'])?$_REQUEST['order']:'DESC');
+		$ele['start'] = new XoopsFormHidden('start', isset($_REQUEST['start'])?intval($_REQUEST['start']):0);
+		$ele['limit'] = new XoopsFormHidden('limit', isset($_REQUEST['limit'])?intval($_REQUEST['limit']):0);
+		$ele['filter'] = new XoopsFormHidden('filter', isset($_REQUEST['filter'])?$_REQUEST['filter']:'1,1');
+
+		$ele['name'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_VOICE_NAME:''), $id.'[name]', ($as_array==false?55:21),128, $object->getVar('name'));
+		$ele['name']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_VOICE_NAME_DESC:''));
+		$ele['albums'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_VOICE_ALBUMS:''), $object->getVar('albums'));
+		$ele['artists'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_VOICE_ARTISTS:''), $object->getVar('artists'));
+		$ele['songs'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_VOICE_SONGS:''), $object->getVar('songs'));
+		$ele['hits'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_VOICE_HITS:''), $object->getVar('hits'));
+		$ele['rank'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_VOICE_RANK:''), number_format(($object->getVar('rank')>0&&$object->getVar('votes')>0?$object->getVar('rank')/$object->getVar('votes'):0),2). ' of 10');
+		if ($object->getVar('created')>0) {
+			$ele['created'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_VOICE_CREATED:''), date(_DATESTRING, $object->getVar('created')));
+		}
+		if ($object->getVar('updated')>0) {
+			$ele['updated'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_VOICE_UPDATED:''), date(_DATESTRING, $object->getVar('updated')));
+		}
+
+		if ($as_array==true)
+			return $ele;
+		
+		$ele['submit'] = new XoopsFormButton('', 'submit', _SUBMIT, 'submit');
+		
+		$required = array('name');
+		
+		foreach($ele as $id => $obj)			
+			if (in_array($id, $required))
+				$sform->addElement($ele[$id], true);			
+			else
+				$sform->addElement($ele[$id], false);
+		
+		return $sform->render();
+		
+	}
+
+
 	function songlist_albums_get_form($object, $as_array=false) {
 		
 		if (!is_object($object)) {
@@ -612,8 +685,8 @@
 
 		$ele['cids'] = new SonglistFormSelectCategory(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_CATEGORY:''), $id.'[cids]', $object->getVar('cids'), 7, true, false, false);
 		$ele['cids']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_CATEGORY_DESC:''));
-		$ele['singer'] = new SonglistFormSelectSinger(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_SINGER:''), $id.'[singer]', $object->getVar('singer'), 1, false, false, false);
-		$ele['singer']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_SINGER_DESC:''));
+		//$ele['singer'] = new SonglistFormSelectSinger(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_SINGER:''), $id.'[singer]', $object->getVar('singer'), 1, false, false, false);
+		//$ele['singer']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_SINGER_DESC:''));
 		$ele['name'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_NAME:''), $id.'[name]', ($as_array==false?55:21),128, $object->getVar('name'));
 		$ele['name']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_NAME_DESC:''));
 		$ele['albums'] = new XoopsFormLabel(($as_array==false?_FRM_SONGLIST_FORM_ARTISTS_ALBUMS:''), $object->getVar('albums'));
@@ -910,9 +983,13 @@
 		$ele['cid'] = new SonglistFormSelectCategory(($as_array==false?_FRM_SONGLIST_FORM_SONGS_CATEGORY:''), $id.'[cid]', (isset($_REQUEST['cid'])?$_REQUEST['cid']:$object->getVar('cid')), 1, false);
 		$ele['cid']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_SONGS_CATEGORY_DESC:''));
 		if ($GLOBALS['songlistModuleConfig']['genre']) {
-			$ele['gid'] = new SonglistFormSelectGenre(($as_array==false?_FRM_SONGLIST_FORM_SONGS_GENRE:''), $id.'[gid]', (isset($_REQUEST['gid'])?$_REQUEST['gid']:$object->getVar('gid')), 1, false);
-			$ele['gid']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_SONGS_GENRE_DESC:''));
+			$ele['gids'] = new SonglistFormSelectGenre(($as_array==false?_FRM_SONGLIST_FORM_SONGS_GENRE:''), $id.'[gids]', (isset($_REQUEST['gids'])?$_REQUEST['gids']:$object->getVar('gids')), 8, true);
+			$ele['gids']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_SONGS_GENRE_DESC:''));
 		}
+		if ($GLOBALS['songlistModuleConfig']['voice']) {
+			$ele['vcid'] = new SonglistFormSelectVoice(($as_array==false?_FRM_SONGLIST_FORM_SONGS_VOICE:''), $id.'[vcid]', (isset($_REQUEST['vcid'])?$_REQUEST['vcid']:$object->getVar('vcid')), 1, false);
+			$ele['vcid']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_SONGS_VOICE_DESC:''));
+		}		
 		if ($GLOBALS['songlistModuleConfig']['album']) {
 			$ele['abid'] = new SonglistFormSelectAlbum(($as_array==false?_FRM_SONGLIST_FORM_SONGS_ALBUM:''), $id.'[abid]', $object->getVar('abid'), 1, false);
 			$ele['abid']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_SONGS_ALBUM_DESC:''));
@@ -921,6 +998,8 @@
 		$ele['aids']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_SONGS_ARTISTS_DESC:''));
 		$ele['songid'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_SONGS_SONGID:''), $id.'[songid]', ($as_array==false?25:15),32, $object->getVar('songid'));
 		$ele['songid']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_SONGS_SONGID_DESC:''));
+		$ele['traxid'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_SONGS_TRAXID:''), $id.'[traxid]', ($as_array==false?25:15),32, $object->getVar('traxid'));
+		$ele['traxid']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_SONGS_TRAXID_DESC:''));
 		$ele['title'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_SONGS_TITLE:''), $id.'[title]', ($as_array==false?55:21),128, $object->getVar('title'));
 		$ele['title']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_SONGS_TITLE_DESC:''));
 		$description_configs = array();
@@ -960,39 +1039,42 @@
 		else
 			$extra = $extras_handler->create();
 		$allnames = array();
-		foreach (array_keys($fields) as $i) {
-			if (($object->getVar('sid')<>0&&$gperm_handler->checkRight('songlist_edit',$fields[$i]->getVar('field_id'),$groups, $modid)) ||
-				($object->getVar('sid')==0&&$gperm_handler->checkRight('songlist_post',$fields[$i]->getVar('field_id'),$groups, $modid))) {
-				$fieldinfo['element'] = $fields[$i]->getEditElement($object, $extra);
-				$fieldinfo['required'] = $fields[$i]->getVar('field_required');
-				foreach($fields[$i]->getVar('cids') as $catidid => $cid) {
-					if (!in_array($fields[$i]->getVar('field_name'), $allnames)) {
-						$allnames[] = $fields[$i]->getVar('field_name');
-						if (in_array($cid, array_keys($all_categories))||$cid==((!empty($_REQUEST['cid']))?intval($_REQUEST['cid']):$object->getVar('cid'))) {
-							$key = $all_categories[$cid]['weight'] * $count_fields + $object->getVar('cid');
-							$elements[$key][] = $fieldinfo;
-							$weights[$key][] = $fields[$i]->getVar('field_weight');
-						} elseif (in_array(0, $fields[$i]->getVar('cids'))) {
-							$key = $all_categories[$cid]['weight'] * $count_fields + $object->getVar('cid');
-							$elements[$key][] = $fieldinfo;
-							$weights[$key][] = $fields[$i]->getVar('field_weight');
+		if (is_array($fields)) {
+			foreach (array_keys($fields) as $i) {
+				if (($object->getVar('sid')<>0&&$gperm_handler->checkRight('songlist_edit',$fields[$i]->getVar('field_id'),$groups, $modid)) ||
+					($object->getVar('sid')==0&&$gperm_handler->checkRight('songlist_post',$fields[$i]->getVar('field_id'),$groups, $modid))) {
+					$fieldinfo['element'] = $fields[$i]->getEditElement($object, $extra);
+					$fieldinfo['required'] = $fields[$i]->getVar('field_required');
+					foreach($fields[$i]->getVar('cids') as $catidid => $cid) {
+						if (!in_array($fields[$i]->getVar('field_name'), $allnames)) {
+							$allnames[] = $fields[$i]->getVar('field_name');
+							if (in_array($cid, array_keys($all_categories))||$cid==((!empty($_REQUEST['cid']))?intval($_REQUEST['cid']):$object->getVar('cid'))) {
+								$key = $all_categories[$cid]['weight'] * $count_fields + $object->getVar('cid');
+								$elements[$key][] = $fieldinfo;
+								$weights[$key][] = $fields[$i]->getVar('field_weight');
+							} elseif (in_array(0, $fields[$i]->getVar('cids'))) {
+								$key = $all_categories[$cid]['weight'] * $count_fields + $object->getVar('cid');
+								$elements[$key][] = $fieldinfo;
+								$weights[$key][] = $fields[$i]->getVar('field_weight');
+							}
 						}
 					}
 				}
 			}
 		}
-		ksort($elements);
-		
-		foreach (array_keys($elements) as $k) {
-			array_multisort($weights[$k], SORT_ASC, array_keys($elements[$k]), SORT_ASC, $elements[$k]);
-			foreach (array_keys($elements[$k]) as $i) {
-				$ele[$k] = $elements[$k][$i]['element'];
-				if ($elements[$k][$i]['required']==true) {
-					$required[$k] = $elements[$k][$i]['element']->getName();
+		if (is_array($elements)) {
+			ksort($elements);
+			foreach (array_keys($elements) as $k) {
+				array_multisort($weights[$k], SORT_ASC, array_keys($elements[$k]), SORT_ASC, $elements[$k]);
+				foreach (array_keys($elements[$k]) as $i) {
+					$ele[$k] = $elements[$k][$i]['element'];
+					if ($elements[$k][$i]['required']==true) {
+						$required[$k] = $elements[$k][$i]['element']->getName();
+					}
 				}
 			}
 		}
-		
+			
 		if (!class_exists('XoopsFormTag')) {
 			$ele['tags'] = new XoopsFormHidden('tags', $object->getVar('tags'));
 		} else {

@@ -4,18 +4,16 @@ if (!defined('XOOPS_ROOT_PATH')) {
 	exit();
 }
 
-class SonglistCategory extends XoopsObject
+include_once(dirname(dirname(__FILE__)).'/include/songlist.object.php');
+include_once(dirname(dirname(__FILE__)).'/include/songlist.form.php');
+
+class SonglistVoice extends XoopsObject
 {
 
-    function SonglistCategory($fid = null)
+    function SonglistVoice($fid = null)
     {
-        $this->initVar('cid', XOBJ_DTYPE_INT, 0, false);
-        $this->initVar('pid', XOBJ_DTYPE_INT, 0, false);
-		$this->initVar('weight', XOBJ_DTYPE_INT, 1, false);
+        $this->initVar('vcid', XOBJ_DTYPE_INT, 0, false);
 		$this->initVar('name', XOBJ_DTYPE_TXTBOX, null, false, 128);
-		$this->initVar('description', XOBJ_DTYPE_OTHER, null, false);
-		$this->initVar('image', XOBJ_DTYPE_TXTBOX, null, false, 128);
-		$this->initVar('path', XOBJ_DTYPE_TXTBOX, null, false, 128);
 		$this->initVar('artists', XOBJ_DTYPE_INT, 0, false);
 		$this->initVar('albums', XOBJ_DTYPE_INT, 0, false);
 		$this->initVar('songs', XOBJ_DTYPE_INT, 0, false);
@@ -27,7 +25,7 @@ class SonglistCategory extends XoopsObject
 	}
 
 	function getForm($as_array = false) {
-		return songlist_category_get_form($this, $as_array);
+		return songlist_voice_get_form($this, $as_array);
 	}
 	
 	function toArray() {
@@ -42,47 +40,34 @@ class SonglistCategory extends XoopsObject
 				$ret[$key] = date(_DATESTRING, $this->getVar($key));
 			}
 		}
-		$ret['picture'] = $this->getImage('image', false);
 		$ret['rank'] = number_format(($this->getVar('rank')>0&&$this->getVar('votes')>0?$this->getVar('rank')/$this->getVar('votes'):0),2)._MI_SONGLIST_OFTEN;
-    	$ret['url'] = $this->getURL();
-		$category_handler = xoops_getmodulehandler('category', 'songlist');
-		if ($category_handler->getCount(new Criteria('pid', $this->getVar('cid')))) {
-			foreach($category_handler->getObjects(new Criteria('pid', $this->getVar('cid')), true) as $cid => $cat) {
-				$ret['subcategories'][$cid] = $cat->toArray();
-			}
-		}
+    		
 		return $ret;
 	}
-    
-	function getImage($field = 'image', $local = false) {
-		if (strlen($this->getVar($field))==0)
-			return false;
-		if (!file_exists($GLOBALS['xoops']->path($this->getVar('path').$this->getVar($field))))
-			return false;
-		if ($local==false)
-    		return XOOPS_URL.'/'.str_replace(DS, '/', $this->getVar('path')).$this->getVar($field);
-    	else 
-    		return XOOPS_ROOT_PATH.DS.$this->getVar('path').$this->getVar($field);
+	
+	function getURL() {
+    	global $file, $op, $fct, $id, $value, $gid, $vid, $cid, $start, $limit;
+    	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
+    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseurl'].'/'.$file.'/'.urlencode(str_replace(array(' ', chr(9)), '-', $this->getVar('name'))).'/'.$op.'-'.$fct.'-'.$this->getVar('gid').'-'.urlencode($value).'-'.$gid.'-'.$vid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
+    	} else {
+    		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op='.$op.'&fct='.$fct.'&id='.$this->getVar('gid').'&value='.urlencode($value).'&gid='.$gid.'&vid='.$vid.'&cid='.$cid;
+    	}
     }
-    
-    function getURL() {
-    	global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit;
-   		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op=category&fct=set&id='.$this->getVar('cid').'&value='.urlencode($file).'&gid='.$gid.'&cid='.$cid;
-    }
-    
+	
+	
+	
 }
 
 
-class SonglistCategoryHandler extends XoopsPersistableObjectHandler
+class SonglistVoiceHandler extends XoopsPersistableObjectHandler
 {
-	
     function __construct(&$db) 
     {
-        parent::__construct($db, "songlist_category", 'SonglistCategory', "cid", "name");
+        parent::__construct($db, "songlist_voice", 'SonglistVoice', "vcid", "name");
     }
 
 	function filterFields() {
-		return array('cid', 'pid', 'weight', 'name', 'image', 'path', 'artists', 'albums', 'songs', 'hits', 'rank', 'votes', 'created', 'updated');
+		return array('vcid', 'name', 'artists', 'albums', 'songs', 'hits', 'rank', 'votes', 'created', 'updated');
 	}
 	
     function getFilterCriteria($filter) {
@@ -119,22 +104,6 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
     		return '&nbsp;';
     }
     
-	function GetCatAndSubCat($pid=0){
-		$categories = $this->getObjects(new Criteria('pid', $pid), true);
-		$langs_array = $this->TreeIDs(array(), $categories, -1);
-		return $langs_array;
-	}
-	
-	private function TreeIDs($langs_array, $categories, $level) {
-		foreach($categories as $catid => $category) {
-			$langs_array[$catid] = $catid;
-			if ($categoriesb = $this->getObjects(new Criteria('pid', $catid), true)){
-				$langs_array = $this->TreeIDs($langs_array, $categoriesb, $level);
-			}
-		}
-		return ($langs_array);
-	}
-	
 	function insert($obj, $force=true) {
     	if ($obj->isNew()) {
     		$obj->setVar('created', time());	
@@ -145,24 +114,18 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
     		return false;
     	return parent::insert($obj, $force);
     }
-
-    var $_objects = array('object'=>array(), 'array'=>array());
+     
+	var $_objects = array('object'=>array(), 'array'=>array());
     
     function get($id, $fields = '*') {
     	if (!isset($this->_objects['object'][$id])) {
 	    	$this->_objects['object'][$id] = parent::get($id, $fields);
-	    	if (!isset($GLOBALS['songlistAdmin'])) {
-		    	$sql = 'UPDATE `'.$this->table.'` set hits=hits+1 where `'.$this->keyName.'` = '.$id;
+	    	if (!isset($GLOBALS['songlistAdmin'])&&is_object($this->_objects['object'][$id])) {
+		    	$sql = 'UPDATE `'.$this->table.'` set hits=hits+1 where `'.$this->keyName.'` = '.$this->_objects['object'][$id]->getVar($this->keyName);
 		    	$GLOBALS['xoopsDB']->queryF($sql);
 	    	}
     	}
     	return $this->_objects['object'][$id];
-    }
-    
-    function delete($object, $force=true) {
-    	parent::delete($object, $force);
-    	$sql = 'UPDATE ' . $GLOBALS['xoopsDB']->prefix('songlist_songs') . ' SET `cid` = 0 WHERE `cid` = ' . $object->getVar('cid');
-    	return $GLOBALS['xoopsDB']->queryF($sql);	
     }
     
     function getObjects($criteria = NULL, $id_as_key = false, $as_object = true) {
@@ -189,6 +152,15 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
     	}*/
     	return $ret;
     }
+
+    function getURL() {
+    	global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit;
+    	if ($GLOBALS['songlistModuleConfig']['htaccess']) {
+    		return XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['baseurl'].'/'.$file.'/'.$start.'-'.$op.'-'.$fct.'-'.$id.'-'.urlencode($value).'-'.$gid.'-'.$cid.$GLOBALS['songlistModuleConfig']['endofurl'];
+    	} else {
+    		return XOOPS_URL.'/modules/songlist/'.$file.'.php?op='.$op.'&fct='.$fct.'&id='.$id.'&value='.urlencode($value).'&gid='.$gid.'&cid='.$cid.'&start='.$start;
+    	}
+    }
     
 	function getTop($limit=1) {
     	$sql = 'SELECT * FROM `'.$this->table.'` WHERE `rank`>=0 ORDER BY (`rank`/`votes`) DESC LIMIT '.$limit;
@@ -201,6 +173,12 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
     		$i++;
     	}
     	return $ret;
+    }
+    
+	function delete($object, $force=true) {
+    	parent::delete($object, $force);
+    	$sql = 'UPDATE ' . $GLOBALS['xoopsDB']->prefix('songlist_songs') . ' SET `vcid` = 0 WHERE `vcid` = ' . $object->getVar('vcid');
+    	return $GLOBALS['xoopsDB']->queryF($sql);	
     }
 }
 ?>

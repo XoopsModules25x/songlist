@@ -6,18 +6,15 @@ defined('XOOPS_ROOT_PATH') or die("XOOPS root path not defined");
 
 class SonglistExtras extends XoopsObject
 {
+
+	var $handler;
+	
     function __construct($fields)
     {
-		$this->initVar('sid', XOBJ_DTYPE_INT, null, true);			
-        $this->init($fields);	
+    	$this->initVar('sid', XOBJ_DTYPE_INT, null, true);
+		$this->init($fields);
     }
 
-
-	
-    function SonglistExtras($fields)
-    {
-        $this->__construct($fields);
-    }
 
     /**
     * Initiate variables
@@ -64,7 +61,7 @@ class SonglistExtrasHandler extends XoopsPersistableObjectHandler
      */
     function &create($isNew = true)
     {
-        $obj = new $this->className($this->loadFields() );
+        $obj = new $this->className( $this->loadFields() );
         $obj->handler = $this;
         $obj->setNew();
         return $obj;
@@ -109,7 +106,7 @@ class SonglistExtrasHandler extends XoopsPersistableObjectHandler
         if (count($this->_fields) == 0) {
             $this->_fields = $this->_fHandler->loadFields();
         }
-        return $this->_fields;
+        return ($this->_fields==0||empty($this->_fields)?false:$this->_fields);
     }
 	
 	function getPostVars()

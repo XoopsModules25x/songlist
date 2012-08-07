@@ -86,26 +86,25 @@
 				$id=0;
 				if ($id=intval($_REQUEST['id'])) {
 					$songs = $songs_handler->get($id);
-					$extra = $extras_handler->get($id);
 				} else {
 					$songs = $songs_handler->create();
-					$extra = $extras_handler->create();
 				}
 				$songs->setVars($_POST[$id]);
 				
 				if (!$id=$songs_handler->insert($songs)) {
-					$extra->setVar('sid', $id);
-					$extra->setVars($_POST[$id]);
-					@$extra_handler->insert($extra);
-					
-					if ($GLOBALS['songlistModuleConfig']['tag']&&file_exists(XOOPS_ROOT_PATH . '/modules/tag/class/tag.php')) {
-						$tag_handler = xoops_getmodulehandler('tag', 'tag');
-						$tag_handler->updateByItem($_POST['tags'], $id, $GLOBALS['songlistModule']->getVar("mid"), $songs->getVar('cid'));
-					}
-					
 					redirect_header($_SERVER['PHP_SELF'].'?op='.$GLOBALS['op'].'&fct=list&limit='.$GLOBALS['limit'].'&start='.$GLOBALS['start'].'&order='.$GLOBALS['order'].'&sort='.$GLOBALS['sort'].'&filter='.$GLOBALS['filter'], 10, _AM_SONGLIST_MSG_SONGS_FAILEDTOSAVE);
 					exit(0);
 				} else {
+					$extra = $extras_handler->get($id);
+					$extra->setVars($_POST[$id]);
+					$extra->setVar('sid', $id);
+					$extras_handler->insert($extra);
+					
+					if ($GLOBALS['songlistModuleConfig']['tags']&&file_exists(XOOPS_ROOT_PATH . '/modules/tag/class/tag.php')) {
+						$tag_handler = xoops_getmodulehandler('tag', 'tag');
+						$tag_handler->updateByItem($_POST['tags'], $id, $GLOBALS['songlistModule']->getVar("dirname"), $songs->getVar('cid'));
+					}
+					
 					if ($_REQUEST['state'][$_REQUEST['id']]=='new')
 						redirect_header($_SERVER['PHP_SELF'].'?op='.$GLOBALS['op'].'&fct=edit&id='.$_REQUEST['id'] . '&limit='.$GLOBALS['limit'].'&start='.$GLOBALS['start'].'&order='.$GLOBALS['order'].'&sort='.$GLOBALS['sort'].'&filter='.$GLOBALS['filter'], 10, _AM_SONGLIST_MSG_SONGS_SAVEDOKEY);
 					else 

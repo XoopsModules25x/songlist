@@ -98,6 +98,7 @@
 				$albums_handler = xoops_getmodulehandler('albums', 'songlist');
 				$artists_handler = xoops_getmodulehandler('artists', 'songlist');
 				$genre_handler = xoops_getmodulehandler('genre', 'songlist');
+				$voice_handler = xoops_getmodulehandler('voice', 'songlist');
 				$category_handler = xoops_getmodulehandler('category', 'songlist');
 				
 				
@@ -129,19 +130,38 @@
 								}
 							}
 							$gid = 0;
+							$gids = array();
 							if (!empty($_POST['genre'])&&strlen($_POST['genre'])>1) {
 								if (isset($data[$_POST['genre']])&&trim($_POST['genre'])!='') {
-									$criteria = new Criteria('`name`',  trim($data[$_POST['genre']]));
-									if ($genre_handler->getCount($criteria)>0) {
-										$objects = $genre_handler->getObjects($criteria, false);
-										$gid = $objects[0]->getVar('gid');
+									foreach(explode(',', trim($data[$_POST['genre']])) as $genre) {
+										$criteria = new Criteria('`name`',  trim($genre));
+										if ($genre_handler->getCount($criteria)>0) {
+											$objects = $genre_handler->getObjects($criteria, false);
+											$gid = $objects[0]->getVar('gid');
+										} else {
+											$object = $genre_handler->create();
+											$object->setVar('name', trim($genre));
+											$gid = $genre_handler->insert($object);
+										} 								
+										$gids[$gid] = $gid;
+									}
+								}
+							}	
+							$vcid = 0;
+							if (!empty($_POST['voice'])&&strlen($_POST['voice'])>1) {
+								if (isset($data[$_POST['voice']])&&trim($_POST['voice'])!='') {
+									$criteria = new Criteria('`name`',  trim($data[$_POST['voice']]));
+									if ($voice_handler->getCount($criteria)>0) {
+										$objects = $voice_handler->getObjects($criteria, false);
+										$vcid = $objects[0]->getVar('vcid');
 									} else {
-										$object = $genre_handler->create();
-										$object->setVar('name', trim($data[$_POST['genre']]));
-										$gid = $genre_handler->insert($object);
+										$object = $voice_handler->create();
+										$object->setVar('name', trim($data[$_POST['voice']]));
+										$vcid = $voice_handler->insert($object);
 									} 								
 								}
 							}	
+							
 							$cid = 0;
 							if (!empty($_POST['category'])&&strlen($_POST['category'])>1) {
 								if (isset($data[$_POST['category']])&&trim($_POST['category'])!='') {
@@ -165,15 +185,7 @@
 											$objects = $artists_handler->getObjects($criteria, false);
 											$aids[$objects[0]->getVar('aid')] = $objects[0]->getVar('aid');
 										} else {
-											$object = $artists_handler->create();
-											switch(trim($data[$_POST['singer']])) {
-												case $_POST['duet']:
-													$object->setVar('singer', '_ENUM_SONGLIST_DUET');
-													break;
-												case $_POST['solo']:
-													$object->setVar('singer', '_ENUM_SONGLIST_SOLO');
-													break;
-											}
+											$object = $artists_handler->create(); // added PL
 											$object->setVar('name', trim($artist));
 											$aid = $artists_handler->insert($object);
 											$aids[$aid] = $aid;
@@ -187,7 +199,7 @@
 									$criteria = new Criteria('`title`',  trim($data[$_POST['album']]));
 									if ($albums_handler->getCount($criteria)>0) {
 										$objects = $albums_handler->getObjects($criteria, false);
-										$abid = $objects[0]->getVar('aid');
+										$abid = $objects[0]->getVar('abid');
 									} else {
 										$object = $albums_handler->create();
 										$object->setVar('cid', $cid);
@@ -212,13 +224,39 @@
 										$object = $songs_handler->create();
 									}
 									$object->setVar('cid', $cid);
-									$object->setVar('gid', $gid); 
+									$object->setVar('gids', $gids);
+									$object->setVar('vcid', $vcid);
 									$object->setVar('aids', $aids); 
 									$object->setVar('abid', $abid); 
 									$object->setVar('songid', trim($data[$_POST['songid']]));
+									$object->setVar('traxid', trim($data[$_POST['traxid']]));
 									$object->setVar('title', trim($data[$_POST['title']]));
+									$object->setVar('tags', trim($data[$_POST['tags']]));
 									$object->setVar('lyrics', str_replace("\n", "<br/>\n", trim($data[$_POST['lyrics']])));
 									$sid = $songs_handler->insert($object);
+									
+									if ($GLOBALS['songlistModuleConfig']['tags']&&file_exists(XOOPS_ROOT_PATH . '/modules/tag/class/tag.php')) {
+										$tag_handler = xoops_getmodulehandler('tag', 'tag');
+										$tag_handler->updateByItem(trim($data[$_POST['tags']]), $sid, $GLOBALS['songlistModule']->getVar("dirname"), $cid);
+									}
+										
+									$extras_handler = xoops_getmodulehandler('extras', 'songlist');
+									$fields = $extras_handler->getFields(NULL);
+									$criteria = new CriteriaCompo(new Criteria('`sid`', $sid));
+									if ($extras_handler->getCount($criteria)>0) {
+										$extras = $extras_handler->getObjects($criteria, false);
+										$extra = $extras[0];
+									} else {
+										$extra = $extras_handler->create();
+									}
+									$extra->setVar('sid', $sid);
+									foreach($fields as $field) {
+										if (!empty($_POST[$field->getVar('field_name')])&&strlen($_POST[$field->getVar('field_name')])>1) {
+											if (isset($data[$_POST[$field->getVar('field_name')]])&&trim($_POST[$field->getVar('field_name')])!='') {
+												$extra->setVar($field->getVar('field_name'), trim($data[$_POST[$field->getVar('field_name')]]));
+											}
+										}
+									}									
 									foreach($artists_handler->getObjects(new Criteria('aid', '('.implode(',', $aids).')', 'IN'), true) as $aid => $artist) {
 										$artist->setVar('sids', array_merge($artist->getVar('sids'), array($sid=>$sid)));
 										$artists_handler->insert($artist, true);
@@ -241,19 +279,36 @@
 								}
 							}
 							$gid = 0;
+							$gids = array();
 							if (!empty($_POST['genre'])&&strlen($_POST['genre'])>1) {
 								if (isset($data[$_POST['genre']])&&trim($_POST['genre'])!='') {
-									$criteria = new Criteria('`name`',  trim($data[$_POST['genre']]));
-									if ($genre_handler->getCount($criteria)>0) {
-										$objects = $genre_handler->getObjects($criteria, false);
-										$gid = $objects[0]->getVar('gid');
-									} else {
-										$object = $genre_handler->create();
-										$object->setVar('name', trim($data[$_POST['genre']]));
-										$gid = $genre_handler->insert($object);
-									} 								
+									foreach(explode(',', trim($data[$_POST['genre']])) as $genre) {
+										$criteria = new Criteria('`name`',  trim($genre));
+										if ($genre_handler->getCount($criteria)>0) {
+											$objects = $genre_handler->getObjects($criteria, false);
+											$gid = $objects[0]->getVar('gid');
+										} else {
+											$object = $genre_handler->create();
+											$object->setVar('name', trim($genre));
+											$gid = $genre_handler->insert($object);
+										} 								
+										$gids[$gid] = $gid;
+									}
 								}
 							}	
+							if (!empty($_POST['voice'])&&strlen($_POST['voice'])>1) {
+								if (isset($data[$_POST['voice']])&&trim($_POST['voice'])!='') {
+									$criteria = new Criteria('`name`',  trim($data[$_POST['voice']]));
+									if ($voice_handler->getCount($criteria)>0) {
+										$objects = $voice_handler->getObjects($criteria, false);
+										$vcid = $objects[0]->getVar('vcid');
+									} else {
+										$object = $voice_handler->create();
+										$object->setVar('name', trim($data[$_POST['voice']]));
+										$vcid = $voice_handler->insert($object);
+									} 								
+								}
+							}							
 							$cid = 0;
 							if (!empty($_POST['category'])&&strlen($_POST['category'])>1) {
 								if (isset($data[$_POST['category']])&&trim($_POST['category'])!='') {
@@ -277,15 +332,7 @@
 											$objects = $artists_handler->getObjects($criteria, false);
 											$aids[$objects[0]->getVar('aid')] = $objects[0]->getVar('aid');
 										} else {
-											$object = $artists_handler->create();
-											switch(trim($data[$_POST['singer']])) {
-												case $_POST['duet']:
-													$object->setVar('singer', '_ENUM_SONGLIST_DUET');
-													break;
-												case $_POST['solo']:
-													$object->setVar('singer', '_ENUM_SONGLIST_SOLO');
-													break;
-											}
+											$object = $artists_handler->create(); //added PL
 											$object->setVar('cid', $cid);
 											$object->setVar('name', trim($data[$_POST['artist']]));
 											$aid = $artists_handler->insert($object);
@@ -300,7 +347,7 @@
 									$criteria = new Criteria('`title`',  trim($data[$_POST['album']]));
 									if ($albums_handler->getCount($criteria)>0) {
 										$objects = $albums_handler->getObjects($criteria, false);
-										$abid = $objects[0]->getVar('aid');
+										$abid = $objects[0]->getVar('abid');
 									} else {
 										$object = $albums_handler->create();
 										$object->setVar('cid', $cid);
@@ -325,13 +372,40 @@
 										$object = $songs_handler->create();
 									}
 									$object->setVar('cid', $cid);
-									$object->setVar('gid', $gid); 
+									$object->setVar('gids', $gids); 
+									$object->setVar('vcid', $vcid); 
 									$object->setVar('aids', $aids); 
 									$object->setVar('abid', $abid); 
 									$object->setVar('songid', trim($data[$_POST['songid']]));
+									$object->setVar('traxid', trim($data[$_POST['traxid']]));
+									$object->setVar('tags', trim($data[$_POST['tags']]));
 									$object->setVar('title', trim($data[$_POST['title']]));
 									$object->setVar('lyrics', str_replace("\n", "<br/>\n", trim($data[$_POST['lyrics']])));
 									$sid = $songs_handler->insert($object);
+									
+									if ($GLOBALS['songlistModuleConfig']['tags']&&file_exists(XOOPS_ROOT_PATH . '/modules/tag/class/tag.php')) {
+										$tag_handler = xoops_getmodulehandler('tag', 'tag');
+										$tag_handler->updateByItem(trim($data[$_POST['tags']]), $sid, $GLOBALS['songlistModule']->getVar("dirname"), $cid);
+									}
+										
+									$extras_handler = xoops_getmodulehandler('extras', 'songlist');
+									$fields = $extras_handler->getFields(NULL);
+									$criteria = new CriteriaCompo(new Criteria('`sid`', $sid));
+									if ($extras_handler->getCount($criteria)>0) {
+										$extras = $extras_handler->getObjects($criteria, false);
+										$extra = $extras[0];
+									} else {
+										$extra = $extras_handler->create();
+									}
+									$extra->setVar('sid', $sid);
+									foreach($fields as $field) {
+										if (!empty($_POST[$field->getVar('field_name')])&&strlen($_POST[$field->getVar('field_name')])>1) {
+											if (isset($data[$_POST[$field->getVar('field_name')]])&&trim($_POST[$field->getVar('field_name')])!='') {
+												$extra->setVar($field->getVar('field_name'), trim($data[$_POST[$field->getVar('field_name')]]));
+											}
+										}
+									}
+									$extras_handler->insert($extra, true);
 									foreach($artists_handler->getObjects(new Criteria('aid', '('.implode(',', $aids).')', 'IN'), true) as $aid => $artist) {
 										$artist->setVar('sids', array_merge($artist->getVar('sids'), array($sid=>$sid)));
 										$artists_handler->insert($artist, true);
@@ -343,6 +417,11 @@
 				} else {
 					
 					foreach ($xmlarray as $recid => $data) {
+						$cid=0;
+						$gid=0; 
+						$vcid=0;
+						$aids=array(); 
+						$abid=array(); 
 						if (isset($_POST['limiting'])) {
 							if (intval($_POST['limiting'])==true) {
 								$record++;
@@ -356,19 +435,38 @@
 							}
 						}
 						$gid = 0;
+						$gids = array();
 						if (!empty($_POST['genre'])&&strlen($_POST['genre'])>1) {
 							if (isset($data[$_POST['genre']])&&trim($_POST['genre'])!='') {
-								$criteria = new Criteria('`name`',  trim($data[$_POST['genre']]));
-								if ($genre_handler->getCount($criteria)>0) {
-									$objects = $genre_handler->getObjects($criteria, false);
-									$gid = $objects[0]->getVar('gid');
-								} else {
-									$object = $genre_handler->create();
-									$object->setVar('name', trim($data[$_POST['genre']]));
-									$gid = $genre_handler->insert($object);
-								} 								
+								foreach(explode(',', trim($data[$_POST['genre']])) as $genre) {
+									$criteria = new Criteria('`name`',  trim($genre));
+									if ($genre_handler->getCount($criteria)>0) {
+										$objects = $genre_handler->getObjects($criteria, false);
+										$gid = $objects[0]->getVar('gid');
+									} else {
+										$object = $genre_handler->create();
+										$object->setVar('name', trim($genre));
+										$gid = $genre_handler->insert($object);
+									} 								
+									$gids[$gid] = $gid;
+								}
 							}
 						}	
+					
+						$vcid = 0;
+						if (!empty($_POST['voice'])&&strlen($_POST['voice'])>1) {
+							if (isset($data[$_POST['voice']])&&trim($_POST['voice'])!='') {
+								$criteria = new Criteria('`name`',  trim($data[$_POST['voice']]));
+								if ($voice_handler->getCount($criteria)>0) {
+									$objects = $voice_handler->getObjects($criteria, false);
+									$vcid = $objects[0]->getVar('vcid');
+								} else {
+									$object = $voice_handler->create();
+									$object->setVar('name', trim($data[$_POST['voice']]));
+									$vcid = $voice_handler->insert($object);
+								} 								
+							}
+						}						
 						$cid = 0;
 						if (!empty($_POST['category'])&&strlen($_POST['category'])>1) {
 							if (isset($data[$_POST['category']])&&trim($_POST['category'])!='') {
@@ -392,15 +490,7 @@
 										$objects = $artists_handler->getObjects($criteria, false);
 										$aids[$objects[0]->getVar('aid')] = $objects[0]->getVar('aid');
 									} else {
-										$object = $artists_handler->create();
-										switch(trim($data[$_POST['singer']])) {
-											case $_POST['duet']:
-												$object->setVar('singer', '_ENUM_SONGLIST_DUET');
-												break;
-											case $_POST['solo']:
-												$object->setVar('singer', '_ENUM_SONGLIST_SOLO');
-												break;
-										}
+										$object = $artists_handler->create(); //Added PL
 										$object->setVar('cid', $cid);
 										$object->setVar('name', trim($data[$_POST['artist']]));
 										$aid = $artists_handler->insert($object);
@@ -415,7 +505,7 @@
 								$criteria = new Criteria('`title`',  trim($data[$_POST['album']]));
 								if ($albums_handler->getCount($criteria)>0) {
 									$objects = $albums_handler->getObjects($criteria, false);
-									$abid = $objects[0]->getVar('aid');
+									$abid = $objects[0]->getVar('abid');
 								} else {
 									$object = $albums_handler->create();
 									$object->setVar('cid', $cid);
@@ -440,13 +530,39 @@
 									$object = $songs_handler->create();
 								}
 								$object->setVar('cid', $cid);
-								$object->setVar('gid', $gid); 
+								$object->setVar('gids', $gids); 
+								$object->setVar('vcid', $vcid);
 								$object->setVar('aids', $aids); 
 								$object->setVar('abid', $abid); 
 								$object->setVar('songid', trim($data[$_POST['songid']]));
+								$object->setVar('traxid', trim($data[$_POST['traxid']]));
 								$object->setVar('title', trim($data[$_POST['title']]));
+								$object->setVar('tags', trim($data[$_POST['tags']]));
 								$object->setVar('lyrics', str_replace("\n", "<br/>\n", trim($data[$_POST['lyrics']])));
 								$sid = $songs_handler->insert($object);
+								
+								if ($GLOBALS['songlistModuleConfig']['tags']&&file_exists(XOOPS_ROOT_PATH . '/modules/tag/class/tag.php')) {
+									$tag_handler = xoops_getmodulehandler('tag', 'tag');
+									$tag_handler->updateByItem(trim($data[$_POST['tags']]), $sid, $GLOBALS['songlistModule']->getVar("dirname"), $cid);
+								}
+								
+								$extras_handler = xoops_getmodulehandler('extras', 'songlist');
+								$fields = $extras_handler->getFields(NULL);
+								$criteria = new CriteriaCompo(new Criteria('`sid`', $sid));
+								if ($extras_handler->getCount($criteria)>0) {
+									$extras = $extras_handler->getObjects($criteria, false);
+									$extra = $extras[0];
+								} else {
+									$extra = $extras_handler->create();
+								}
+								$extra->setVar('sid', $sid);
+								foreach($fields as $field) {
+									if (!empty($_POST[$field->getVar('field_name')])&&strlen($_POST[$field->getVar('field_name')])>1) {
+										if (isset($data[$_POST[$field->getVar('field_name')]])&&trim($_POST[$field->getVar('field_name')])!='') {
+											$extra->setVar($field->getVar('field_name'), trim($data[$_POST[$field->getVar('field_name')]]));
+										}
+									}
+								}
 								foreach($artists_handler->getObjects(new Criteria('aid', '('.implode(',', $aids).')', 'IN'), true) as $aid => $artist) {
 									$artist->setVar('sids', array_merge($artist->getVar('sids'), array($sid=>$sid)));
 									$artists_handler->insert($artist, true);

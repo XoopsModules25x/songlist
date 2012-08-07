@@ -128,7 +128,8 @@
 						    }      	
 					  	} else {
 					  		
-					  		songlist_adminMenu(1);
+							$indexAdmin = new ModuleAdmin();
+							echo $indexAdmin->addNavigation(basename(__FILE__));
 					       	echo $uploader->getErrors();
 							songlist_footer_adminMenu();
 							xoops_cp_footer();

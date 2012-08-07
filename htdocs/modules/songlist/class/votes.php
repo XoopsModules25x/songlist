@@ -117,12 +117,14 @@ class SonglistVotesHandler extends XoopsPersistableObjectHandler
     			$artists_handler = xoops_getmodulehandler('artists', 'songlist');
     			$category_handler = xoops_getmodulehandler('category', 'songlist');
     			$genre_handler = xoops_getmodulehandler('genre', 'songlist');
+				$voice_handler = xoops_getmodulehandler('voice', 'songlist');				
     			
     			$song = $songs_handler->get($sid);
     			$sql = array();
     			$sql[] = "UPDATE `" . $songs_handler->table . "` SET `rank` = `rank` + ".$value.", `votes` = `votes` + 1 WHERE `". $songs_handler->keyName . "` = " . $sid;
     			$sql[] = "UPDATE `" . $category_handler->table . "` SET `rank` = `rank` + ".$value.", `votes` = `votes` + 1 WHERE `". $category_handler->keyName . "` = " . $song->getVar($category_handler->keyName);
     			$sql[] = "UPDATE `" . $genre_handler->table . "` SET `rank` = `rank` + ".$value.", `votes` = `votes` + 1 WHERE `". $genre_handler->keyName . "` = " . $song->getVar($genre_handler->keyName);
+				$sql[] = "UPDATE `" . $voice_handler->table . "` SET `rank` = `rank` + ".$value.", `votes` = `votes` + 1 WHERE `". $voice_handler->keyName . "` = " . $song->getVar($voice_handler->keyName);
     			$sql[] = "UPDATE `" . $albums_handler->table . "` SET `rank` = `rank` + ".$value.", `votes` = `votes` + 1 WHERE `". $albums_handler->keyName . "` = " . $song->getVar($albums_handler->keyName);
     			foreach($song->getVar('aids') as $aid) {
     				$sql[] = "UPDATE `" . $artists_handler->table . "` SET `rank` = `rank` + ".$value.", `votes` = `votes` + 1 WHERE `". $artists_handler->keyName . "` = " . $aid;

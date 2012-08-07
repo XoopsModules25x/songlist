@@ -574,6 +574,8 @@ class SonglistFieldHandler extends XoopsPersistableObjectHandler
         if (!empty($force_update) || count($fields) == 0) {
             $criteria = new Criteria('field_id', 0, "!=");
             $criteria->setSort('field_weight');
+            if ($this->getCount($criteria)==0)
+            	return false;
             $field_objs = $this->getObjects($criteria);
             foreach (array_keys($field_objs) as $i ) {
                 $fields[$field_objs[$i]->getVar('field_name')] = $field_objs[$i];
@@ -775,7 +777,7 @@ class SonglistFieldHandler extends XoopsPersistableObjectHandler
      */
     function getPostVars()
     {
-        return array('sid', 'cid', 'gid', 'aids', 'abid', 'songid', 'title', 'lyrics', 'hits', 'rank', 'votes', 'tags',
+        return array('sid', 'cid', 'gid', 'aids', 'abid', 'songid', 'traxid', 'title', 'lyrics', 'hits', 'rank', 'votes', 'tags',
  					 'created', 'updated');
     }
 }

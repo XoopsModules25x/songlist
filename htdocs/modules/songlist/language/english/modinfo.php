@@ -7,6 +7,7 @@
 	
 	// Form langauges
 	define('_MI_SONGLIST_NONE', 'None');
+	define('_MI_SONGLIST_ALL', 'All');
 	define('_MI_SONGLIST_OFTEN', ' of 10.00');
 	
 	// Javascripts and style sheets
@@ -20,6 +21,7 @@
 	define('_MI_SONGLIST_ADMENU_ARTISTS', 'Artists');
 	define('_MI_SONGLIST_ADMENU_SONGS', 'Songs');
 	define('_MI_SONGLIST_ADMENU_GENRE', 'Genre');
+	define('_MI_SONGLIST_ADMENU_VOICE', 'Voice');
 	define('_MI_SONGLIST_ADMENU_VOTE', 'Votes');
 	define('_MI_SONGLIST_ADMENU_PERMISSIONS', 'Permissions');
 	define('_MI_SONGLIST_ADMENU_REQUESTS', 'Requests');
@@ -64,6 +66,8 @@
 	define('_MI_SONGLIST_ALBUM_DESC', '');
 	define('_MI_SONGLIST_GENRE', 'Support Genre?');
 	define('_MI_SONGLIST_GENRE_DESC', '');
+	define('_MI_SONGLIST_VOICE', 'Support Voice?');
+	define('_MI_SONGLIST_VOICE_DESC', '');	
 	define('_MI_SONGLIST_SINGER', 'Allow Singer Type in Search?');
 	define('_MI_SONGLIST_SINGER_DESC', '');
 	define('_MI_SONGLIST_HTACCESS', 'SEO Supported (see doc/.htaccess)');
@@ -92,4 +96,8 @@
 	define('_MI_SONGLIST_TIME_USER','Second Limit of Execution for User Interface');
 	define('_MI_SONGLIST_TIME_USER_DESC','This is the time limit in megabytes for the user interface of songlist, you may have to increase this over a certain amount of records.');
 	
-	?>
+	// version 1.12
+	define('_MI_SONGLIST_LYRICS', 'Display Lyrics in Results?');
+	define('_MI_SONGLIST_LYRICS_DESC', 'If you enable this the lyrics will be displayed in the search results!');
+
+?>

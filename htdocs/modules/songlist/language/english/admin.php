@@ -6,6 +6,7 @@
 	define('_AM_SONGLIST_NUMBER_OF_ARTISTS', 'Number of Artists: %s');
 	define('_AM_SONGLIST_NUMBER_OF_ALBUMS', 'Number of Albums: %s');
 	define('_AM_SONGLIST_NUMBER_OF_GENRE', 'Number of Genre: %s');
+	define('_AM_SONGLIST_NUMBER_OF_VOICE', 'Number of Voice: %s');
 	define('_AM_SONGLIST_NUMBER_OF_SONGS', 'Number of Songs: %s');
 	define('_AM_SONGLIST_NUMBER_OF_REQUESTS', 'Number of Request: %s');
 	define('_AM_SONGLIST_NUMBER_OF_VOTES', 'Number of Votes: %s');
@@ -41,6 +42,7 @@
 	define('_AM_SONGLIST_TH_UTFID', 'Map ID');
 	define('_AM_SONGLIST_TH_FROM', 'From');
 	define('_AM_SONGLIST_TH_TO', 'To');
+	define('_AM_SONGLIST_TH_VCID', 'Voice ID');
 			
 	// Category
 	define('_AM_SONGLIST_CATEGORY_H1', 'Categories');
@@ -94,6 +96,15 @@
 	define('_AM_SONGLIST_NEW_GENRE_P', 'Create a new Genre from here');
 	define('_AM_SONGLIST_EDIT_GENRE_H1', 'Edit Genre');
 	define('_AM_SONGLIST_EDIT_GENRE_P', 'Edit an existing Genre from here');
+	
+	// Voice
+	define('_AM_SONGLIST_VOICE_H1', 'Voices');
+	define('_AM_SONGLIST_VOICE_P', 'These are the Voice you have on the system.');
+	define('_AM_SONGLIST_NEW_VOICE_H1', 'New Voice');
+	define('_AM_SONGLIST_NEW_VOICE_P', 'Create a new Voice from here');
+	define('_AM_SONGLIST_EDIT_VOICE_H1', 'Edit voice');
+	define('_AM_SONGLIST_EDIT_VOICE_P', 'Edit an existing Voice from here');
+	
 		
 	// Genre Redirection Messages
 	define('_AM_SONGLIST_MSG_GENRE_SAVEDOKEY', 'Genre Saved Okey!');
@@ -101,6 +112,13 @@
 	define('_AM_SONGLIST_MSG_GENRE_FAILEDTODELETE', 'Genre Failed to Delete!');
 	define('_AM_SONGLIST_MSG_GENRE_DELETED', 'Genre Deleted Fine!');
 	define('_AM_SONGLIST_MSG_GENRE_DELETE', 'Are you sure you wish to delete the Genre "%s"?');
+
+	// Voice Redirection Messages
+	define('_AM_SONGLIST_MSG_VOICE_SAVEDOKEY', 'Voice Saved Okey!');
+	define('_AM_SONGLIST_MSG_VOICE_FAILEDTOSAVE', 'Voice Failed to Save!');
+	define('_AM_SONGLIST_MSG_VOICE_FAILEDTODELETE', 'Voice Failed to Delete!');
+	define('_AM_SONGLIST_MSG_VOICE_DELETED', 'Voice Deleted Fine!');
+	define('_AM_SONGLIST_MSG_VOICE_DELETE', 'Are you sure you wish to delete the Voice "%s"?');
 	
 	// Request
 	define('_AM_SONGLIST_REQUESTS_H1', 'Requests');

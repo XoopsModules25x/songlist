@@ -1,27 +1,53 @@
-<div class="sl_mainartist">
-	<a href="<{$artist.url}>"><{$artist.name}></a>
-</div>
-<{if $artist.songs_array}>
-<div class="sl_subtitle">
-	<{$smarty.const._MN_SONGLIST_SONGS}>
-</div>
-<div class="sl_subartist">
-	<{assign var=songs value=0}>
-	<{foreach from=$artist.songs_array item=song}>
+<div class="container">
+    <div class="label"><{$artist.name}></div>
+    <div class="content"><br />
+
+    <table class="sl_resulttable" cellpadding="3">
+     	<thead>
+		<tr>
+			<th class="songid"><{$smarty.const._MN_SONGLIST_RESULTS_SONGID}></th>
+			<th><{$smarty.const._MN_SONGLIST_RESULTS_TITLE}></th>
+			<th><{$smarty.const._MN_SONGLIST_RESULTS_TRAXNO}></th>
+        </tr>
+        </thead>
+        </tbody>    
+	<{if $artist.songs_array}>
+		<{assign var=songs value=0}>
+		<{foreach from=$artist.songs_array item=song}>
+	    <tr class="<{cycle values="even,odd"}>">
 	<{assign var=songs value=$songs+1}>
-	<a href="<{$song.url}>"><{$song.title}> [<{$song.songid}>]</a><{if not $songs < count($artist.songs)}>,&nbsp;<{/if}>
-	<{/foreach}> 
+		    <td class="songid">
+	    		<{$song.songid}>
+	    	</td> 
+	    	<td>
+				<a href="<{$song.url}>"><{$song.title}></a>
+	    	</td>
+		    <td class="traxno">
+	    		<{$song.traxid}>
+	    	</td> 
+	    </tr>
+		<{/foreach}> 
+	
+	<{/if}>
+       </tbody>
+    </table>
+	</div>
 </div>
-<{/if}>
-<{if $artist.albums_array}>
-<div class="sl_subtitle">
-	<{$smarty.const._MN_SONGLIST_ALBUMS}>
-</div>
-<div class="sl_subartist">
-	<{assign var=albums value=0}>
-	<{foreach from=$artist.albums_array item=album}>
-	<{assign var=albums value=$albums+1}>
-	<a href="<{$album.url}>"><{$album.name}></a><{if not $albums < count($artist.albums)}>,&nbsp;<{/if}>
-	<{/foreach}> 
-</div>
-<{/if}>
+    <!--
+    
+        <tr>
+       		<{if $artist.artists_array}>
+                <td>
+                    <{$smarty.const._MN_SONGLIST_artistS}>
+                </td>
+                <td>
+                    <{assign var=artists value=0}>
+                    <{foreach from=$artist.artists_array item=artist}>
+                    <{assign var=artists value=$artists+1}>
+                    <a href="<{$artist.url}>"><{$artist.name}></a><{if $artists < count($artist.artists)}>,&nbsp;<{/if}>
+                    <{/foreach}> 
+                </td>
+            <{/if}>
+        </tr>
+        
+     -->

@@ -17,19 +17,19 @@ function songlist_tag_iteminfo(&$items)
         }
     }
     $item_handler =& xoops_getmodulehandler('songs', 'songlist');
-    $items_obj = $item_handler->getObjects(new Criteria("vid", "(" . implode(", ", $items_id) . ")", "IN"), true);
+    $items_obj = $item_handler->getObjects(new Criteria("sid", "(" . implode(", ", $items_id) . ")", "IN"), true);
     $myts =& MyTextSanitizer::getInstance();
     foreach (array_keys($items) as $cat_id) {
         foreach (array_keys($items[$cat_id]) as $item_id) {
             $item_obj =& $items_obj[$item_id];
             if (is_object($item_obj))
 			$items[$cat_id][$item_id] = array(
-                "title"     => $item_obj->getVar("name"),
+                "title"     => $item_obj->getVar("title"),
                 "uid"       => $item_obj->getVar("uid"),
-                "link"      => 'song.php?sid='.$item_id.'&cid='.$item_obj->getVar("cid"),
+                "link"      => 'index.php?op=item&fct=item&id='.$item_obj->getVar("sid").'&cid='.$item_obj->getVar("cid"),
                 "time"      => $item_obj->getVar("date"),
                 "tags"      => tag_parse_tag($item_obj->getVar("tags", "n")),
-                "content"   => $myts->displayTarea($item_obj->getVar("summary"),true,true,true,true,true,true)
+                "content"   => $myts->displayTarea($item_obj->getVar("lyrics"),true,true,true,true,true,true)
                 );
         }
     }

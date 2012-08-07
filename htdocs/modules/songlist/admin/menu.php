@@ -14,12 +14,26 @@ $adminmenu[$i]['title'] = _MI_SONGLIST_ADMENU_CATEGORY;
 $adminmenu[$i]['icon'] = 'images/icons/32/songlist.category.png';
 $adminmenu[$i]['image'] = 'images/icons/32/songlist.category.png';
 $adminmenu[$i]['link'] = "admin/category.php";
+if ($GLOBALS['songlistModuleConfig']['voice']) {
+	$i++;
+	$adminmenu[$i]['title'] = _MI_SONGLIST_ADMENU_VOICE;
+	$adminmenu[$i]['icon'] = 'images/icons/32/songlist.voice.png';
+	$adminmenu[$i]['image'] = 'images/icons/32/songlist.voice.png';
+	$adminmenu[$i]['link'] = "admin/voice.php";
+}
 if ($GLOBALS['songlistModuleConfig']['album']) {
 	$i++;
 	$adminmenu[$i]['title'] = _MI_SONGLIST_ADMENU_ALBUMS;
 	$adminmenu[$i]['icon'] = 'images/icons/32/songlist.albums.png';
 	$adminmenu[$i]['image'] = 'images/icons/32/songlist.albums.png';
 	$adminmenu[$i]['link'] = "admin/albums.php";
+}
+if ($GLOBALS['songlistModuleConfig']['genre']) {
+	$i++;
+	$adminmenu[$i]['title'] = _MI_SONGLIST_ADMENU_GENRE;
+	$adminmenu[$i]['icon'] = 'images/icons/32/songlist.genre.png';
+	$adminmenu[$i]['image'] = 'images/icons/32/songlist.genre.png';
+	$adminmenu[$i]['link'] = "admin/genre.php";
 }
 $i++;
 $adminmenu[$i]['title'] = _MI_SONGLIST_ADMENU_ARTISTS;
@@ -31,13 +45,6 @@ $adminmenu[$i]['title'] = _MI_SONGLIST_ADMENU_SONGS;
 $adminmenu[$i]['icon'] = 'images/icons/32/songlist.songs.png';
 $adminmenu[$i]['image'] = 'images/icons/32/songlist.songs.png';
 $adminmenu[$i]['link'] = "admin/songs.php";
-if ($GLOBALS['songlistModuleConfig']['genre']) {
-	$i++;
-	$adminmenu[$i]['title'] = _MI_SONGLIST_ADMENU_GENRE;
-	$adminmenu[$i]['icon'] = 'images/icons/32/songlist.genre.png';
-	$adminmenu[$i]['image'] = 'images/icons/32/songlist.genre.png';
-	$adminmenu[$i]['link'] = "admin/genre.php";
-}
 $i++;
 $adminmenu[$i]['title'] = _MI_SONGLIST_ADMENU_VOTE;
 $adminmenu[$i]['icon'] = 'images/icons/32/songlist.votes.png';

@@ -92,7 +92,5 @@
 	xoops_loadLanguage('admin', 'songlist');
 
 	$GLOBALS['songlistModule'] = $module_handler->getByDirname('songlist');	
-	
-	set_time_limit('320');
-	ini_set('memory_limit', '196M');
+
 ?>

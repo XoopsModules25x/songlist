@@ -49,6 +49,7 @@
 			$artists_handler = xoops_getmodulehandler('artists', 'songlist');
 			$albums_handler = xoops_getmodulehandler('albums', 'songlist');
 			$genre_handler = xoops_getmodulehandler('genre', 'songlist');
+			$voice_handler = xoops_getmodulehandler('voice', 'songlist');			
 			$songs_handler = xoops_getmodulehandler('songs', 'songlist');
 			$requests_handler = xoops_getmodulehandler('requests', 'songlist');
 			$votes_handler = xoops_getmodulehandler('votes', 'songlist');
@@ -58,6 +59,7 @@
 		    $indexAdmin->addInfoBoxLine(_AM_SONGLIST_COUNT, "<label>"._AM_SONGLIST_NUMBER_OF_ARTISTS."</label>", $artists_handler->getCount(NULL, true), 'green');
 		    $indexAdmin->addInfoBoxLine(_AM_SONGLIST_COUNT, "<label>"._AM_SONGLIST_NUMBER_OF_ALBUMS."</label>", $albums_handler->getCount(NULL, true), 'green');
 		    $indexAdmin->addInfoBoxLine(_AM_SONGLIST_COUNT, "<label>"._AM_SONGLIST_NUMBER_OF_GENRE."</label>", $genre_handler->getCount(NULL, true), 'green');
+			$indexAdmin->addInfoBoxLine(_AM_SONGLIST_COUNT, "<label>"._AM_SONGLIST_NUMBER_OF_VOICE."</label>", $voice_handler->getCount(NULL, true), 'green');
 		    $indexAdmin->addInfoBoxLine(_AM_SONGLIST_COUNT, "<label>"._AM_SONGLIST_NUMBER_OF_SONGS."</label>", $songs_handler->getCount(NULL, true), 'green');
 		    $indexAdmin->addInfoBoxLine(_AM_SONGLIST_COUNT, "<label>"._AM_SONGLIST_NUMBER_OF_REQUESTS."</label>", $requests_handler->getCount(NULL, true), 'green');
 		    $indexAdmin->addInfoBoxLine(_AM_SONGLIST_COUNT, "<label>"._AM_SONGLIST_NUMBER_OF_VOTES."</label>", $votes_handler->getCount(NULL, true), 'green');

@@ -12,8 +12,8 @@
 		<{if $xoConfig.album}>
 		<th><{$abid_th}></th>
 		<{/if}>
-		<{if $xoConfig.genre}>
-		<th><{$gid_th}></th>
+		<{if $xoConfig.voice}>
+		<th><{$vcid_th}></th>
 		<{/if}>
 		<th><{$songid_th}></th>
 		<th><{$title_th}></th>
@@ -29,8 +29,8 @@
 		<{if $xoConfig.album}>
 		<th><{$filter_abid_th}></th>
 		<{/if}>
-		<{if $xoConfig.genre}>
-		<th><{$filter_gid_th}></th>
+		<{if $xoConfig.voice}>
+		<th><{$filter_vcid_th}></th>
 		<{/if}>
 		<th><{$filter_songid_th}></th>
 		<th><{$filter_title_th}></th>
@@ -47,8 +47,8 @@
 		<{if $xoConfig.album}>
 		<td align='center'><{$item.form.abid}></td>
 		<{/if}>
-		<{if $xoConfig.genre}>
-		<td align='center'><{$item.form.gid}></td>
+		<{if $xoConfig.voice}>
+		<td align='center'><{$item.form.vcid}></td>
 		<{/if}>
 		<td align='center'><{$item.form.songid}></td>
 		<td align='center'><{$item.form.title}></td>
@@ -60,7 +60,7 @@
 	</tr>
 	<{/foreach}>
 	<tr class="foot">
-		<td colspan="11"><input type='submit' name='submit' value='<{$smarty.const._SUBMIT}>'/></td>
+		<td colspan="12"><input type='submit' name='submit' value='<{$smarty.const._SUBMIT}>'/></td>
 	</tr>
 </table>
 <input type='hidden' name='op' value='category'/>

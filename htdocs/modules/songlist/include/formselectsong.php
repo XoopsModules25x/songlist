@@ -111,14 +111,20 @@ class SonglistFormSelectSong extends XoopsFormElement
 		if ($id==-1) {
 			if (!isset($_form_object_options['songs'][$field][$id])) {
 				$songs_handler =& xoops_getmodulehandler('songs', 'songlist');
-				foreach($songs_handler->getObjects(NULL, true) as $id => $obj) { 
+				$criteria = new Criteria('1', '1');
+				$criteria->setSort('`title`');
+				$criteria->setOrder('ASC');
+				foreach($songs_handler->getObjects($criteria, true) as $id => $obj) { 
 					$_form_object_options['songs'][$field][$id][$id] = $obj->getVar('title');
 				}
 			}
 		} else {
 			if (!isset($_form_object_options['songs'][$field][$id])) {
 				$songs_handler =& xoops_getmodulehandler('songs', 'songlist');
-				foreach($songs_handler->getObjects(new Criteria('`'.$field.'`', $id)) as $id => $obj) { 
+				$criteria = new Criteria('`'.$field.'`', $id);
+				$criteria->setSort('`title`');
+				$criteria->setOrder('ASC');
+				foreach($songs_handler->getObjects($criteria) as $id => $obj) { 
 					$_form_object_options['songs'][$field][$id][$id] = $obj->getVar('title');
 				}
 			}

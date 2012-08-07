@@ -1,4 +1,15 @@
 ==========================================
+ 2012/08/07 21:56:01 Version 1.13 STABLE
+==========================================
+Changed: /admin/import.php - Tags, track no added to import feature (wishcraft)
+Changed: /class/albums.php - SEO Path fixed (wishcraft)
+Changed: /class/artists.php - SEO Path fixed (wishcraft)
+Changed: /class/songs.php - SEO Path fixed (wishcraft)
+Changed: /docs/.htaccess - SEO Path fixed (wishcraft)
+  Added: /class/songs.php - Field `traxid` added (wishcraft)
+
+ 
+==========================================
  2012/03/26 09:16:01 Version 1.07 STABLE
 ==========================================
  - First Release Package Was Finalised (wishcraft)

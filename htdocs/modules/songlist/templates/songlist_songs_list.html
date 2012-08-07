@@ -2,88 +2,54 @@
 <div class="sl_pagenav">
 	<{$pagenav}>
 </div>
-<h2><{$smarty.const._MN_SONGLIST_RESULTS}></h2>
+<!--<h2 ><{$smarty.const._MN_SONGLIST_RESULTS}></h2>-->
 <table class="sl_resulttable" cellpadding="3">
 	<thead>
 		<tr>
-			<td><{$smarty.const._MN_SONGLIST_RESULTS_SONGID}></td>
-			<td><{$smarty.const._MN_SONGLIST_RESULTS_TITLE}></td>
-			<td><{$smarty.const._MN_SONGLIST_RESULTS_ARTIST}></td>
+			<th class="id"><{$smarty.const._MN_SONGLIST_RESULTS_SONGID}></th>
+			<th class="title"><{$smarty.const._MN_SONGLIST_RESULTS_TITLE}></th>
+			<th class="artist"><{$smarty.const._MN_SONGLIST_RESULTS_ARTIST}></th>
 			<{if !isset($wurlf_mobile) or not $wurlf_mobile}>
-			<{if $xoConfig.singer}>
-			<td><{$smarty.const._MN_SONGLIST_RESULTS_SINGER}></td>
-			<{/if}>
-			<{if $xoConfig.genre}>
-			<td><{$smarty.const._MN_SONGLIST_RESULTS_GENRE}></td>
-			<{/if}>
-			<{if $xoConfig.album}>
-			<td><{$smarty.const._MN_SONGLIST_RESULTS_ALBUM}></td>
-			<{/if}>
-			<{/if}>
-			<{if $xoConfig.tags}>
-			<td><{$smarty.const._MN_SONGLIST_RESULTS_TAGS}></td>
-			<{/if}>
-			<td><{$smarty.const._MN_SONGLIST_RESULTS_ACTIONS}></td>
+                <{if $xoConfig.singer}>
+                <th class="artist"><{$smarty.const._MN_SONGLIST_RESULTS_SINGER}></th>
+                <{/if}>
+            <{/if}>
 		</tr>
 	</thead>
 	<tbody>
 		<{foreach item=result from=$results}>
-		<tr class="<{cycle values="even,odd"}>">
-			<td><a href="<{$result.url}>"><{$result.songid}></a></td>
-			<td><a href="<{$result.url}>"><{$result.title}></a></td>		
-			<td>
-				<{foreach from=$result.artists_array key=number item=artist}>
-					<a href="<{$artist.url}>"><{$artist.name}></a><{if $number<sizeof($result.artists)-1}>,&nbsp;<{/if}>
-				<{/foreach}>
-			</td>
-			<{if !isset($wurlf_mobile) or not $wurlf_mobile}>
-			<{if $xoConfig.singer}>
-			<td>
-				<{foreach from=$result.artists_array key=number item=artist}>
-					<{if $artist.singer}><{$artist.singer}><{if $number<sizeof($result.artists)-1}>,&nbsp;<{/if}><{/if}>
-				<{/foreach}>
-			</td>
-			<{/if}>
-			<{if $xoConfig.genre}>
-			<td><a href="<{$result.url}>"><{$result.genre.name}></a></td>
-			<{/if}>
-			<{if $xoConfig.album}>
-			<td><a href="<{$result.url}>"><{$result.album.title}></a></td>
-			<{/if}>
-			<{/if}>
-			<{if $xoConfig.tags}>
-			<td><{includeq file="db:tag_bar.html" tagbar=$result.tagbar}></a></td>
-			<{/if}>
-			<td><form action="<{$xoops_url}>/modules/songlist/index.php" method='post'>
-				<input type="hidden" name='id' value='<{$result.sid}>'/>
-				<input type="hidden" name='op' value='vote'/>
-				<input type="hidden" name='uri' value='<{$uri}>'/>
-				<select name='value' id='value'>
-					<option value="10"><{$smarty.const._MN_SONGLIST_10STARS}></option>
-					<option value="9"><{$smarty.const._MN_SONGLIST_9STARS}></option>
-					<option value="8"><{$smarty.const._MN_SONGLIST_8STARS}></option>
-					<option value="7"><{$smarty.const._MN_SONGLIST_7STARS}></option>
-					<option value="6"><{$smarty.const._MN_SONGLIST_6STARS}></option>
-					<option value="5"><{$smarty.const._MN_SONGLIST_5STARS}></option>
-					<option value="6"><{$smarty.const._MN_SONGLIST_6STARS}></option>
-					<option value="5"><{$smarty.const._MN_SONGLIST_5STARS}></option>
-					<option value="4"><{$smarty.const._MN_SONGLIST_4STARS}></option>
-					<option value="3"><{$smarty.const._MN_SONGLIST_3STARS}></option>
-					<option value="2"><{$smarty.const._MN_SONGLIST_2STARS}></option>
-					<option value="1"><{$smarty.const._MN_SONGLIST_1STARS}></option>
-				</select>
-				&nbsp;<input type="submit" name='vote' value="<{$smarty.const._MN_SONGLIST_VOTE}>"/>
-				</form>
-			</td>
-		</tr>
-		<{if !isset($wurlf_mobile) or not $wurlf_mobile}>
-		<{if $xoConfig.lyrics}>
-		<tr class="<{cycle values="even,odd"}>">
-			<td colspan='7'><{$result.lyrics}></td>
-		</tr>
-		<{/if}>
-		<{/if}>
+            <tr class="<{cycle values="even,odd"}>">
+                <td class="id"><a href="<{$result.url}>"><{$result.songid}></a></td>
+                <td><a href="<{$result.url}>"><{$result.title}></a></td>		
+                <td>
+                    <{foreach from=$result.artists_array key=number item=artist}>
+                        <a href="<{$artist.url}>"><{$artist.name}></a><{if $number<sizeof($result.artists)-1}>,&nbsp;<{/if}>
+                    <{/foreach}>
+                </td>
+                <{if !isset($wurlf_mobile) or not $wurlf_mobile}>
+                    <{if $xoConfig.singer}>
+                    <td>
+                        <{foreach from=$result.artists_array key=number item=artist}>
+                            <{if $artist.singer}><{$artist.singer}><{if $number<sizeof($result.artists)-1}>,&nbsp;<{/if}><{/if}>
+                        <{/foreach}>
+                    </td>
+                    <{/if}>
+                <{/if}>
+            </tr>
+            <{if !isset($wurlf_mobile) or not $wurlf_mobile}>
+                <{if $xoConfig.lyrics}>
+                <tr class="<{cycle values="even,odd"}>">
+                    <td></td>
+                    <td colspan='3'>
+                        <div class="lyric"><{$result.lyrics}></div>
+                    </td>
+                </tr>
+                <{/if}>
+            <{/if}>
 		<{/foreach}>
 	</tbody>
 </table>
+<div class="sl_pagenav">
+	<{$pagenav}>
+</div>
 <{/if}>

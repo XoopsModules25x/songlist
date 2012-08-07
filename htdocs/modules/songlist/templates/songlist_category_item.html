@@ -11,7 +11,7 @@
 	<{assign var=cats value=0}>
 	<{foreach from=$category.subcategories item=subcategory}>
 	<{assign var=cats value=$cats+1}>
-	<a href="<{$subcategory.url}>"><{$subcategory.name}></a><{if not $cats < count($category.subcategories)}>,&nbsp;<{/if}>
+	<a href="<{$subcategory.url}>"><{$subcategory.name}></a><{if $cats < count($category.subcategories)}>,&nbsp;<{/if}>
 	<{/foreach}> 
 </div>
 <{/if}>

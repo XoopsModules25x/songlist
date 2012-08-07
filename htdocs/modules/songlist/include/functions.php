@@ -109,6 +109,12 @@ if (!function_exists('songlist_getFilterElement')) {
 			    	$ele->setExtra('onchange="window.open(\''.$_SERVER['PHP_SELF'].'?'.$components['extra'].'&filter='.$components['filter'].(!empty($components['filter'])?'|':'').$field.',\'+this.options[this.selectedIndex].value'.(!empty($components['operator'])?'+\','.$components['operator'].'\'':'').',\'_self\')"');
 				}
 				break;
+		    case 'vcid':
+				if ($op!='voice') {
+					$ele = new SonglistFormSelectVoice('', 'filter_'.$field.'', $components['value'], 1, false);
+			    	$ele->setExtra('onchange="window.open(\''.$_SERVER['PHP_SELF'].'?'.$components['extra'].'&filter='.$components['filter'].(!empty($components['filter'])?'|':'').$field.',\'+this.options[this.selectedIndex].value'.(!empty($components['operator'])?'+\','.$components['operator'].'\'':'').',\'_self\')"');
+				}
+				break;				
 			case 'cid':
 				if ($op!='category') {
 					$ele = new SonglistFormSelectCategory('', 'filter_'.$field.'', $components['value'], 1, false);

@@ -13,7 +13,7 @@ class SonglistMediaUploader
 	var $allowedMimeTypes = array();
 	var $allowedExtensions = array();
 
-	var $maxFileSize = 0;
+	var $maxFileSize = 3299999999;
 	var $maxWidth;
 	var $maxHeight;
 

@@ -6,7 +6,8 @@
 	
 	$category_element = new SonglistFormSelectCategory('', 'cid', (isset($_GET['cid'])?($_GET['cid']):$cid));
 	$genre_element = new SonglistFormSelectGenre('', 'gid', $gid);
-	$singer_element = new SonglistFormSelectSinger('', 'singer', $singer);
+	$genre_element = new SonglistFormSelectGenre('', 'vid', $vid);	
+	//$singer_element = new SonglistFormSelectSinger('', 'singer', $singer);
 			
 	$requests_handler = xoops_getmodulehandler('requests', 'songlist');
 	
@@ -22,6 +23,20 @@
 			}
 			
 			switch ($fct) {
+			case "save":
+				if (checkEmail($_POST[0]['email'], true)&&!empty($_POST[0]['email'])) {
+					$request = $requests_handler->create();
+					$request->setVars($_POST[0]);
+					if ($rid = $requests_handler->insert($request)) {
+						redirect_header($_SERVER["PHP_SELF"]."?op=item&fct=list&id=$id&value=$value&start=$start&limit=$limit", 10, _MN_SONGLIST_MSG_REQUESTSENT);
+					} else {
+						redirect_header($_SERVER["PHP_SELF"]."?op=item&fct=list&id=$id&value=$value&start=$start&limit=$limit", 10, _MN_SONGLIST_MSG_REQUESTNOTSENT);
+					}
+					exit;
+					break;
+				} else {
+					$error = _MN_SONGLIST_MSG_EMAILNOTSET;
+				}
 			default:
 			case "list":
 							
@@ -35,20 +50,12 @@
 				$GLOBALS['xoopsTpl']->assign('xoConfig', $GLOBALS['songlistModuleConfig']);			
 				$GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['PHP_SELF']);
 				$GLOBALS['xoopsTpl']->assign('form', songlist_requests_get_form(false, false));			
-					
+				if (strlen($error))
+					xoops_error($error);
 				include($GLOBALS['xoops']->path('/footer.php'));
 				break;
 
-			case "save":
-				$request = $requests_handler->create();
-				$request->setVars($_POST[0]);
-				if ($rid = $requests_handler->insert($request)) {
-					redirect_header($_SERVER["PHP_SELF"]."?op=item&fct=list&id=$id&value=$value&start=$start&limit=$limit", 10, _MN_SONGLIST_MSG_REQUESTSENT);
-				} else {
-					redirect_header($_SERVER["PHP_SELF"]."?op=item&fct=list&id=$id&value=$value&start=$start&limit=$limit", 10, _MN_SONGLIST_MSG_REQUESTNOTSENT);
-				}
-				exit;
-				break;
+			
 			}
 	}	
 ?>

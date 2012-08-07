@@ -1,8 +1,8 @@
 CREATE TABLE `songlist_albums` (
   `abid` INT(12) UNSIGNED NOT NULL AUTO_INCREMENT,
   `cid` int(12) unsigned DEFAULT '0',
-  `aids` varchar(650) DEFAULT NULL,
-  `sids` varchar(650) DEFAULT NULL,
+  `aids` mediumtext,
+  `sids` mediumtext,
   `title` varchar(128) DEFAULT NULL,
   `image` varchar(128) DEFAULT NULL,
   `path` varchar(128) DEFAULT NULL,
@@ -21,9 +21,8 @@ CREATE TABLE `songlist_albums` (
 
 CREATE TABLE `songlist_artists` (
   `aid` INT(12) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `cids` varchar(650) DEFAULT NULL,
-  `sids` varchar(650) DEFAULT NULL,
-  `singer` ENUM('_ENUM_SONGLIST_SOLO','_ENUM_SONGLIST_DUET') DEFAULT NULL,
+  `cids` mediumtext,
+  `sids` mediumtext,
   `name` varchar(128) DEFAULT NULL,
   `albums` int(12) unsigned DEFAULT '0',
   `songs` int(12) unsigned DEFAULT '0',
@@ -33,7 +32,7 @@ CREATE TABLE `songlist_artists` (
   `created` int(12) unsigned DEFAULT '0',
   `updated` int(12) unsigned DEFAULT '0',
   PRIMARY KEY (`aid`),
-  KEY `SEARCH` (`cids`(25),`sids`(25),`singer`,`name`(10)),
+  KEY `SEARCH` (`cids`(25),`sids`(25),`name`(10)),
   KEY `BROWSEBY` (`cids`(25),`name`(1)),
   KEY `SORT` (`rank`,`votes`,`created`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -43,7 +42,7 @@ CREATE TABLE `songlist_category` (
   `pid` int(10) unsigned DEFAULT '0',
   `weight` int(5) unsigned DEFAULT '0',
   `name` varchar(128) DEFAULT NULL,
-  `description` varchar(650) DEFAULT NULL,
+  `description` mediumtext,
   `image` varchar(128) DEFAULT NULL,
   `path` varchar(128) DEFAULT NULL,
   `artists` int(12) unsigned DEFAULT '0',
@@ -83,7 +82,7 @@ CREATE TABLE `songlist_requests` (
 
 CREATE TABLE `songlist_field` (
   `field_id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `cids` varchar(650) DEFAULT NULL,
+  `cids` mediumtext,
   `field_type` varchar(30) NOT NULL DEFAULT '',
   `field_valuetype` tinyint(2) unsigned NOT NULL DEFAULT '0',
   `field_name` varchar(255) NOT NULL DEFAULT '',
@@ -119,12 +118,14 @@ CREATE TABLE `songlist_genre` (
 CREATE TABLE `songlist_songs` (
   `sid` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `cid` int(12) unsigned DEFAULT '0',
-  `gid` int(12) unsigned DEFAULT '0',
-  `aids` varchar(650) DEFAULT NULL,
+  `gids` mediumtext,
+  `vcid` int(12) unsigned DEFAULT '0',
+  `aids` mediumtext,
   `abid` int(12) unsigned DEFAULT '0',
   `songid` varchar(32) DEFAULT NULL,
+  `traxid` varchar(32) DEFAULT NULL,
   `title` varchar(128) DEFAULT NULL,
-  `lyrics` varchar(650) DEFAULT NULL,
+  `lyrics` longtext,
   `hits` int(12) unsigned DEFAULT '0',
   `rank` decimal(10,3) unsigned DEFAULT '0.000',
   `votes` int(10) unsigned DEFAULT '0',
@@ -132,7 +133,7 @@ CREATE TABLE `songlist_songs` (
   `created` int(12) unsigned DEFAULT '0',
   `updated` int(12) unsigned DEFAULT '0',
   PRIMARY KEY (`sid`),
-  KEY `SEARCH` (`cid`,`gid`,`aids`(25),`abid`,`songid`(10),`title`(10),`lyrics`(15)),
+  KEY `SEARCH` (`cid`,`gids`(25),`vcid`,`aids`(25),`abid`,`songid`(10),`traxid`(10),`title`(10),`lyrics`(15)),
   KEY `BROWSEBY` (`cid`,`title`(1),`lyrics`(1)),
   KEY `SORT` (`rank`,`votes`,`created`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -152,6 +153,21 @@ CREATE TABLE `songlist_visibility` (
   `profile_group` smallint(5) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`field_id`,`user_group`,`profile_group`),
   KEY `visible` (`user_group`,`profile_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `songlist_voice` (
+  `vcid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) DEFAULT NULL,
+  `artists` int(12) unsigned DEFAULT '0',
+  `albums` int(12) unsigned DEFAULT '0',
+  `songs` int(12) unsigned DEFAULT '0',
+  `rank` decimal(10,3) unsigned DEFAULT '0.000',
+  `votes` int(10) unsigned DEFAULT '0',  
+  `hits` INT(12) UNSIGNED DEFAULT '0',
+  `created` int(12) unsigned DEFAULT '0',
+  `updated` int(12) unsigned DEFAULT '0',
+  PRIMARY KEY (`vcid`),
+  KEY `SORT` (`name`(32),`rank`,`votes`,`created`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `songlist_votes` (

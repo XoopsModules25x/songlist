@@ -1,15 +1,16 @@
 <{if $results}>
 <{if not $pagenav eq ''}> 
 <div style='width:100%; clear:both; height:25px;'>
-	<div style='float:right;'>
+	<div class="sl_pagenav">
 		<{$pagenav}>
 	</div>
 </div>
 <{/if}>
 <table>
 	<{foreach from=$results item=row}>
-	<tr>
+
 		<{foreach from=$row item=result}>
+        	<tr>
 		<td width="<{$result.width}>%"><{includeq file="db:songlist_albums_item.html" album=$result}></td>
 		<{/foreach}>
 	</tr>

@@ -66,13 +66,11 @@
 	$GLOBALS['id']=isset($_REQUEST['id'])?$_REQUEST['id']:0;
 	$GLOBALS['value']=isset($_REQUEST['value'])?$_REQUEST['value']:'%';
 	$GLOBALS['gid']=isset($_REQUEST['gid'])?$_REQUEST['gid']:0;
+	$GLOBALS['vid']=isset($_REQUEST['vid'])?$_REQUEST['vid']:0;
+	$GLOBALS['vcid']=isset($_REQUEST['vcid'])?$_REQUEST['vcid']:0;
 	$GLOBALS['cid']=(((isset($_POST['cid'])?$_POST['cid']:isset($_GET['cid']))?$_GET['cid']:isset($_SESSION['cid']))?$_SESSION['cid']:0);
-	$GLOBALS['singer']=isset($_REQUEST['singer'])?$_REQUEST['singer']:'_ENUM_SONGLIST_SOLO';
 	$GLOBALS['start']=isset($_REQUEST['start'])?$_REQUEST['start']:0;
 	$GLOBALS['limit']=isset($_REQUEST['limit'])?$_REQUEST['limit']:$GLOBALS['songlistModuleConfig']['cols']*$GLOBALS['songlistModuleConfig']['rows'];
-	
-	set_time_limit('320');
-	ini_set('memory_limit', '128M');
 	
 	if (!isset($_SESSION['cid']))
 		$_SESSION['cid'] = $GLOBALS['cid'];

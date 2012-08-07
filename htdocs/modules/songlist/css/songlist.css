@@ -17,20 +17,12 @@
 	width: 100%; 
 }
 
-.sl_outersep {
-	clear:both;
-	height: 6px; 
-	text-align:center;
-	width: 100%; 
-	border-bottom: 2px dashed #000;
-	margin-bottom: 6px;
-}
-
 .sl_breadcrumb {
 	clear:both;
-	text-align:left;
-	font-size: 1.05em;
+	text-align:center;
+	font-size: 1.4em;
 	font-weight: bold;
+	margin-bottom:10px;
 }
 
 .sl_breadcrumb a {
@@ -62,19 +54,17 @@
 }
 
 .sl_alphasubdiva {
-	float:left; 
-	width: 20%;
+	float:center; 
+	width: 100%;
 	clear:none;
-	font-size:1.25em;
+	font-size:1.5em;
 }
 
 .sl_alphasubdivb {
-	top: -7px;
-	position: relative;
-	float:right;
-	width: 70%; 
+	float:clear;
+	width: 100%; 
 	clear:none;
-	font-size:1.3em;
+	font-size:1.4em;
 }
 
 .sl_search {
@@ -84,16 +74,18 @@
 }
 
 .sl_searchdiv {
-	float:left;
-	clear:none;
+	float: clear;
+	width: 250px;
+	margin: 0 auto; 
 }
 
 .sl_pagenav {
-	float:right;
+	float: clear;
+	align: center;
 }
 
 .sl_resulttable {
-	
+
 }
 
 .sl_resulttable tr {
@@ -155,6 +147,59 @@
 	margin-bottom: 10px;
 }
 
+.container{
+  float: left;
+  clear: left;
+  border: 0px dotted;
+  width: 366px;
+}
+
+.col1 {
+  float: left;
+  clear:both;
+  width: 85px;
+  border: 0px solid;
+  font-size:1.25em;
+  font-weight: bold;
+}
+
+.col2 {
+  float: left;
+  border: 0px solid;
+  font-size:1.25em;
+  width: inherit;
+}
+
+.label{
+    position:absolute;
+    top:-15px;
+    left:20px;  
+    margin:0;
+    padding:0 5px;
+    line-height:25px;
+    background: #00ff00;
+    border:1px solid #000000;
+	font-size:1.8em;
+}
+
+.container{
+    position:relative;
+    float:left;
+    width: inherit;
+    border: 1px solid #000000;
+    margin:20px;
+    background:white;
+    display:inline;
+	min-width:320px;
+}
+
+.content {
+    padding: 5px;
+    margin: 5px 1px 1px 1px;
+	
+
+}
+
 .sl_subsong {
 	margin-left:13px; 
 	font-size:0.90em; 
@@ -169,3 +214,24 @@
 	clear:both;
 	width:320px;
 }
+
+.lyric {
+	font-style:italic;
+	margin-left: 10px;
+}
+
+.id {
+	text-align: center;
+	width: 40px;
+}
+
+.title .artist .album {
+	text-align: left;
+}
+
+
+.leftcol {
+    font-weight: bold;
+    text-align: right;
+    width: 60px;
+ }

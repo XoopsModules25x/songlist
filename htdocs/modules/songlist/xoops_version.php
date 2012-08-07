@@ -10,7 +10,7 @@ if (is_object($GLOBALS['songlistModule']))
 // $Id: xoops_version.php,v 4.04 2008/06/05 15:35:59 wishcraft Exp $
 
 $modversion['name'] = _MI_SONGLIST_NAME;
-$modversion['version'] = 1.11;
+$modversion['version'] = 1.13;
 $modversion['description'] = _MI_SONGLIST_DESC;
 $modversion['credits'] = "Orginally Written by wishcraft, Testing Phil and Michael Beck";
 $modversion['author'] = "Simon Roberts (wishcraft)";
@@ -54,11 +54,12 @@ $modversion['tables'][2] = "songlist_category";
 $modversion['tables'][3] = "songlist_extra";
 $modversion['tables'][4] = "songlist_field";
 $modversion['tables'][5] = "songlist_genre";
-$modversion['tables'][6] = "songlist_requests";
-$modversion['tables'][7] = "songlist_songs";
-$modversion['tables'][8] = "songlist_utf8map";
-$modversion['tables'][9] = "songlist_visibility";
-$modversion['tables'][10] = "songlist_votes";
+$modversion['tables'][6] = "songlist_voice";
+$modversion['tables'][7] = "songlist_requests";
+$modversion['tables'][8] = "songlist_songs";
+$modversion['tables'][9] = "songlist_utf8map";
+$modversion['tables'][10] = "songlist_visibility";
+$modversion['tables'][11] = "songlist_votes";
 
 // Admin things
 $modversion['system_menu'] = 1;
@@ -73,7 +74,7 @@ $modversion['hasMain'] = 1;
 //$modversion['onInstall'] = 'include/module.php';
 
 //update things
-//$modversion['onUpdate'] = 'include/module.php';
+$modversion['onUpdate'] = 'include/update.php';
 
 //module css
 $modversion['css'] = 'css/songlist.css';
@@ -161,6 +162,12 @@ $modversion['templates'][$i]['file'] = 'songlist_cpanel_genre_edit.html';
 $modversion['templates'][$i]['description'] = '';
 $i++;
 $modversion['templates'][$i]['file'] = 'songlist_cpanel_genre_list.html';
+$modversion['templates'][$i]['description'] = '';
+$i++;
+$modversion['templates'][$i]['file'] = 'songlist_cpanel_voice_edit.html';
+$modversion['templates'][$i]['description'] = '';
+$i++;
+$modversion['templates'][$i]['file'] = 'songlist_cpanel_voice_list.html';
 $modversion['templates'][$i]['description'] = '';
 $i++;
 $modversion['templates'][$i]['file'] = 'songlist_cpanel_import_actiona.html';
@@ -402,12 +409,30 @@ $modversion['config'][$i]['valuetype'] = 'int';
 $modversion['config'][$i]['default'] = '0';
 
 $i++;
+$modversion['config'][$i]['name'] = 'voice';
+$modversion['config'][$i]['title'] = "_MI_SONGLIST_VOICE";
+$modversion['config'][$i]['description'] = "_MI_SONGLIST_VOICE_DESC";
+$modversion['config'][$i]['formtype'] = 'yesno';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = '0';
+
+$i++;
+$modversion['config'][$i]['name'] = 'lyrics';
+$modversion['config'][$i]['title'] = "_MI_SONGLIST_LYRICS";
+$modversion['config'][$i]['description'] = "_MI_SONGLIST_LYRICS_DESC";
+$modversion['config'][$i]['formtype'] = 'yesno';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = '0';
+
+/*
+$i++;
 $modversion['config'][$i]['name'] = 'singer';
 $modversion['config'][$i]['title'] = "_MI_SONGLIST_SINGER";
 $modversion['config'][$i]['description'] = "_MI_SONGLIST_SINGER_DESC";
 $modversion['config'][$i]['formtype'] = 'yesno';
 $modversion['config'][$i]['valuetype'] = 'int';
 $modversion['config'][$i]['default'] = '0';
+*/
 
 $i++;
 $modversion['config'][$i]['name'] = 'htaccess';

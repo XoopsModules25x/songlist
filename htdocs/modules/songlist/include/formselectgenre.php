@@ -107,10 +107,13 @@ class SonglistFormSelectGenre extends XoopsFormElement
         if (isset($value)) {
             $this->setValue($value);
         }
-		$this->addOption('0', _MI_SONGLIST_NONE);
+		$this->addOption('0', _MI_SONGLIST_ALL);
 		if (!isset($_form_object_options['genre'])) {
 			$genre_handler =& xoops_getmodulehandler('genre', 'songlist');
-			foreach($genre_handler->getObjects(NULL, true) as $id => $obj) {
+			$criteria = new Criteria('1', '1');
+			$criteria->setSort('`name`');
+			$criteria->setOrder('ASC');
+			foreach($genre_handler->getObjects($criteria, true) as $id => $obj) {
 				$_form_object_options['genre'][$id] = $obj->getVar('name'); 
 			}
 		}

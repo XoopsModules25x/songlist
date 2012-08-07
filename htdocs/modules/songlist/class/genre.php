@@ -120,7 +120,7 @@ class SonglistGenreHandler extends XoopsPersistableObjectHandler
     function get($id, $fields = '*') {
     	if (!isset($this->_objects['object'][$id])) {
 	    	$this->_objects['object'][$id] = parent::get($id, $fields);
-	    	if (!isset($GLOBALS['songlistAdmin'])) {
+	    	if (!isset($GLOBALS['songlistAdmin'])&&is_object($this->_objects['object'][$id])) {
 		    	$sql = 'UPDATE `'.$this->table.'` set hits=hits+1 where `'.$this->keyName.'` = '.$this->_objects['object'][$id]->getVar($this->keyName);
 		    	$GLOBALS['xoopsDB']->queryF($sql);
 	    	}
@@ -174,5 +174,12 @@ class SonglistGenreHandler extends XoopsPersistableObjectHandler
     	}
     	return $ret;
     }
+    
+    function delete($object, $force=true) {
+    	parent::delete($object, $force);
+    	$sql = 'UPDATE ' . $GLOBALS['xoopsDB']->prefix('songlist_songs') . ' SET `gid` = 0 WHERE `gid` = ' . $object->getVar('gid');
+    	return $GLOBALS['xoopsDB']->queryF($sql);	
+    }
+    
 }
 ?>

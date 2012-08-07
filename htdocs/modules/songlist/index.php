@@ -2,7 +2,7 @@
 
 	include (dirname(__FILE__).'/header.php');
 	
-	global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit, $singer;
+	global $file, $op, $fct, $id, $value, $gid, $cid, $vcid,$start, $limit, $singer;
 	
 	$category_handler = xoops_getmodulehandler('category', 'songlist');
 	$criteria_cat = new CriteriaCompo();
@@ -44,8 +44,8 @@
 	
 	$category_element = new SonglistFormSelectCategory('', 'cid', (isset($_GET['cid'])?($_GET['cid']):$cid));
 	$genre_element = new SonglistFormSelectGenre('', 'gid', $gid);
-	$singer_element = new SonglistFormSelectSinger('', 'singer', $singer);
-		
+	$voice_element = new SonglistFormSelectVoice('', 'vcid', $vcid);
+	
 	$songs_handler = xoops_getmodulehandler('songs', 'songlist');
 	switch ($op) {
 		case "vote":
@@ -89,7 +89,7 @@
 				$GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
 				$GLOBALS['xoopsTpl']->assign('category_element', $category_element->render());
 				$GLOBALS['xoopsTpl']->assign('genre_element', $genre_element->render());
-				$GLOBALS['xoopsTpl']->assign('singer_element', $singer_element->render());				
+				$GLOBALS['xoopsTpl']->assign('voice_element', $voice_element->render());
 				$GLOBALS['xoopsTpl']->assign('cid', $_SESSION['cid']);
 				if ($_SESSION['cid']!=0) {
 					$category = $category_handler->get($_SESSION['cid']);
@@ -123,7 +123,7 @@
 				$GLOBALS['xoopsTpl']->assign('categories', $cat);
 				$GLOBALS['xoopsTpl']->assign('category_element', $category_element->render());
 				$GLOBALS['xoopsTpl']->assign('genre_element', $genre_element->render());
-				$GLOBALS['xoopsTpl']->assign('singer_element', $singer_element->render());
+				$GLOBALS['xoopsTpl']->assign('voice_element', $voice_element->render());
 				$GLOBALS['xoopsTpl']->assign('uri', $_SERVER['REQUEST_URI']);				
 				include($GLOBALS['xoops']->path('/footer.php'));
 				break;	
@@ -206,13 +206,15 @@
 						$browse_criteria->add(new Criteria('`title`', strtolower($value).'%', 'LIKE'), 'OR');
 						break;
 				}
+				$ids=array();
 				$albums_handler = xoops_getmodulehandler('albums', 'songlist');
 				foreach($albums_handler->getObjects($browse_criteria, true) as $id => $obj) {
 					$ids[$id] = $id; 
 					
 				}
 				$criteria = new CriteriaCompo($criteria_cat, 'AND');
-				$criteria->add(new Criteria('abid', '('.implode(',', $ids).')', 'IN'));
+				if (count($ids)>0)
+					$criteria->add(new Criteria('abid', '('.implode(',', $ids).')', 'IN'));
 				break;
 			}
 			
@@ -246,7 +248,7 @@
 			$GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
 			$GLOBALS['xoopsTpl']->assign('category_element', $category_element->render());
 			$GLOBALS['xoopsTpl']->assign('genre_element', $genre_element->render());
-			$GLOBALS['xoopsTpl']->assign('singer_element', $singer_element->render());			
+			$GLOBALS['xoopsTpl']->assign('voice_element', $voice_element->render());			
 			$GLOBALS['xoopsTpl']->assign('cid', $_SESSION['cid']);
 			if ($_SESSION['cid']!=0) {
 				$category = $category_handler->get($_SESSION['cid']);
@@ -273,41 +275,66 @@
 			}
 			
 			switch ($fct) {
-			default:
-			case "titleandlyrics":
-				$criteria = new CriteriaCompo();
-				foreach(explode(' ' , $value) as $keyword) {
-					$criteria->add(new Criteria('`title`', '%'.$utf8map_handler->convert($keyword).'%', 'LIKE'));
-					$criteria->add(new Criteria('`lyrics`', '%'.$utf8map_handler->convert($keyword).'%', 'LIKE'));
-				}
-				break;
-			case "lyrics":
-				$criteria = new CriteriaCompo();
-				foreach(explode(' ' , $value) as $keyword) {
-					$criteria->add(new Criteria('`lyrics`', '%'.$utf8map_handler->convert($keyword).'%', 'LIKE'));
-				}
-				break;
-			case "title":
-				$criteria = new CriteriaCompo();
-				foreach(explode(' ' , $value) as $keyword) {
-					$criteria->add(new Criteria('`title`', '%'.$utf8map_handler->convert($keyword).'%', 'LIKE'));
-				}
-				break;
+				default:
+				case "titleandlyrics":
+					$criteria = new CriteriaCompo();
+					foreach(explode(' ' , $value) as $keyword) {
+						$criteria->add(new Criteria('`title`', '%'.$utf8map_handler->convert($keyword).'%', 'LIKE'));
+						$criteria->add(new Criteria('`lyrics`', '%'.$utf8map_handler->convert($keyword).'%', 'LIKE'));
+					}
+					break;
+					
+				case "albums":
+					$criteria = new CriteriaCompo();
+					foreach(explode(' ' , $value) as $keyword) {
+						$criteria->add(new Criteria('`title`', '%'.$utf8map_handler->convert($keyword).'%', 'LIKE'));
+					}
+					$albums = $albums_handler->getObject($criteria, true);
+					$criteria = new CriteriaCompo();
+					foreach($albums as $abid=> $album) {
+						$criteria->add(new Criteria('`abid`', $abid), 'OR');
+					}
+					break;
+				
+				case "artists":
+					$criteria = new CriteriaCompo();
+					foreach(explode(' ' , $value) as $keyword) {
+						$criteria->add(new Criteria('`name`', '%'.$utf8map_handler->convert($keyword).'%', 'LIKE'));
+					}
+					$artists = $artists_handler->getObject($criteria, true);
+					$criteria = new CriteriaCompo();
+					foreach($artists as $aid=> $artist) {
+						$criteria->add(new Criteria('`aids`', '%"'.$aid.'"%', 'LIKE'), 'OR');
+					}
+					break;				
+				
+				case "lyrics":
+					$criteria = new CriteriaCompo();
+					foreach(explode(' ' , $value) as $keyword) {
+						$criteria->add(new Criteria('`lyrics`', '%'.$utf8map_handler->convert($keyword).'%', 'LIKE'));
+					}
+					break;
+				case "title":
+					$criteria = new CriteriaCompo();
+					foreach(explode(' ' , $value) as $keyword) {
+						$criteria->add(new Criteria('`title`', '%'.$utf8map_handler->convert($keyword).'%', 'LIKE'));
+					}
+					break;
 			}
 			
 			if ($gid != 0 && $GLOBALS['songlistModuleConfig']['genre']) {
-				$criteria->add(new Criteria('`gid`', $gid));
+				$criteria->add(new Criteria('`gids`', '%"'.$gid.'"%', 'LIKE'));
 			}
 			
-			if ($singer!='_' && $GLOBALS['songlistModuleConfig']['singer']) {
-				$criteria->add(new Criteria('`sid`', '('.implode(',', $artists_handler->getSIDs(new Criteria('`singer`', $singer))).')', 'IN'));
-			}
+			if ($vcid != 0 && $GLOBALS['songlistModuleConfig']['voice']) {
+				$criteria->add(new Criteria('`vcid`', $vcid));
+			}			
 
 			if ((isset($_GET['cid'])?($_GET['cid']):$cid) != 0) {
 				$criteria->add(new Criteria('`cid`',  (isset($_GET['cid'])?($_GET['cid']):$cid)));
 			}
 			
-			$pagenav = new XoopsPageNav($songs_handler->getCount($criteria), $limit, $start, 'start', "op=$op&fct=$fct&gid=$gid&singer=$singer&value=$value&limit=$limit");
+			$pagenav = new XoopsPageNav($songs_handler->getCount($criteria), $limit, $start, 'start', "op=$op&fct=$fct&gid=$gid&vcid=$vcid&value=$value&limit=$limit");
 
 			$criteria->setLimit($limit);
 			$criteria->setStart($start);
@@ -330,7 +357,7 @@
 			$GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
 			$GLOBALS['xoopsTpl']->assign('category_element', $category_element->render());
 			$GLOBALS['xoopsTpl']->assign('genre_element', $genre_element->render());
-			$GLOBALS['xoopsTpl']->assign('singer_element', $singer_element->render());				
+			$GLOBALS['xoopsTpl']->assign('voice_element', $voice_element->render());		
 			$GLOBALS['xoopsTpl']->assign('cid', $_SESSION['cid']);
 			$GLOBALS['xoopsTpl']->assign('uri', $_SERVER['REQUEST_URI']);	
 			include($GLOBALS['xoops']->path('/footer.php'));

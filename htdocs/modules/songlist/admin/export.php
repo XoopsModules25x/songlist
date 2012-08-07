@@ -87,6 +87,7 @@
 				$albums_handler = xoops_getmodulehandler('albums', 'songlist');
 				$artists_handler = xoops_getmodulehandler('artists', 'songlist');
 				$genre_handler = xoops_getmodulehandler('genre', 'songlist');
+				$voice_handler = xoops_getmodulehandler('voice', 'songlist');				
 				$category_handler = xoops_getmodulehandler('category', 'songlist');
 				
 				$filesize = filesize($GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas'].$_SESSION['xmlfile']));
@@ -113,6 +114,20 @@
 									$gid = $genre_handler->insert($object);
 								} 								
 							}	
+
+							$vid = 0;
+							if (strlen($_POST['voice'])>0&&!empty($data[$_POST['voice']])) {
+								$criteria = new Criteria('`name`',  $data[$_POST['voice']]);
+								if ($voice_handler->getCount($criteria)>0) {
+									$objects = $voice_handler->getObjects($criteria, false);
+									$gid = $objects[0]->getVar('vid');
+								} else {
+									$object = $voice_handler->create();
+									$object->setVar('name', $data[$_POST['voice']]);
+									$gid = $voice_handler->insert($object);
+								} 								
+							}								
+							
 							$cid = 0;
 							if (strlen($_POST['category'])>0&&!empty($data[$_POST['category']])) {
 								$criteria = new Criteria('`name`',  $data[$_POST['category']]);
@@ -197,6 +212,18 @@
 								$gid = $genre_handler->insert($object);
 							} 								
 						}	
+						$vid = 0;
+						if (strlen($_POST['voice'])>0&&!empty($data[$_POST['voice']])) {
+							$criteria = new Criteria('`name`',  $data[$_POST['voice']]);
+							if ($voice_handler->getCount($criteria)>0) {
+								$objects = $voice_handler->getObjects($criteria, false);
+								$gid = $objects[0]->getVar('vid');
+							} else {
+								$object = $voice_handler->create();
+								$object->setVar('name', $data[$_POST['voice']]);
+								$gid = $voice_handler->insert($object);
+							} 								
+						}						
 						$cid = 0;
 						if (strlen($_POST['category'])>0&&!empty($data[$_POST['category']])) {
 							$criteria = new Criteria('`name`',  $data[$_POST['category']]);

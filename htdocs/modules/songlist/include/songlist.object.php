@@ -15,7 +15,7 @@
 	require_once('formselectartist.php');
 	require_once('formselectcategory.php');
 	require_once('formselectgenre.php');
-	require_once('formselectsinger.php');
+	require_once('formselectvoice.php');
 	require_once('formselectsong.php');
 	
 	if (file_exists($GLOBALS['xoops']->path('/modules/tag/include/formtag.php')) && $GLOBALS['songlistModuleConfig']['tags'])
