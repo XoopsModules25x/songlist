@@ -118,7 +118,7 @@
 							if (strlen($songs->getVar('mp3')))
 								unlink($GLOBALS['xoops']->path($songs->getVar('path')).basename($songs->getVar('mp3')));
 								
-							$songs->setVar('mp3', XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['upload_areas'].$uploader->getSavedFileName());
+							$songs->setVar('mp3', XOOPS_URL.'/'.str_replace(DS, '/', $GLOBALS['songlistModuleConfig']['upload_areas']).$uploader->getSavedFileName());
 								
 						}
 					} else {
@@ -186,7 +186,7 @@
 								if (strlen($songs->getVar('mp3')))
 									unlink($GLOBALS['xoops']->path($songs->getVar('path')).basename($songs->getVar('mp3')));
 					
-								$songs->setVar('mp3', XOOPS_URL.'/'.$GLOBALS['songlistModuleConfig']['upload_areas'].$uploader->getSavedFileName());
+								$songs->setVar('mp3', XOOPS_URL.'/'.str_replace(DS, '/', $GLOBALS['songlistModuleConfig']['upload_areas']).$uploader->getSavedFileName());
 					
 							}
 						} else {
