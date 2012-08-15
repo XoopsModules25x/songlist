@@ -1,0 +1,39 @@
+﻿Vietnamese Alphabets: A B C D Đ E F G H I J K L M N O P Q R S T U Ư V W X Y Z 0 - 9
+Link Example: http://music.nhacthanh.net/index.php
+
+See excel for list of fields.
+							
+1. Search on field Title or Lyric or Artist or Title and Lyric - default to Title
+2. Narrow down search in songlist List1 or List2 or List3....default ALL List
+3. Option to narrow down to genre - setting in admin to turn on/off.
+4. Option to narrow down to how many singers require - setting in admin to turn on/off
+
+Question: Is there a way to strip Vietnamese symbol on search but result display full Vietnamse symbols.????
+
+Search result should be according to 1, 2, 3 and 4 above, has auto complete (can turn off in admin).
+
+Search Result Display:
+title_vn, lyric_vn, artist_vn, song_id, songlist
+and title's image if avaliable.
+Link to each title to have format http://....../Songlist-SongID-Title-name-and-dash-in-between
+
+Browse by:
+Below all have colums for each field and click on field's name to sort.
+Title, Lyric, Artist, SongID, Genre, Songlist
+Browse Title by Letters - admin site to enable or disable
+Browse Title by Artist - admin site to enable or disable
+Browse Title by Genre - admin site to enable or disable
+Browse Title by Songlist - admin site to enable or disable
+
+Statistic: Title by Artist, Genre, Hit or rating.
+
+Admin import script: New Songs, update songs title, lyric, artist base on song id.
+
+Admin side:
+ Create Songlist, Genre and add song.
+
+User side:
+ User Submit request for SongID classification
+ Must fill in Title, Artist, Lyric
+
+Songlist most likely will be used by mobile devices but does not excluding computer, therefore GUI should be mobile friendly
