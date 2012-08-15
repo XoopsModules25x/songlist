@@ -59,7 +59,9 @@
 	define('_FRM_SONGLIST_FORM_SONGS_VOICE_DESC', '');
 	define('_FRM_SONGLIST_FORM_SONGS_ALBUM', 'Song Album');
 	define('_FRM_SONGLIST_FORM_SONGS_ALBUM_DESC', '');
-	
+	define('_FRM_SONGLIST_FORM_SONGS_MP3', 'MP3 File');
+	define('_FRM_SONGLIST_FORM_SONGS_MP3_DESC', '');
+		
 	// UTF8 Mapping Form
 	define('_FRM_SONGLIST_FORM_ISNEW_UTF8MAP', 'New Chracter replacement mapping');
 	define('_FRM_SONGLIST_FORM_EDIT_UTF8MAP', 'Edit Chracter replacement mapping');
@@ -224,6 +226,8 @@
 	define('_FRM_SONGLIST_FORM_ELEMENT_LYRICS_DESC', 'Lyrics data is contained in this element');
 	define('_FRM_SONGLIST_FORM_ELEMENT_TAGS', 'Song Tags Element Is');
 	define('_FRM_SONGLIST_FORM_ELEMENT_TAGS_DESC', 'Tags is contained in this element');
+	define('_FRM_SONGLIST_FORM_ELEMENT_MP3', 'Song MP3 URL');
+	define('_FRM_SONGLIST_FORM_ELEMENT_MP3_DESC', 'URL for MP3 is contained in this element');
 	define('_FRM_SONGLIST_FORM_IMPORT_LIMITING', 'Import Sessioning Limitations?');
 	define('_FRM_SONGLIST_FORM_IMPORT_LIMITING_DESC', 'If this is enabled every number of records the process will sleep for a certain amount of seconds.');
 	define('_FRM_SONGLIST_FORM_IMPORT_RECORDS', 'Import Sessioning Record Count');

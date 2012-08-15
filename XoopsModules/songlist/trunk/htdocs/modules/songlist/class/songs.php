@@ -26,6 +26,7 @@ class SonglistSongs extends XoopsObject
 		$this->initVar('rank', XOBJ_DTYPE_DECIMAL, 0, false);
 		$this->initVar('votes', XOBJ_DTYPE_INT, 0, false);
 		$this->initVar('tags', XOBJ_DTYPE_TXTBOX, null, false, 255);
+		$this->initVar('mp3', XOBJ_DTYPE_OTHER, null, false, 500);
 		$this->initVar('created', XOBJ_DTYPE_INT, 0, false);
 		$this->initVar('updated', XOBJ_DTYPE_INT, 0, false);
 	}
@@ -55,6 +56,10 @@ class SonglistSongs extends XoopsObject
 		$ret['url'] = $this->getURL();
 		
 		$ret['rank'] = number_format(($this->getVar('rank')>0&&$this->getVar('votes')>0?$this->getVar('rank')/$this->getVar('votes'):0),2)._MI_SONGLIST_OFTEN;
+		
+		if (!empty($ret['mp3'])) {
+			$ret['mp3'] = "<embed flashvars=\"playerID=1&amp;bg=0xf8f8f8&amp;leftbg=0x3786b3&amp;lefticon=0x78bee3&amp;rightbg=0x3786b3&amp;rightbghover=0x78bee3&amp;righticon=0x78bee3&amp;righticonhover=0x3786b3&amp;text=0x666666&amp;slider=0x3786b3&amp;track=0xcccccc&amp;border=0x666666&amp;loader=0x78bee3&amp;loop=no&amp;soundFile=".$ret['mp3']."\" quality='high' menu='false' wmode='transparent' pluginspage='http://www.macromedia.com/go/getflashplayer' src='" . XOOPS_URL . "/images/form/player.swf'  width=290 height=24 type='application/x-shockwave-flash'></embed>";
+		}
 		
 		if (file_exists($GLOBALS['xoops']->path("/modules/tag/include/tagbar.php"))&&$GLOBALS['songlistModuleConfig']['tags']) {
 			include_once XOOPS_ROOT_PATH."/modules/tag/include/tagbar.php";
@@ -155,7 +160,7 @@ class SonglistSongsHandler extends XoopsPersistableObjectHandler
     }
 
 	function filterFields() {
-		return array('sid', 'cid', 'gid', 'vcid', 'aids', 'abid', 'songid', 'title', 'lyrics', 'hits', 'rank', 'votes', 'tags', 'created', 'updated');
+		return array('sid', 'cid', 'mp3', 'gid', 'vcid', 'aids', 'abid', 'songid', 'title', 'lyrics', 'hits', 'rank', 'votes', 'tags', 'created', 'updated');
 	}
 	
     function getFilterCriteria($filter) {

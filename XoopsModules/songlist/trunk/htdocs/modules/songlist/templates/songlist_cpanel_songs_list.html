@@ -19,6 +19,7 @@
 		<th><{$title_th}></th>
 		<th><{$hits_th}></th>
 		<th><{$rank_th}></th>
+		<th><{$mp3_th}></th>
 		<th><{$created_th}></th>
 		<th><{$updated_th}></th>
 		<th><{$smarty.const._AM_SONGLIST_TH_ACTIONS}></th>
@@ -39,6 +40,7 @@
 		<th>&nbsp;</th>
 		<th>&nbsp;</th>
 		<th>&nbsp;</th>
+		<th>&nbsp;</th>
 	</tr>
 	<{foreach item=item from=$songs}>
 	<tr class="<{cycle values="even,odd"}>">
@@ -54,6 +56,7 @@
 		<td align='center'><{$item.form.title}></td>
 		<td align='center'><{$item.hits}></td>
 		<td align='center'><{$item.rank}></td>
+		<td align='center'><{if $item.mp3}><{$item.mp3}><{else}><{$item.form.mp3}><{/if}></td>
 		<td align='right'><{$item.form.created}></td>
 		<td align='right'><{$item.form.updated}></td>
 		<td align='right'><a href="<{$php_self}>?op=category&fct=edit&id=<{$item.sid}>&start=<{$start}>&limit=<{$limit}>&order=<{$order}>&sort=<{$sort}>&filter=<{$filter}>"><{$smarty.const._EDIT}></a>&nbsp;|&nbsp;<a href="<{$php_self}>?op=category&fct=delete&id=<{$item.sid}>&start=<{$start}>&limit=<{$limit}>&order=<{$order}>&sort=<{$sort}>&filter=<{$filter}>"><{$smarty.const._DELETE}></a></td>
