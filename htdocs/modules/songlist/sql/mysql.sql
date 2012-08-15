@@ -130,6 +130,7 @@ CREATE TABLE `songlist_songs` (
   `rank` decimal(10,3) unsigned DEFAULT '0.000',
   `votes` int(10) unsigned DEFAULT '0',
   `tags` varchar(255) DEFAULT NULL,
+  `mp3` varchar(500) DEFAULT '',
   `created` int(12) unsigned DEFAULT '0',
   `updated` int(12) unsigned DEFAULT '0',
   PRIMARY KEY (`sid`),

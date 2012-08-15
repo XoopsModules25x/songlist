@@ -9,6 +9,7 @@
 			<th class="id"><{$smarty.const._MN_SONGLIST_RESULTS_SONGID}></th>
 			<th class="title"><{$smarty.const._MN_SONGLIST_RESULTS_TITLE}></th>
 			<th class="artist"><{$smarty.const._MN_SONGLIST_RESULTS_ARTIST}></th>
+			<th class="mp3"><{$smarty.const._MN_SONGLIST_RESULTS_MP3}></th>
 			<{if !isset($wurlf_mobile) or not $wurlf_mobile}>
                 <{if $xoConfig.singer}>
                 <th class="artist"><{$smarty.const._MN_SONGLIST_RESULTS_SINGER}></th>
@@ -26,6 +27,15 @@
                         <a href="<{$artist.url}>"><{$artist.name}></a><{if $number<sizeof($result.artists)-1}>,&nbsp;<{/if}>
                     <{/foreach}>
                 </td>
+                           
+                <td colspan="2" align="center">
+                	<{if $result.mp3}>
+                    	<{$result.mp3}>
+                    <{else}>
+                    	&nbsp;
+                    <{/if}> 
+                </td>
+            
                 <{if !isset($wurlf_mobile) or not $wurlf_mobile}>
                     <{if $xoConfig.singer}>
                     <td>

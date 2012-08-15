@@ -10,7 +10,7 @@ if (is_object($GLOBALS['songlistModule']))
 // $Id: xoops_version.php,v 4.04 2008/06/05 15:35:59 wishcraft Exp $
 
 $modversion['name'] = _MI_SONGLIST_NAME;
-$modversion['version'] = 1.13;
+$modversion['version'] = 1.14;
 $modversion['description'] = _MI_SONGLIST_DESC;
 $modversion['credits'] = "Orginally Written by wishcraft, Testing Phil and Michael Beck";
 $modversion['author'] = "Simon Roberts (wishcraft)";
@@ -25,9 +25,9 @@ $modversion['dirmoduleadmin'] = 'Frameworks/moduleclasses';
 $modversion['icons16'] = 'Frameworks/moduleclasses/icons/16';
 $modversion['icons32'] = 'Frameworks/moduleclasses/icons/32';
 
-$modversion['release_info'] = "Stable 2012/04/29";
+$modversion['release_info'] = "Stable 2012/08/16";
 $modversion['release_file'] = XOOPS_URL."/modules/xforum/docs/changelog.txt";
-$modversion['release_date'] = "2012/04/29";
+$modversion['release_date'] = "2012/08/16";
 
 $modversion['author_realname'] = "Wishcraft";
 $modversion['author_website_url'] = "http://www.chronolabs.coop";
@@ -355,6 +355,29 @@ $modversion['config'][$i]['valuetype'] = 'text';
 $modversion['config'][$i]['default'] = $GLOBALS['xoopsConfig']['adminmail'];
 $modversion['config'][$i]['options'] = array();
 
+$i++;
+$modversion['config'][$i]['name'] = 'mp3_filesize';
+$modversion['config'][$i]['title'] = "_MI_SONGLIST_MP3FILESIZE";
+$modversion['config'][$i]['description'] = "_MI_SONGLIST_MP3FILESIZE_DESC";
+$modversion['config'][$i]['formtype'] = 'textbox';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = '195035100';
+
+$i++;
+$modversion['config'][$i]['name'] = 'mp3_mimetype';
+$modversion['config'][$i]['title'] = "_MI_SONGLIST_MP3MIMETYPE";
+$modversion['config'][$i]['description'] = "_MI_SONGLIST_MP3MIMETYPE_DESC";
+$modversion['config'][$i]['formtype'] = 'textarea';
+$modversion['config'][$i]['valuetype'] = 'text';
+$modversion['config'][$i]['default'] = 'audio/mpeg|audio/x-mpeg|audio/mp3|audio/x-mp3|audio/mpeg3|audio/x-mpeg3|audio/mpg|audio/x-mpg|audio/x-mpegaudio';
+
+$i++;
+$modversion['config'][$i]['name'] = 'mp3_extensions';
+$modversion['config'][$i]['title'] = "_MI_SONGLIST_MP3EXTENSIONS";
+$modversion['config'][$i]['description'] = "_MI_SONGLIST_MP3EXTENSIONS_DESC";
+$modversion['config'][$i]['formtype'] = 'textarea';
+$modversion['config'][$i]['valuetype'] = 'text';
+$modversion['config'][$i]['default'] = 'mp3';
 
 $i++;
 $modversion['config'][$i]['name'] = 'filesize_upload';

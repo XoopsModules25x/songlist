@@ -80,7 +80,7 @@
 				$GLOBALS['xoopsTpl']->display('db:songlist_cpanel_songs_edit.html');
 				break;
 			case "save":
-				
+
 				$songs_handler =& xoops_getmodulehandler('songs', 'songlist');
 				$extras_handler = xoops_getmodulehandler('extras', 'songlist');
 				$id=0;
@@ -91,6 +91,45 @@
 				}
 				$songs->setVars($_POST[$id]);
 				
+				if (isset($_FILES['mp3'.$id])&&!empty($_FILES['mp3'.$id]['title'])) {
+						
+					if (!is_dir($GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas']))) {
+						foreach(explode('\\', $GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas'])) as $folders)
+							foreach(explode('/', $folders) as $folder) {
+							$path .= DS . $folder;
+							mkdir($path, 0777);
+						}
+					}
+						
+					include_once($GLOBALS['xoops']->path('modules/songlist/include/uploader.php'));
+					$uploader = new SonglistMediaUploader($GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas']), explode('|', $GLOBALS['songlistModuleConfig']['mp3_mimetype']), $GLOBALS['songlistModuleConfig']['mp3_filesize'], 0, 0, explode('|', $GLOBALS['songlistModuleConfig']['mp3_extensions']));
+					$uploader->setPrefix(substr(md5(microtime(true)), mt_rand(0,20), 13));
+						
+					if ($uploader->fetchMedia('mp3'.$id)) {
+						if (!$uploader->upload()) {
+								
+							$indexAdmin = new ModuleAdmin();
+							echo $indexAdmin->addNavigation(basename(__FILE__));
+							echo $uploader->getErrors();
+							xoops_cp_footer();
+							exit(0);
+						} else {
+								
+							if (strlen($songs->getVar('mp3')))
+								unlink($GLOBALS['xoops']->path($songs->getVar('path')).basename($songs->getVar('mp3')));
+								
+							$songs->setVar('mp3', XOOPS_URL.'/'.str_replace(DS, '/', $GLOBALS['songlistModuleConfig']['upload_areas']).$uploader->getSavedFileName());
+								
+						}
+					} else {
+				
+						$indexAdmin = new ModuleAdmin();
+						echo $indexAdmin->addNavigation(basename(__FILE__));
+						echo $uploader->getErrors();
+						xoops_cp_footer();
+						exit(0);
+					}
+				}
 				if (!$id=$songs_handler->insert($songs)) {
 					redirect_header($_SERVER['PHP_SELF'].'?op='.$GLOBALS['op'].'&fct=list&limit='.$GLOBALS['limit'].'&start='.$GLOBALS['start'].'&order='.$GLOBALS['order'].'&sort='.$GLOBALS['sort'].'&filter='.$GLOBALS['filter'], 10, _AM_SONGLIST_MSG_SONGS_FAILEDTOSAVE);
 					exit(0);
@@ -105,6 +144,7 @@
 						$tag_handler->updateByItem($_POST['tags'], $id, $GLOBALS['songlistModule']->getVar("dirname"), $songs->getVar('cid'));
 					}
 					
+					
 					if ($_REQUEST['state'][$_REQUEST['id']]=='new')
 						redirect_header($_SERVER['PHP_SELF'].'?op='.$GLOBALS['op'].'&fct=edit&id='.$_REQUEST['id'] . '&limit='.$GLOBALS['limit'].'&start='.$GLOBALS['start'].'&order='.$GLOBALS['order'].'&sort='.$GLOBALS['sort'].'&filter='.$GLOBALS['filter'], 10, _AM_SONGLIST_MSG_SONGS_SAVEDOKEY);
 					else 
@@ -113,11 +153,51 @@
 				}
 				break;
 			case "savelist":
-				
+				print_r($_FILES);
+				exit;
 				$songs_handler =& xoops_getmodulehandler('songs', 'songlist');
 				foreach($_REQUEST['id'] as $id) {
 					$songs = $songs_handler->get($id);
 					$songs->setVars($_POST[$id]);
+					if (isset($_FILES['mp3'.$id])&&!empty($_FILES['mp3'.$id]['title'])) {
+					
+						if (!is_dir($GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas']))) {
+							foreach(explode('\\', $GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas'])) as $folders)
+								foreach(explode('/', $folders) as $folder) {
+								$path .= DS . $folder;
+								mkdir($path, 0777);
+							}
+						}
+					
+						include_once($GLOBALS['xoops']->path('modules/songlist/include/uploader.php'));
+						$uploader = new SonglistMediaUploader($GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas']), explode('|', $GLOBALS['songlistModuleConfig']['mp3_mimetype']), $GLOBALS['songlistModuleConfig']['mp3_filesize'], 0, 0, explode('|', $GLOBALS['songlistModuleConfig']['mp3_extensions']));
+						$uploader->setPrefix(substr(md5(microtime(true)), mt_rand(0,20), 13));
+					
+						if ($uploader->fetchMedia('mp3'.$id)) {
+							if (!$uploader->upload()) {
+					
+								$indexAdmin = new ModuleAdmin();
+								echo $indexAdmin->addNavigation(basename(__FILE__));
+								echo $uploader->getErrors();
+								xoops_cp_footer();
+								exit(0);
+							} else {
+					
+								if (strlen($songs->getVar('mp3')))
+									unlink($GLOBALS['xoops']->path($songs->getVar('path')).basename($songs->getVar('mp3')));
+					
+								$songs->setVar('mp3', XOOPS_URL.'/'.str_replace(DS, '/', $GLOBALS['songlistModuleConfig']['upload_areas']).$uploader->getSavedFileName());
+					
+							}
+						} else {
+					
+							$indexAdmin = new ModuleAdmin();
+							echo $indexAdmin->addNavigation(basename(__FILE__));
+							echo $uploader->getErrors();
+							xoops_cp_footer();
+							exit(0);
+						}
+					}
 					if (!$songs_handler->insert($songs)) {
 						redirect_header($_SERVER['PHP_SELF'].'?op='.$GLOBALS['op'].'&fct=list&limit='.$GLOBALS['limit'].'&start='.$GLOBALS['start'].'&order='.$GLOBALS['order'].'&sort='.$GLOBALS['sort'].'&filter='.$GLOBALS['filter'], 10, _AM_SONGLIST_MSG_SONGS_FAILEDTOSAVE);
 						exit(0);

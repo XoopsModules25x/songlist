@@ -417,6 +417,8 @@
 		$ele['lyrics']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_LYRICS_DESC:''));
 		$ele['tags'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_TAGS:''), 'tags', 32, 128, 'tags');
 		$ele['tags']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_TAGS_DESC:''));
+		$ele['mp3'] = new XoopsFormText(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_MP3:''), 'mp3', 32, 128, 'mp3');
+		$ele['mp3']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_ELEMENT_MP3_DESC:''));
 		$extras_handler = xoops_getmodulehandler('extras', 'songlist');
 		$fields = $extras_handler->getFields(NULL);
 		foreach($fields as $field) {
@@ -1011,7 +1013,8 @@
 		$description_configs['height'] = "400px";
 		$ele['lyrics'] = new XoopsFormEditor(_FRM_SONGLIST_FORM_SONGS_LYRICS, $GLOBALS['songlistModuleConfig']['editor'], $description_configs);
 		$ele['lyrics']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_SONGS_LYRICS_DESC:''));
-		
+		$ele['mp3'] = new XoopsFormFile(($as_array==false?_FRM_SONGLIST_FORM_SONGS_MP3:''), 'mp3'.$id, $GLOBALS['songlistModuleConfig']['mp3_filesize']);
+		$ele['mp3']->setDescription(($as_array==false?_FRM_SONGLIST_FORM_SONGS_MP3_DESC:''));
 		$category_handler = xoops_getmodulehandler('category', 'songlist');
 		$criteria = new CriteriaCompo(new Criteria('cid', (!empty($_REQUEST['cid']))?intval($_REQUEST['cid']):$object->getVar('cid')));
 		$all_categories = $category_handler->getObjects($criteria, true, false);

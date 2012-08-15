@@ -232,6 +232,7 @@
 									$object->setVar('traxid', trim($data[$_POST['traxid']]));
 									$object->setVar('title', trim($data[$_POST['title']]));
 									$object->setVar('tags', trim($data[$_POST['tags']]));
+									$object->setVar('mp3', trim($data[$_POST['mp3']]));
 									$object->setVar('lyrics', str_replace("\n", "<br/>\n", trim($data[$_POST['lyrics']])));
 									$sid = $songs_handler->insert($object);
 									
@@ -379,6 +380,7 @@
 									$object->setVar('songid', trim($data[$_POST['songid']]));
 									$object->setVar('traxid', trim($data[$_POST['traxid']]));
 									$object->setVar('tags', trim($data[$_POST['tags']]));
+									$object->setVar('mp3', trim($data[$_POST['mp3']]));
 									$object->setVar('title', trim($data[$_POST['title']]));
 									$object->setVar('lyrics', str_replace("\n", "<br/>\n", trim($data[$_POST['lyrics']])));
 									$sid = $songs_handler->insert($object);
@@ -538,6 +540,7 @@
 								$object->setVar('traxid', trim($data[$_POST['traxid']]));
 								$object->setVar('title', trim($data[$_POST['title']]));
 								$object->setVar('tags', trim($data[$_POST['tags']]));
+								$object->setVar('mp3', trim($data[$_POST['mp3']]));
 								$object->setVar('lyrics', str_replace("\n", "<br/>\n", trim($data[$_POST['lyrics']])));
 								$sid = $songs_handler->insert($object);
 								
