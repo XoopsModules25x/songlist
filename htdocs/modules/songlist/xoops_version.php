@@ -35,7 +35,9 @@ $modversion['author_website_name'] = "Chronolabs";
 $modversion['author_email'] = "simon@chronolabs.coop";
 $modversion['status_version'] = "1.00";
 
-$modversion['warning'] = "For XOOPS 2.5 or later";
+$modversion['warning'] = "For XOOPS 2.5.7.2 or later";
+$modversion['min_php']             = '5.5';
+$modversion['min_xoops']           = '2.5.7.2';
 
 $modversion['demo_site_url'] = "http://xoops.demo.chronolabs.coop/";
 $modversion['demo_site_name'] = "Chronolabs";

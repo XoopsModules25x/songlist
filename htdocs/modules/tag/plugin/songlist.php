@@ -18,7 +18,7 @@ function songlist_tag_iteminfo(&$items)
     }
     $item_handler =& xoops_getmodulehandler('songs', 'songlist');
     $items_obj = $item_handler->getObjects(new Criteria("sid", "(" . implode(", ", $items_id) . ")", "IN"), true);
-    $myts =& MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
     foreach (array_keys($items) as $cat_id) {
         foreach (array_keys($items[$cat_id]) as $item_id) {
             $item_obj =& $items_obj[$item_id];
