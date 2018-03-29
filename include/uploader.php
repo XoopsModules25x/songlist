@@ -101,7 +101,7 @@ class SonglistMediaUploader
 
             return false;
         }
-        if ('none' == $this->mediaTmpName || !is_uploaded_file($this->mediaTmpName) || 0 == $this->mediaSize) {
+        if ('none' === $this->mediaTmpName || !is_uploaded_file($this->mediaTmpName) || 0 == $this->mediaSize) {
             $this->setErrors('No file uploaded');
 
             return false;

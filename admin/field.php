@@ -20,7 +20,7 @@ switch ($op) {
         $weights    = [];
 
         $GLOBALS['categoryHandler'] = xoops_getModuleHandler('category');
-        $criteria                   = new CriteriaCompo();
+        $criteria                   = new \CriteriaCompo();
         $criteria->setSort('weight');
         if ($categorys = $GLOBALS['categoryHandler']->getObjects($criteria, true)) {
             unset($criteria);
@@ -129,7 +129,7 @@ switch ($op) {
                 $errors = [];
                 //if there are changed fields, fetch the fieldcategory objects
                 $fieldHandler = xoops_getModuleHandler('field');
-                $fields       = $fieldHandler->getObjects(new Criteria('field_id', '(' . implode(',', $ids) . ')', 'IN'), true);
+                $fields       = $fieldHandler->getObjects(new \Criteria('field_id', '(' . implode(',', $ids) . ')', 'IN'), true);
                 foreach ($ids as $i) {
                     $fields[$i]->setVar('field_weight', (int)$weight[$i]);
                     $fields[$i]->setVar('cids', $categories[$i]);
@@ -230,9 +230,9 @@ switch ($op) {
             }
             if (count($perm_arr) > 0) {
                 foreach ($perm_arr as $perm) {
-                    $criteria = new CriteriaCompo(new Criteria('gperm_name', $perm));
-                    $criteria->add(new Criteria('gperm_itemid', (int)$obj->getVar('field_id')));
-                    $criteria->add(new Criteria('gperm_modid', (int)$GLOBALS['songlistModule']->getVar('mid')));
+                    $criteria = new \CriteriaCompo(new \Criteria('gperm_name', $perm));
+                    $criteria->add(new \Criteria('gperm_itemid', (int)$obj->getVar('field_id')));
+                    $criteria->add(new \Criteria('gperm_modid', (int)$GLOBALS['songlistModule']->getVar('mid')));
                     if (isset($_REQUEST[$perm]) && is_array($_REQUEST[$perm])) {
                         $perms = $grouppermHandler->getObjects($criteria);
                         if (count($perms) > 0) {
@@ -256,7 +256,7 @@ switch ($op) {
                         }
                         $removed_groups = array_diff(array_keys($groups), $_REQUEST[$perm]);
                         if (count($removed_groups) > 0) {
-                            $criteria->add(new Criteria('gperm_groupid', '(' . implode(',', $removed_groups) . ')', 'IN'));
+                            $criteria->add(new \Criteria('gperm_groupid', '(' . implode(',', $removed_groups) . ')', 'IN'));
                             $grouppermHandler->deleteAll($criteria);
                         }
                         unset($groups);

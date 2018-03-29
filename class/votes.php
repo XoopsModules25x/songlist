@@ -1,6 +1,6 @@
 <?php
 
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 include_once(dirname(__DIR__) . '/include/songlist.object.php');
 include_once(dirname(__DIR__) . '/include/songlist.form.php');
@@ -51,25 +51,25 @@ class SonglistVotesHandler extends XoopsPersistableObjectHandler
     public function getFilterCriteria($filter)
     {
         $parts    = explode('|', $filter);
-        $criteria = new CriteriaCompo();
+        $criteria = new \CriteriaCompo();
         foreach ($parts as $part) {
             $var = explode(',', $part);
             if (!empty($var[1]) && !is_numeric($var[0])) {
                 $object = $this->create();
                 if (XOBJ_DTYPE_TXTBOX == $object->vars[$var[0]]['data_type']
                     || XOBJ_DTYPE_TXTAREA == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new Criteria('`' . $var[0] . '`', '%' . $var[1] . '%', (isset($var[2]) ? $var[2] : 'LIKE')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', '%' . $var[1] . '%', (isset($var[2]) ? $var[2] : 'LIKE')));
                 } elseif (XOBJ_DTYPE_INT == $object->vars[$var[0]]['data_type']
                           || XOBJ_DTYPE_DECIMAL == $object->vars[$var[0]]['data_type']
                           || XOBJ_DTYPE_FLOAT == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
                 } elseif (XOBJ_DTYPE_ENUM == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
                 } elseif (XOBJ_DTYPE_ARRAY == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new Criteria('`' . $var[0] . '`', '%"' . $var[1] . '";%', (isset($var[2]) ? $var[2] : 'LIKE')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', '%"' . $var[1] . '";%', (isset($var[2]) ? $var[2] : 'LIKE')));
                 }
             } elseif (!empty($var[1]) && is_numeric($var[0])) {
-                $criteria->add(new Criteria($var[0], $var[1]));
+                $criteria->add(new \Criteria($var[0], $var[1]));
             }
         }
 
@@ -86,7 +86,7 @@ class SonglistVotesHandler extends XoopsPersistableObjectHandler
         }
     }
 
-    public function insert(XoopsObject $obj, $force = true)
+    public function insert(\XoopsObject $obj, $force = true)
     {
         if ($obj->isNew()) {
             $obj->setVar('created', time());
@@ -99,14 +99,14 @@ class SonglistVotesHandler extends XoopsPersistableObjectHandler
 
     public function addVote($sid, $value)
     {
-        $criteria = new CriteriaCompo(new Criteria('sid', $sid));
+        $criteria = new \CriteriaCompo(new \Criteria('sid', $sid));
 
         $ip = songlist_getIPData(false);
         if ($ip['uid'] > 0) {
-            $criteria->add(new Criteria('uid', $ip['uid']));
+            $criteria->add(new \Criteria('uid', $ip['uid']));
         } else {
-            $criteria->add(new Criteria('ip', $ip['ip']));
-            $criteria->add(new Criteria('netaddy', $ip['network-addy']));
+            $criteria->add(new \Criteria('ip', $ip['ip']));
+            $criteria->add(new \Criteria('netaddy', $ip['network-addy']));
         }
 
         if (0 == $this->getCount($criteria) && $sid > 0 && $value > 0) {

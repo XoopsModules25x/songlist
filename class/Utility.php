@@ -15,24 +15,24 @@ class Utility extends \XoopsObject
     public static function createFolder($folder)
     {
         //        try {
-        //            if (!mkdir($folder) && !is_dir($folder)) {
+        //            if (!is_dir($folder) && !mkdir($folder) && !is_dir($folder)) {
         //                throw new \RuntimeException(sprintf('Unable to create the %s directory', $folder));
         //            } else {
         //                file_put_contents($folder . '/index.html', '<script>history.go(-1);</script>');
         //            }
         //        }
-        //        catch (Exception $e) {
+        //        catch (\Exception $e) {
         //            echo 'Caught exception: ', $e->getMessage(), "\n", '<br>';
         //        }
         try {
             if (!file_exists($folder)) {
-                if (!mkdir($folder) && !is_dir($folder)) {
+                if (!is_dir($folder) && !mkdir($folder) && !is_dir($folder)) {
                     throw new \RuntimeException(sprintf('Unable to create the %s directory', $folder));
                 } else {
                     file_put_contents($folder . '/index.html', '<script>history.go(-1);</script>');
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo 'Caught exception: ', $e->getMessage(), "\n", '<br>';
         }
     }
@@ -51,7 +51,7 @@ class Utility extends \XoopsObject
         //            } else {
         //                return copy($file, $folder);
         //            }
-        //        } catch (Exception $e) {
+        //        } catch (\Exception $e) {
         //            echo 'Caught exception: ', $e->getMessage(), "\n", "<br>";
         //        }
         //        return false;
@@ -86,7 +86,7 @@ class Utility extends \XoopsObject
      * @param null|string $requiredVer
      * @return bool true if meets requirements, false if not
      */
-    public static function checkVerXoops(XoopsModule $module = null, $requiredVer = null)
+    public static function checkVerXoops(\XoopsModule $module = null, $requiredVer = null)
     {
         $moduleDirName = basename(dirname(__DIR__));
         if (null === $module) {
@@ -117,7 +117,7 @@ class Utility extends \XoopsObject
      *
      * @return bool true if meets requirements, false if not
      */
-    public static function checkVerPhp(XoopsModule $module)
+    public static function checkVerPhp(\XoopsModule $module)
     {
         xoops_loadLanguage('admin', $module->dirname());
         // check for minimum PHP version

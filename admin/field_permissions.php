@@ -22,8 +22,8 @@ $adminObject->displayNavigation(basename(__FILE__));
 $op = $op = (!empty($_GET['op']) ? $_GET['op'] : (!empty($_POST['op']) ? $_POST['op'] : 'edit'));
 
 require_once $GLOBALS['xoops']->path('/class/xoopsformloader.php');
-$opform    = new XoopsSimpleForm('', 'opform', 'field_permissions.php', 'post', true);
-$op_select = new XoopsFormSelect('', 'op', $op);
+$opform    = new \XoopsSimpleForm('', 'opform', 'field_permissions.php', 'post', true);
+$op_select = new \XoopsFormSelect('', 'op', $op);
 $op_select->setExtra('onchange="document.forms.opform.submit()"');
 $op_select->addOption('visibility', _AM_SONGLIST_PROF_VISIBLE);
 $op_select->addOption('post', _AM_SONGLIST_PROF_POST);
@@ -63,9 +63,9 @@ switch ($op) {
 
 $module_id = $GLOBALS['songlistModule']->getVar('mid');
 require_once $GLOBALS['xoops']->path('/class/xoopsform/grouppermform.php');
-$form = new XoopsGroupPermForm($title_of_form, $module_id, $perm_name, $perm_desc, 'admin/field_permissions.php', $anonymous);
+$form = new \XoopsGroupPermForm($title_of_form, $module_id, $perm_name, $perm_desc, 'admin/field_permissions.php', $anonymous);
 
-if ('access' == $op) {
+if ('access' === $op) {
     $memberHandler = xoops_getHandler('member');
     $glist         = $memberHandler->getGroupList();
     foreach (array_keys($glist) as $i) {
@@ -77,7 +77,7 @@ if ('access' == $op) {
     $extrasHandler = xoops_getModuleHandler('extras');
     $fields        = array_merge([], $extrasHandler->loadFields());
 
-    if ('search' != $op) {
+    if ('search' !== $op) {
         if (is_array($fields) && count($fields) > 0) {
             foreach (array_keys($fields) as $i) {
                 if ('' == $restriction || $fields[$i]->getVar($restriction)) {

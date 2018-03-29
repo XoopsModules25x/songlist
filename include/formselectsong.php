@@ -37,7 +37,7 @@ License: See /docs - GPL 2.0
  * @author          John Neill <catzwolf@xoops.org>
  * @version         $Id: formselect.php 3988 2009-12-05 15:46:47Z trabis $
  */
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 xoops_load('XoopsFormElement');
 
@@ -111,10 +111,10 @@ class SonglistFormSelectSong extends XoopsFormElement
             $this->setValue($value);
         }
         $this->addOption('0', _MI_SONGLIST_NONE);
-        if ($id == -1) {
+        if (-1 == $id) {
             if (!isset($_form_object_options['songs'][$field][$id])) {
                 $songsHandler = xoops_getModuleHandler('songs', 'songlist');
-                $criteria     = new Criteria('1', '1');
+                $criteria     = new \Criteria('1', '1');
                 $criteria->setSort('`title`');
                 $criteria->setOrder('ASC');
                 foreach ($songsHandler->getObjects($criteria, true) as $id => $obj) {
@@ -124,7 +124,7 @@ class SonglistFormSelectSong extends XoopsFormElement
         } else {
             if (!isset($_form_object_options['songs'][$field][$id])) {
                 $songsHandler = xoops_getModuleHandler('songs', 'songlist');
-                $criteria     = new Criteria('`' . $field . '`', $id);
+                $criteria     = new \Criteria('`' . $field . '`', $id);
                 $criteria->setSort('`title`');
                 $criteria->setOrder('ASC');
                 foreach ($songsHandler->getObjects($criteria) as $id => $obj) {
@@ -283,7 +283,7 @@ class SonglistFormSelectSong extends XoopsFormElement
         // render custom validation code if any
         if (!empty($this->customValidationCode)) {
             return implode("\n", $this->customValidationCode);
-            // generate validation code if required
+        // generate validation code if required
         } elseif ($this->isRequired()) {
             $eltname    = $this->getName();
             $eltcaption = $this->getCaption();

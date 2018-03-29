@@ -55,9 +55,9 @@ class forum_XoopsGroupPermForm extends XoopsGroupPermForm
             $this->addElement($ele);
             unset($ele);
         }
-        $tray = new XoopsFormElementTray('');
-        $tray->addElement(new XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
-        $tray->addElement(new XoopsFormButton('', 'reset', _CANCEL, 'reset'));
+        $tray = new \XoopsFormElementTray('');
+        $tray->addElement(new \XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
+        $tray->addElement(new \XoopsFormButton('', 'reset', _CANCEL, 'reset'));
         $this->addElement($tray);
         $ret      = '<h4>' . $this->getTitle() . '</h4>' . $this->_permDesc . '<br>';
         $ret      .= "<form name='" . $this->getName() . "' id='" . $this->getName() . "' action='" . $this->getAction() . "' method='" . $this->getMethod() . "'" . $this->getExtra() . ">\n<table width='100%' class='outer' cellspacing='1' valign='top'>\n";
@@ -157,7 +157,7 @@ class forum_XoopsGroupFormCheckBox extends XoopsGroupFormCheckBox
                  . '[itemname]['
                  . $option['id']
                  . ']" value="'
-                 . htmlspecialchars($option['name'])
+                 . htmlspecialchars($option['name'], ENT_QUOTES | ENT_HTML5)
                  . "\"><br>\n"; else:
             $tree .= $prefix . $option['name'] . '<input type="hidden" id="' . $this->getName() . '[groups][' . $this->_groupId . '][' . $option['id'] . "]\"><br>\n";
         endif;
@@ -182,8 +182,8 @@ $perms     = array_map('trim', explode(',', FORUM_PERM_ITEMS));
 
 switch ($action) {
     case 'template':
-        $opform    = new XoopsSimpleForm(_AM_SONGLIST_PERM_ACTION, 'actionform', 'permissions.php', 'get');
-        $op_select = new XoopsFormSelect('', 'action');
+        $opform    = new \XoopsSimpleForm(_AM_SONGLIST_PERM_ACTION, 'actionform', 'permissions.php', 'get');
+        $op_select = new \XoopsFormSelect('', 'action');
         $op_select->setExtra('onchange="document.forms.actionform.submit()"');
         $op_select->addOptionArray([
                                        'no'       => _SELECT,
@@ -222,10 +222,10 @@ switch ($action) {
             $ret_ele    .= '</td></tr>';
             $elements[] = $ret_ele;
         }
-        $tray = new XoopsFormElementTray('');
-        $tray->addElement(new XoopsFormHidden('action', 'template_save'));
-        $tray->addElement(new XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
-        $tray->addElement(new XoopsFormButton('', 'reset', _CANCEL, 'reset'));
+        $tray = new \XoopsFormElementTray('');
+        $tray->addElement(new \XoopsFormHidden('action', 'template_save'));
+        $tray->addElement(new \XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
+        $tray->addElement(new \XoopsFormButton('', 'reset', _CANCEL, 'reset'));
         $ret = '<h4>' . _AM_SONGLIST_PERM_TEMPLATE . '</h4>' . _AM_SONGLIST_PERM_TEMPLATE_DESC . '<br><br><br>';
         $ret .= "<form name='template' id='template' method='post'>\n<table width='100%' class='outer' cellspacing='1'>\n";
         $ret .= implode("\n", $elements);
@@ -253,8 +253,8 @@ switch ($action) {
             redirect_header('permissions.php?action=template', 2, _AM_SONGLIST_PERM_TEMPLATE);
         }
 
-        $opform    = new XoopsSimpleForm(_AM_SONGLIST_PERM_ACTION, 'actionform', 'permissions.php', 'get');
-        $op_select = new XoopsFormSelect('', 'action');
+        $opform    = new \XoopsSimpleForm(_AM_SONGLIST_PERM_ACTION, 'actionform', 'permissions.php', 'get');
+        $op_select = new \XoopsFormSelect('', 'action');
         $op_select->setExtra('onchange="document.forms.actionform.submit()"');
         $op_select->addOptionArray(['no' => _SELECT, 'template' => _AM_SONGLIST_PERM_TEMPLATE, 'apply' => _AM_SONGLIST_PERM_TEMPLATEAPP]);
         $opform->addElement($op_select);
@@ -279,14 +279,14 @@ switch ($action) {
             }
         }
         unset($songlists, $categories);
-        $fmform    = new XoopsThemeForm(_AM_SONGLIST_PERM_TEMPLATEAPP, 'fmform', 'permissions.php', 'post', true);
-        $fm_select = new XoopsFormSelect(_AM_SONGLIST_PERM_FORUMS, 'forums', null, 10, true);
+        $fmform    = new \XoopsThemeForm(_AM_SONGLIST_PERM_TEMPLATEAPP, 'fmform', 'permissions.php', 'post', true);
+        $fm_select = new \XoopsFormSelect(_AM_SONGLIST_PERM_FORUMS, 'forums', null, 10, true);
         $fm_select->addOptionArray($fm_options);
         $fmform->addElement($fm_select);
-        $tray = new XoopsFormElementTray('');
-        $tray->addElement(new XoopsFormHidden('action', 'apply_save'));
-        $tray->addElement(new XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
-        $tray->addElement(new XoopsFormButton('', 'reset', _CANCEL, 'reset'));
+        $tray = new \XoopsFormElementTray('');
+        $tray->addElement(new \XoopsFormHidden('action', 'apply_save'));
+        $tray->addElement(new \XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
+        $tray->addElement(new \XoopsFormButton('', 'reset', _CANCEL, 'reset'));
         $fmform->addElement($tray);
         $fmform->display();
         break;
@@ -307,8 +307,8 @@ switch ($action) {
 
     default:
 
-        $opform    = new XoopsSimpleForm(_AM_SONGLIST_PERM_ACTION, 'actionform', 'permissions.php', 'get');
-        $op_select = new XoopsFormSelect('', 'action');
+        $opform    = new \XoopsSimpleForm(_AM_SONGLIST_PERM_ACTION, 'actionform', 'permissions.php', 'get');
+        $op_select = new \XoopsFormSelect('', 'action');
         $op_select->setExtra('onchange="document.forms.actionform.submit()"');
         $op_select->addOptionArray([
                                        'no'       => _SELECT,
@@ -342,8 +342,8 @@ switch ($action) {
             setcookie('op', isset($op_keys[$i + 1]) ? $op_keys[$i + 1] : '');
         }
 
-        $opform    = new XoopsSimpleForm('', 'opform', 'permissions.php', 'get');
-        $op_select = new XoopsFormSelect('', 'op', $op);
+        $opform    = new \XoopsSimpleForm('', 'opform', 'permissions.php', 'get');
+        $op_select = new \XoopsFormSelect('', 'op', $op);
         $op_select->setExtra('onchange="document.forms.opform.submit()"');
         $op_select->addOptionArray($op_options);
         $opform->addElement($op_select);
@@ -355,7 +355,7 @@ switch ($action) {
 
         $categoryHandler = xoops_getModuleHandler('category', 'songlist');
         $categories      = $categoryHandler->getObjects(null, true);
-        if ('category' == $op) {
+        if ('category' === $op) {
             foreach (array_keys($categories) as $c) {
                 $form->addItem($c, $categories[$c]->getVar('cat_title'));
             }

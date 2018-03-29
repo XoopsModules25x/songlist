@@ -113,7 +113,7 @@ if (!function_exists('songlist_getFilterElement')) {
         include_once('songlist.object.php');
         switch ($field) {
             case 'gid':
-                if ('genre' != $op) {
+                if ('genre' !== $op) {
                     $ele = new SonglistFormSelectGenre('', 'filter_' . $field . '', $components['value'], 1, false);
                     $ele->setExtra('onchange="window.open(\''
                                    . $_SERVER['PHP_SELF']
@@ -131,7 +131,7 @@ if (!function_exists('songlist_getFilterElement')) {
                 }
                 break;
             case 'vcid':
-                if ('voice' != $op) {
+                if ('voice' !== $op) {
                     $ele = new SonglistFormSelectVoice('', 'filter_' . $field . '', $components['value'], 1, false);
                     $ele->setExtra('onchange="window.open(\''
                                    . $_SERVER['PHP_SELF']
@@ -149,7 +149,7 @@ if (!function_exists('songlist_getFilterElement')) {
                 }
                 break;
             case 'cid':
-                if ('category' != $op) {
+                if ('category' !== $op) {
                     $ele = new SonglistFormSelectCategory('', 'filter_' . $field . '', $components['value'], 1, false);
                     $ele->setExtra('onchange="window.open(\''
                                    . $_SERVER['PHP_SELF']
@@ -183,7 +183,7 @@ if (!function_exists('songlist_getFilterElement')) {
                                . ',\'_self\')"');
                 break;
             case 'abid':
-                if ('albums' != $op) {
+                if ('albums' !== $op) {
                     $ele = new SonglistFormSelectAlbum('', 'filter_' . $field . '', $components['value'], 1, false);
                     $ele->setExtra('onchange="window.open(\''
                                    . $_SERVER['PHP_SELF']
@@ -201,7 +201,7 @@ if (!function_exists('songlist_getFilterElement')) {
                 }
                 break;
             case 'aid':
-                if ('artists' != $op) {
+                if ('artists' !== $op) {
                     $ele = new SonglistFormSelectArtist('', 'filter_' . $field . '', $components['value'], 1, false);
                     $ele->setExtra('onchange="window.open(\''
                                    . $_SERVER['PHP_SELF']
@@ -219,7 +219,7 @@ if (!function_exists('songlist_getFilterElement')) {
                 }
                 break;
             case 'sid':
-                if ('songs' != $op) {
+                if ('songs' !== $op) {
                     $ele = new SonglistFormSelectSong('', 'filter_' . $field . '', $components['value'], 1, false);
                     $ele->setExtra('onchange="window.open(\''
                                    . $_SERVER['PHP_SELF']
@@ -248,9 +248,9 @@ if (!function_exists('songlist_getFilterElement')) {
             case 'lyrics':
             case 'songid':
             case 'tags':
-                $ele = new XoopsFormElementTray('');
-                $ele->addElement(new XoopsFormText('', 'filter_' . $field . '', 11, 40, $components['value']));
-                $button = new XoopsFormButton('', 'button_' . $field . '', '[+]');
+                $ele = new \XoopsFormElementTray('');
+                $ele->addElement(new \XoopsFormText('', 'filter_' . $field . '', 11, 40, $components['value']));
+                $button = new \XoopsFormButton('', 'button_' . $field . '', '[+]');
                 $button->setExtra('onclick="window.open(\''
                                   . $_SERVER['PHP_SELF']
                                   . '?'
@@ -410,7 +410,7 @@ if (!function_exists('songlist_xml2array')) {
             $attributes_data = [];
 
             if (isset($value)) {
-                if ('tag' == $priority) {
+                if ('tag' === $priority) {
                     $result = $value;
                 } else {
                     $result['value'] = $value;
@@ -420,7 +420,7 @@ if (!function_exists('songlist_xml2array')) {
             //Set the attributes too.
             if (isset($attributes) and $get_attributes) {
                 foreach ($attributes as $attr => $val) {
-                    if ('tag' == $priority) {
+                    if ('tag' === $priority) {
                         $attributes_data[$attr] = $val;
                     } else {
                         $result['attr'][$attr] = $val;
@@ -429,7 +429,7 @@ if (!function_exists('songlist_xml2array')) {
             }
 
             //See tag status and do the needed.
-            if ('open' == $type) {//The starting of the tag '<tag>'
+            if ('open' === $type) {//The starting of the tag '<tag>'
                 $parent[$level - 1] =& $current;
                 if (!is_array($current) or (!in_array($tag, array_keys($current)))) { //Insert New tag
                     $current[$tag] = $result;
@@ -456,12 +456,12 @@ if (!function_exists('songlist_xml2array')) {
                     $last_item_index = $repeated_tag_index[$tag . '_' . $level] - 1;
                     $current         =& $current[$tag][$last_item_index];
                 }
-            } elseif ('complete' == $type) { //Tags that ends in 1 line '<tag>'
+            } elseif ('complete' === $type) { //Tags that ends in 1 line '<tag>'
                 //See if the key is already taken.
                 if (!isset($current[$tag])) { //New Key
                     $current[$tag]                           = $result;
                     $repeated_tag_index[$tag . '_' . $level] = 1;
-                    if ('tag' == $priority and $attributes_data) {
+                    if ('tag' === $priority and $attributes_data) {
                         $current[$tag . '_attr'] = $attributes_data;
                     }
                 } else { //If taken, put all things inside a list(array)
@@ -470,14 +470,14 @@ if (!function_exists('songlist_xml2array')) {
                         // ...push the new element into that array.
                         $current[$tag][$repeated_tag_index[$tag . '_' . $level]] = $result;
 
-                        if ('tag' == $priority and $get_attributes and $attributes_data) {
+                        if ('tag' === $priority and $get_attributes and $attributes_data) {
                             $current[$tag][$repeated_tag_index[$tag . '_' . $level] . '_attr'] = $attributes_data;
                         }
                         $repeated_tag_index[$tag . '_' . $level]++;
                     } else { //If it is not an array...
                         $current[$tag]                           = [$current[$tag], $result]; //...Make it an array using using the existing value and the new value
                         $repeated_tag_index[$tag . '_' . $level] = 1;
-                        if ('tag' == $priority and $get_attributes) {
+                        if ('tag' === $priority and $get_attributes) {
                             if (isset($current[$tag . '_attr'])) { //The attribute of the last(0th) tag must be moved as well
 
                                 $current[$tag]['0_attr'] = $current[$tag . '_attr'];
@@ -491,7 +491,7 @@ if (!function_exists('songlist_xml2array')) {
                         $repeated_tag_index[$tag . '_' . $level]++; //0 and 1 index is already taken
                     }
                 }
-            } elseif ('close' == $type) { //End of tag '</tag>'
+            } elseif ('close' === $type) { //End of tag '</tag>'
                 $current =& $parent[$level - 1];
             }
         }

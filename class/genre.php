@@ -1,6 +1,6 @@
 <?php
 
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 include_once(dirname(__DIR__) . '/include/songlist.object.php');
 include_once(dirname(__DIR__) . '/include/songlist.form.php');
@@ -89,25 +89,25 @@ class SonglistGenreHandler extends XoopsPersistableObjectHandler
     public function getFilterCriteria($filter)
     {
         $parts    = explode('|', $filter);
-        $criteria = new CriteriaCompo();
+        $criteria = new \CriteriaCompo();
         foreach ($parts as $part) {
             $var = explode(',', $part);
             if (!empty($var[1]) && !is_numeric($var[0])) {
                 $object = $this->create();
                 if (XOBJ_DTYPE_TXTBOX == $object->vars[$var[0]]['data_type']
                     || XOBJ_DTYPE_TXTAREA == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new Criteria('`' . $var[0] . '`', '%' . $var[1] . '%', (isset($var[2]) ? $var[2] : 'LIKE')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', '%' . $var[1] . '%', (isset($var[2]) ? $var[2] : 'LIKE')));
                 } elseif (XOBJ_DTYPE_INT == $object->vars[$var[0]]['data_type']
                           || XOBJ_DTYPE_DECIMAL == $object->vars[$var[0]]['data_type']
                           || XOBJ_DTYPE_FLOAT == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
                 } elseif (XOBJ_DTYPE_ENUM == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
                 } elseif (XOBJ_DTYPE_ARRAY == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new Criteria('`' . $var[0] . '`', '%"' . $var[1] . '";%', (isset($var[2]) ? $var[2] : 'LIKE')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', '%"' . $var[1] . '";%', (isset($var[2]) ? $var[2] : 'LIKE')));
                 }
             } elseif (!empty($var[1]) && is_numeric($var[0])) {
-                $criteria->add(new Criteria($var[0], $var[1]));
+                $criteria->add(new \Criteria($var[0], $var[1]));
             }
         }
 
@@ -124,7 +124,7 @@ class SonglistGenreHandler extends XoopsPersistableObjectHandler
         }
     }
 
-    public function insert(XoopsObject $obj, $force = true)
+    public function insert(\XoopsObject $obj, $force = true)
     {
         if ($obj->isNew()) {
             $obj->setVar('created', time());
@@ -197,7 +197,7 @@ class SonglistGenreHandler extends XoopsPersistableObjectHandler
         $results = $GLOBALS['xoopsDB']->queryF($sql);
         $ret     = [];
         $i       = 0;
-        while ($row = $GLOBALS['xoopsDB']->fetchArray($results)) {
+        while (false !== ($row = $GLOBALS['xoopsDB']->fetchArray($results))) {
             $ret[$i] = $this->create();
             $ret[$i]->assignVars($row);
             ++$i;
@@ -206,7 +206,7 @@ class SonglistGenreHandler extends XoopsPersistableObjectHandler
         return $ret;
     }
 
-    public function delete(XoopsObject $object, $force = true)
+    public function delete(\XoopsObject $object, $force = true)
     {
         parent::delete($object, $force);
         $sql = 'UPDATE ' . $GLOBALS['xoopsDB']->prefix('songlist_songs') . ' SET `gid` = 0 WHERE `gid` = ' . $object->getVar('gid');

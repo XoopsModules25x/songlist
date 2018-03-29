@@ -1,6 +1,6 @@
 <?php
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || die('XOOPS root path not defined');
 
 class SonglistExtras extends XoopsObject
 {
@@ -215,7 +215,7 @@ class SonglistExtrasHandler extends XoopsPersistableObjectHandler
      * @return bool FALSE if failed, TRUE if already present and unchanged or successful
      */
 
-    public function insert(XoopsObject $obj, $force = false, $checkObject = true)
+    public function insert(\XoopsObject $obj, $force = false, $checkObject = true)
     {
         $uservars = $this->getPostVars();
         foreach ($uservars as $var) {

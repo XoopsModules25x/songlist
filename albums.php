@@ -5,20 +5,20 @@ include(__DIR__ . '/header.php');
 global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit;
 
 $categoryHandler = xoops_getModuleHandler('category', 'songlist');
-$criteria_cat    = new CriteriaCompo();
+$criteria_cat    = new \CriteriaCompo();
 $cids            = $categoryHandler->GetCatAndSubCat($_SESSION['cid']);
 if ($_SESSION['cid'] > 0) {
     $cids[$_SESSION['cid']] = $_SESSION['cid'];
 }
 if (count($cids) > 0 && 0 != $_SESSION['cid']) {
-    $criteria_cat->add(new Criteria('`cid`', '(' . implode(',', $cids) . ')', 'IN'), 'OR');
+    $criteria_cat->add(new \Criteria('`cid`', '(' . implode(',', $cids) . ')', 'IN'), 'OR');
 } else {
-    $criteria_cat->add(new Criteria('1', '1'), 'OR');
+    $criteria_cat->add(new \Criteria('1', '1'), 'OR');
 }
 $criteria_cat->setSort('`created`');
 $criteria_cat->setOrder('ASC');
 
-$criteria = new Criteria('pid', $_SESSION['cid']);
+$criteria = new \Criteria('pid', $_SESSION['cid']);
 $criteria->setSort('`weight`');
 $criteria->setOrder('ASC');
 $categories = $categoryHandler->getObjects($criteria, false);
@@ -50,7 +50,7 @@ switch ($op) {
         switch ($fct) {
             default:
             case 'list':
-                $pagenav = new XoopsPageNav($albumsHandler->getCount($criteria_cat), $limit, $start, 'start', "op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
+                $pagenav = new \XoopsPageNav($albumsHandler->getCount($criteria_cat), $limit, $start, 'start', "op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
 
                 $criteria_cat->setLimit($limit);
                 $criteria_cat->setStart($start);
@@ -139,24 +139,24 @@ switch ($op) {
             case 'artist':
             case 'album':
 
-                $browse_criteria = new CriteriaCompo();
+                $browse_criteria = new \CriteriaCompo();
                 switch ($value) {
                     case '0':
                         for ($u = 0; $u < 10; ++$u) {
-                            $browse_criteria->add(new Criteria('`title`', $u . '%', 'LIKE'), 'OR');
+                            $browse_criteria->add(new \Criteria('`title`', $u . '%', 'LIKE'), 'OR');
                         }
                         break;
                     default:
-                        $browse_criteria->add(new Criteria('`title`', strtoupper($value) . '%', 'LIKE'), 'OR');
-                        $browse_criteria->add(new Criteria('`title`', strtolower($value) . '%', 'LIKE'), 'OR');
+                        $browse_criteria->add(new \Criteria('`title`', strtoupper($value) . '%', 'LIKE'), 'OR');
+                        $browse_criteria->add(new \Criteria('`title`', strtolower($value) . '%', 'LIKE'), 'OR');
                         break;
                 }
-                $criteria = new CriteriaCompo($criteria_cat, 'AND');
+                $criteria = new \CriteriaCompo($criteria_cat, 'AND');
                 $criteria->add($browse_criteria);
 
         }
 
-        $pagenav = new XoopsPageNav($albumsHandler->getCount($criteria), $limit, $start, 'start', "op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
+        $pagenav = new \XoopsPageNav($albumsHandler->getCount($criteria), $limit, $start, 'start', "op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
 
         $criteria->setLimit($limit);
         $criteria->setStart($start);

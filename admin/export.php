@@ -106,7 +106,7 @@ switch ($op) {
                         foreach ($record as $recid => $data) {
                             $gid = 0;
                             if (strlen($_POST['genre']) > 0 && !empty($data[$_POST['genre']])) {
-                                $criteria = new Criteria('`name`', $data[$_POST['genre']]);
+                                $criteria = new \Criteria('`name`', $data[$_POST['genre']]);
                                 if ($genreHandler->getCount($criteria) > 0) {
                                     $objects = $genreHandler->getObjects($criteria, false);
                                     $gid     = $objects[0]->getVar('gid');
@@ -119,7 +119,7 @@ switch ($op) {
 
                             $vid = 0;
                             if (strlen($_POST['voice']) > 0 && !empty($data[$_POST['voice']])) {
-                                $criteria = new Criteria('`name`', $data[$_POST['voice']]);
+                                $criteria = new \Criteria('`name`', $data[$_POST['voice']]);
                                 if ($voiceHandler->getCount($criteria) > 0) {
                                     $objects = $voiceHandler->getObjects($criteria, false);
                                     $gid     = $objects[0]->getVar('vid');
@@ -132,7 +132,7 @@ switch ($op) {
 
                             $cid = 0;
                             if (strlen($_POST['category']) > 0 && !empty($data[$_POST['category']])) {
-                                $criteria = new Criteria('`name`', $data[$_POST['category']]);
+                                $criteria = new \Criteria('`name`', $data[$_POST['category']]);
                                 if ($categoryHandler->getCount($criteria) > 0) {
                                     $objects = $categoryHandler->getObjects($criteria, false);
                                     $cid     = $objects[0]->getVar('cid');
@@ -145,7 +145,7 @@ switch ($op) {
                             $aids = [];
                             if (strlen($_POST['artist']) > 0 && !empty($data[$_POST['artist']])) {
                                 foreach (explode(',', $data[$_POST['artist']]) as $artist) {
-                                    $criteria = new Criteria('`name`', $artist);
+                                    $criteria = new \Criteria('`name`', $artist);
                                     if ($artistsHandler->getCount($criteria) > 0) {
                                         $objects                          = $artistsHandler->getObjects($criteria, false);
                                         $aids[$objects[0]->getVar('aid')] = $objects[0]->getVar('aid');
@@ -168,7 +168,7 @@ switch ($op) {
                             }
                             $abid = 0;
                             if (strlen($_POST['album']) > 0 && !empty($data[$_POST['album']])) {
-                                $criteria = new Criteria('`name`', $data[$_POST['album']]);
+                                $criteria = new \Criteria('`name`', $data[$_POST['album']]);
                                 if ($albumsHandler->getCount($criteria) > 0) {
                                     $objects = $albumsHandler->getObjects($criteria, false);
                                     $abid    = $objects[0]->getVar('aid');
@@ -182,7 +182,7 @@ switch ($op) {
                             }
                             $sid = 0;
                             if (strlen($_POST['songid']) > 0 && !empty($data[$_POST['songid']])) {
-                                $criteria = new Criteria('`songid`', $data[$_POST['songid']]);
+                                $criteria = new \Criteria('`songid`', $data[$_POST['songid']]);
                                 if ($songsHandler->getCount($criteria) > 0) {
                                     $objects = $songsHandler->getObjects($criteria, false);
                                     $object  = $objects[0]->getVar('sid');
@@ -220,7 +220,7 @@ switch ($op) {
                     foreach ($xmlarray as $recid => $data) {
                         $gid = 0;
                         if (strlen($_POST['genre']) > 0 && !empty($data[$_POST['genre']])) {
-                            $criteria = new Criteria('`name`', $data[$_POST['genre']]);
+                            $criteria = new \Criteria('`name`', $data[$_POST['genre']]);
                             if ($genreHandler->getCount($criteria) > 0) {
                                 $objects = $genreHandler->getObjects($criteria, false);
                                 $gid     = $objects[0]->getVar('gid');
@@ -232,7 +232,7 @@ switch ($op) {
                         }
                         $vid = 0;
                         if (strlen($_POST['voice']) > 0 && !empty($data[$_POST['voice']])) {
-                            $criteria = new Criteria('`name`', $data[$_POST['voice']]);
+                            $criteria = new \Criteria('`name`', $data[$_POST['voice']]);
                             if ($voiceHandler->getCount($criteria) > 0) {
                                 $objects = $voiceHandler->getObjects($criteria, false);
                                 $gid     = $objects[0]->getVar('vid');
@@ -244,7 +244,7 @@ switch ($op) {
                         }
                         $cid = 0;
                         if (strlen($_POST['category']) > 0 && !empty($data[$_POST['category']])) {
-                            $criteria = new Criteria('`name`', $data[$_POST['category']]);
+                            $criteria = new \Criteria('`name`', $data[$_POST['category']]);
                             if ($categoryHandler->getCount($criteria) > 0) {
                                 $objects = $categoryHandler->getObjects($criteria, false);
                                 $cid     = $objects[0]->getVar('cid');
@@ -257,7 +257,7 @@ switch ($op) {
                         $aids = [];
                         if (strlen($_POST['artist']) > 0 && !empty($data[$_POST['artist']])) {
                             foreach (explode(',', $data[$_POST['artist']]) as $artist) {
-                                $criteria = new Criteria('`name`', $artist);
+                                $criteria = new \Criteria('`name`', $artist);
                                 if ($artistsHandler->getCount($criteria) > 0) {
                                     $objects                          = $artistsHandler->getObjects($criteria, false);
                                     $aids[$objects[0]->getVar('aid')] = $objects[0]->getVar('aid');
@@ -280,7 +280,7 @@ switch ($op) {
                         }
                         $abid = 0;
                         if (strlen($_POST['album']) > 0 && !empty($data[$_POST['album']])) {
-                            $criteria = new Criteria('`name`', $data[$_POST['album']]);
+                            $criteria = new \Criteria('`name`', $data[$_POST['album']]);
                             if ($albumsHandler->getCount($criteria) > 0) {
                                 $objects = $albumsHandler->getObjects($criteria, false);
                                 $abid    = $objects[0]->getVar('aid');
@@ -294,7 +294,7 @@ switch ($op) {
                         }
                         $sid = 0;
                         if (strlen($_POST['songid']) > 0 && !empty($data[$_POST['songid']])) {
-                            $criteria = new Criteria('`songid`', $data[$_POST['songid']]);
+                            $criteria = new \Criteria('`songid`', $data[$_POST['songid']]);
                             if ($songsHandler->getCount($criteria) > 0) {
                                 $objects = $songsHandler->getObjects($criteria, false);
                                 $object  = $objects[0]->getVar('sid');

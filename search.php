@@ -27,64 +27,64 @@ switch ($op) {
         switch ($fct) {
             default:
             case 'titleandlyrics':
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 foreach (explode(' ', $value) as $keyword) {
-                    $criteria->add(new Criteria('`title`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
-                    $criteria->add(new Criteria('`lyrics`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
+                    $criteria->add(new \Criteria('`title`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
+                    $criteria->add(new \Criteria('`lyrics`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
                 }
                 break;
 
             case 'albums':
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 foreach (explode(' ', $value) as $keyword) {
-                    $criteria->add(new Criteria('`title`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
+                    $criteria->add(new \Criteria('`title`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
                 }
                 $albums   = $albumsHandler->getObject($criteria, true);
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 foreach ($albums as $abid => $album) {
-                    $criteria->add(new Criteria('`abid`', $abid), 'OR');
+                    $criteria->add(new \Criteria('`abid`', $abid), 'OR');
                 }
                 break;
 
             case 'artists':
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 foreach (explode(' ', $value) as $keyword) {
-                    $criteria->add(new Criteria('`name`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
+                    $criteria->add(new \Criteria('`name`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
                 }
                 $artists  = $artistsHandler->getObject($criteria, true);
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 foreach ($artists as $aid => $artist) {
-                    $criteria->add(new Criteria('`aids`', '%"' . $aid . '"%', 'LIKE'), 'OR');
+                    $criteria->add(new \Criteria('`aids`', '%"' . $aid . '"%', 'LIKE'), 'OR');
                 }
                 break;
 
             case 'lyrics':
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 foreach (explode(' ', $value) as $keyword) {
-                    $criteria->add(new Criteria('`lyrics`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
+                    $criteria->add(new \Criteria('`lyrics`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
                 }
                 break;
             case 'title':
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 foreach (explode(' ', $value) as $keyword) {
-                    $criteria->add(new Criteria('`title`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
+                    $criteria->add(new \Criteria('`title`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
                 }
                 break;
         }
 
         if (0 != $gid && $GLOBALS['songlistModuleConfig']['genre']) {
-            $criteria->add(new Criteria('`gids`', '%"' . $gid . '"%', 'LIKE'));
+            $criteria->add(new \Criteria('`gids`', '%"' . $gid . '"%', 'LIKE'));
         }
 
         if (0 != $vcid && $GLOBALS['songlistModuleConfig']['voice']) {
-            $criteria->add(new Criteria('`vcid`', $vcid));
+            $criteria->add(new \Criteria('`vcid`', $vcid));
         }
 
         if (0 != (isset($_GET['cid']) ? ($_GET['cid']) : $cid)) {
-            $criteria->add(new Criteria('`cid`', (isset($_GET['cid']) ? ($_GET['cid']) : $cid)));
+            $criteria->add(new \Criteria('`cid`', (isset($_GET['cid']) ? ($_GET['cid']) : $cid)));
         }
 
-        $pagenav = new XoopsPageNav($songsHandler->getCount($criteria), $limit, $start, 'start', "?op=$op&fct=$fct&gid=$gid&vcid=$vcid&value=$value&limit=$limit");
+        $pagenav = new \XoopsPageNav($songsHandler->getCount($criteria), $limit, $start, 'start', "?op=$op&fct=$fct&gid=$gid&vcid=$vcid&value=$value&limit=$limit");
 
         $criteria->setLimit($limit);
         $criteria->setStart($start);

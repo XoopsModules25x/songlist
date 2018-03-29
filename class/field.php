@@ -1,6 +1,6 @@
 <?php
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || die('XOOPS root path not defined');
 
 /**
  * @package   kernel
@@ -42,7 +42,7 @@ class SonglistField extends XoopsObject
      */
     public function setVar($key, $value, $not_gpc = false)
     {
-        if ('field_options' == $key && is_array($value)) {
+        if ('field_options' === $key && is_array($value)) {
             foreach (array_keys($value) as $idx) {
                 $value[$idx] = base64_encode($value[$idx]);
             }
@@ -53,7 +53,7 @@ class SonglistField extends XoopsObject
     public function getVar($key, $format = 's')
     {
         $value = parent::getVar($key, $format);
-        if ('field_options' == $key && !empty($value)) {
+        if ('field_options' === $key && !empty($value)) {
             foreach (array_keys($value) as $idx) {
                 $value[$idx] = base64_decode($value[$idx]);
             }
@@ -95,19 +95,19 @@ class SonglistField extends XoopsObject
             default:
             case 'autotext':
                 //autotext is not for editing
-                $element = new XoopsFormLabel($caption, $this->getOutputValue($user, $profile));
+                $element = new \XoopsFormLabel($caption, $this->getOutputValue($user, $profile));
                 break;
 
             case 'textbox':
-                $element = new XoopsFormText($caption, $name, 35, $this->getVar('field_maxlength'), $value);
+                $element = new \XoopsFormText($caption, $name, 35, $this->getVar('field_maxlength'), $value);
                 break;
 
             case 'textarea':
-                $element = new XoopsFormTextArea($caption, $name, $value, 4, 30);
+                $element = new \XoopsFormTextArea($caption, $name, $value, 4, 30);
                 break;
 
             case 'dhtml':
-                $element = new XoopsFormDhtmlTextArea($caption, $name, $value, 10, 30);
+                $element = new \XoopsFormDhtmlTextArea($caption, $name, $value, 10, 30);
                 break;
 
             case 'editor':
@@ -117,11 +117,11 @@ class SonglistField extends XoopsObject
                 $editor_config['value']  = $value;
                 $editor_config['width']  = $GLOBALS['songlistModuleConfig']['editor_width'];
                 $editor_config['height'] = $GLOBALS['songlistModuleConfig']['editor_height'];
-                $element                 = new XoopsFormEditor($caption, $name, $editor_config);
+                $element                 = new \XoopsFormEditor($caption, $name, $editor_config);
                 break;
 
             case 'select':
-                $element = new XoopsFormSelect($caption, $name, $value);
+                $element = new \XoopsFormSelect($caption, $name, $value);
                 // If options do not include an empty element, then add a blank option to prevent any default selection
                 if (!in_array('', array_keys($options))) {
                     $element->addOption('', _NONE);
@@ -138,59 +138,59 @@ class SonglistField extends XoopsObject
                 break;
 
             case 'select_multi':
-                $element = new XoopsFormSelect($caption, $name, $value, 5, true);
+                $element = new \XoopsFormSelect($caption, $name, $value, 5, true);
                 $element->addOptionArray($options);
                 break;
 
             case 'radio':
-                $element = new XoopsFormRadio($caption, $name, $value);
+                $element = new \XoopsFormRadio($caption, $name, $value);
                 $element->addOptionArray($options);
                 break;
 
             case 'checkbox':
-                $element = new XoopsFormCheckBox($caption, $name, $value);
+                $element = new \XoopsFormCheckBox($caption, $name, $value);
                 $element->addOptionArray($options);
                 break;
 
             case 'yesno':
-                $element = new XoopsFormRadioYN($caption, $name, $value);
+                $element = new \XoopsFormRadioYN($caption, $name, $value);
                 break;
 
             case 'group':
-                $element = new XoopsFormSelectGroup($caption, $name, true, $value);
+                $element = new \XoopsFormSelectGroup($caption, $name, true, $value);
                 break;
 
             case 'group_multi':
-                $element = new XoopsFormSelectGroup($caption, $name, true, $value, 5, true);
+                $element = new \XoopsFormSelectGroup($caption, $name, true, $value, 5, true);
                 break;
 
             case 'language':
-                $element = new XoopsFormSelectLang($caption, $name, $value);
+                $element = new \XoopsFormSelectLang($caption, $name, $value);
                 break;
 
             case 'date':
-                $element = new XoopsFormTextDateSelect($caption, $name, 15, $value);
+                $element = new \XoopsFormTextDateSelect($caption, $name, 15, $value);
                 break;
 
             case 'longdate':
-                $element = new XoopsFormTextDateSelect($caption, $name, 15, str_replace('-', '/', $value));
+                $element = new \XoopsFormTextDateSelect($caption, $name, 15, str_replace('-', '/', $value));
                 break;
 
             case 'datetime':
-                $element = new XoopsFormDatetime($caption, $name, 15, $value);
+                $element = new \XoopsFormDatetime($caption, $name, 15, $value);
                 break;
 
             case 'list':
-                $element = new XoopsFormSelectList($caption, $name, $value, 1, $options[0]);
+                $element = new \XoopsFormSelectList($caption, $name, $value, 1, $options[0]);
                 break;
 
             case 'timezone':
-                $element = new XoopsFormSelectTimezone($caption, $name, $value);
+                $element = new \XoopsFormSelectTimezone($caption, $name, $value);
                 $element->setExtra("style='width: 280px;'");
                 break;
 
             case 'rank':
-                $element = new XoopsFormSelect($caption, $name, $value);
+                $element = new \XoopsFormSelect($caption, $name, $value);
 
                 require_once $GLOBALS['xoops']->path('class/xoopslists.php');
                 $ranks = XoopsLists::getUserRankList();
@@ -199,12 +199,12 @@ class SonglistField extends XoopsObject
                 break;
 
             case 'theme':
-                $element = new XoopsFormSelect($caption, $name, $value);
+                $element = new \XoopsFormSelect($caption, $name, $value);
                 $element->addOption('0', _OBJS_MF_SITEDEFAULT);
                 $handle  = opendir(XOOPS_THEME_PATH . '/');
                 $dirlist = [];
                 while (false !== ($file = readdir($handle))) {
-                    if (is_dir(XOOPS_THEME_PATH . '/' . $file) && !preg_match('/^[.]{1,2}$/', $file) && 'cvs' != strtolower($file)) {
+                    if (is_dir(XOOPS_THEME_PATH . '/' . $file) && !preg_match('/^[.]{1,2}$/', $file) && 'cvs' !== strtolower($file)) {
                         if (file_exists(XOOPS_THEME_PATH . '/' . $file . '/theme.html') && in_array($file, $GLOBALS['xoopsConfig']['theme_set_allowed'])) {
                             $dirlist[$file] = $file;
                         }
@@ -252,23 +252,23 @@ class SonglistField extends XoopsObject
             default:
             case 'autotext':
                 //autotext is not for editing
-                $element = new XoopsFormLabel($caption, $this->getOutputValue($user, $profile));
+                $element = new \XoopsFormLabel($caption, $this->getOutputValue($user, $profile));
                 break;
 
             case 'textbox':
-                $element = new XoopsFormText($caption, $name, 35, $this->getVar('field_maxlength'), $value);
+                $element = new \XoopsFormText($caption, $name, 35, $this->getVar('field_maxlength'), $value);
                 break;
 
             case 'textarea':
-                $element = new XoopsFormTextArea($caption, $name, $value, 4, 30);
+                $element = new \XoopsFormTextArea($caption, $name, $value, 4, 30);
                 break;
 
             case 'dhtml':
-                $element = new XoopsFormText($caption, $name, 35, 255, $value);
+                $element = new \XoopsFormText($caption, $name, 35, 255, $value);
                 break;
 
             case 'select':
-                $element = new XoopsFormSelect($caption, $name, $value);
+                $element = new \XoopsFormSelect($caption, $name, $value);
                 // If options do not include an empty element, then add a blank option to prevent any default selection
                 if (!in_array('', array_keys($options))) {
                     $element->addOption('', _NONE);
@@ -287,63 +287,63 @@ class SonglistField extends XoopsObject
 
             case 'editor':
 
-                $element = new XoopsFormText($caption, $name, 35, 255, $value);
+                $element = new \XoopsFormText($caption, $name, 35, 255, $value);
                 break;
 
             case 'select_multi':
-                $element = new XoopsFormSelect($caption, $name, $value, 5, true);
+                $element = new \XoopsFormSelect($caption, $name, $value, 5, true);
                 $element->addOptionArray($options);
                 break;
 
             case 'radio':
-                $element = new XoopsFormRadio($caption, $name, $value);
+                $element = new \XoopsFormRadio($caption, $name, $value);
                 $element->addOptionArray($options);
                 break;
 
             case 'checkbox':
-                $element = new XoopsFormCheckBox($caption, $name, $value);
+                $element = new \XoopsFormCheckBox($caption, $name, $value);
                 $element->addOptionArray($options);
                 break;
 
             case 'yesno':
-                $element = new XoopsFormRadioYN($caption, $name, $value);
+                $element = new \XoopsFormRadioYN($caption, $name, $value);
                 break;
 
             case 'group':
-                $element = new XoopsFormSelectGroup($caption, $name, true, $value);
+                $element = new \XoopsFormSelectGroup($caption, $name, true, $value);
                 break;
 
             case 'group_multi':
-                $element = new XoopsFormSelectGroup($caption, $name, true, $value, 5, true);
+                $element = new \XoopsFormSelectGroup($caption, $name, true, $value, 5, true);
                 break;
 
             case 'language':
-                $element = new XoopsFormSelectLang($caption, $name, $value);
+                $element = new \XoopsFormSelectLang($caption, $name, $value);
                 break;
 
             case 'date':
-                $element = new XoopsFormTextDateSelect($caption, $name, 15, $value);
+                $element = new \XoopsFormTextDateSelect($caption, $name, 15, $value);
                 break;
 
             case 'longdate':
-                $element = new XoopsFormTextDateSelect($caption, $name, 15, str_replace('-', '/', $value));
+                $element = new \XoopsFormTextDateSelect($caption, $name, 15, str_replace('-', '/', $value));
                 break;
 
             case 'datetime':
-                $element = new XoopsFormDatetime($caption, $name, 15, $value);
+                $element = new \XoopsFormDatetime($caption, $name, 15, $value);
                 break;
 
             case 'list':
-                $element = new XoopsFormSelectList($caption, $name, $value, 1, $options[0]);
+                $element = new \XoopsFormSelectList($caption, $name, $value, 1, $options[0]);
                 break;
 
             case 'timezone':
-                $element = new XoopsFormSelectTimezone($caption, $name, $value);
+                $element = new \XoopsFormSelectTimezone($caption, $name, $value);
                 $element->setExtra("style='width: 280px;'");
                 break;
 
             case 'rank':
-                $element = new XoopsFormSelect($caption, $name, $value);
+                $element = new \XoopsFormSelect($caption, $name, $value);
 
                 require_once $GLOBALS['xoops']->path('class/xoopslists.php');
                 $ranks = XoopsLists::getUserRankList();
@@ -352,12 +352,12 @@ class SonglistField extends XoopsObject
                 break;
 
             case 'theme':
-                $element = new XoopsFormSelect($caption, $name, $value);
+                $element = new \XoopsFormSelect($caption, $name, $value);
                 $element->addOption('0', _OBJS_MF_SITEDEFAULT);
                 $handle  = opendir(XOOPS_THEME_PATH . '/');
                 $dirlist = [];
                 while (false !== ($file = readdir($handle))) {
-                    if (is_dir(XOOPS_THEME_PATH . '/' . $file) && !preg_match('/^[.]{1,2}$/', $file) && 'cvs' != strtolower($file)) {
+                    if (is_dir(XOOPS_THEME_PATH . '/' . $file) && !preg_match('/^[.]{1,2}$/', $file) && 'cvs' !== strtolower($file)) {
                         if (file_exists(XOOPS_THEME_PATH . '/' . $file . '/theme.html') && in_array($file, $GLOBALS['xoopsConfig']['theme_set_allowed'])) {
                             $dirlist[$file] = $file;
                         }
@@ -398,7 +398,7 @@ class SonglistField extends XoopsObject
         switch ($this->getVar('field_type')) {
             default:
             case 'textbox':
-                if ('url' == $this->getVar('field_name') && '' != $value) {
+                if ('url' === $this->getVar('field_name') && '' != $value) {
                     return '<a href="' . formatURL($value) . '" rel="external">' . $value . '</a>';
                 } else {
                     return $value;
@@ -417,7 +417,7 @@ class SonglistField extends XoopsObject
             case 'radio':
                 $options = $this->getVar('field_options');
                 if (isset($options[$value])) {
-                    $value = htmlspecialchars(defined($options[$value]) ? constant($options[$value]) : $options[$value]);
+                    $value = htmlspecialchars(defined($options[$value]) ? constant($options[$value]) : $options[$value], ENT_QUOTES | ENT_HTML5);
                 } else {
                     $value = '';
                 }
@@ -432,7 +432,7 @@ class SonglistField extends XoopsObject
                 if (count($options) > 0) {
                     foreach (array_keys($options) as $key) {
                         if (in_array($key, $value)) {
-                            $$ret[$key] = htmlspecialchars(defined($options[$key]) ? constant($options[$key]) : $options[$key]);
+                            $$ret[$key] = htmlspecialchars(defined($options[$key]) ? constant($options[$key]) : $options[$key], ENT_QUOTES | ENT_HTML5);
                         }
                     }
                 }
@@ -581,12 +581,12 @@ class SonglistFieldHandler extends XoopsPersistableObjectHandler
     {
         static $fields = [];
         if (!empty($force_update) || 0 == count($fields)) {
-            $criteria = new Criteria('field_id', 0, '!=');
+            $criteria = new \Criteria('field_id', 0, '!=');
             $criteria->setSort('field_weight');
             if (0 == $this->getCount($criteria)) {
                 return false;
             }
-            $field_objs = $this->getObjects($criteria);
+            $field_objs =& $this->getObjects($criteria);
             foreach (array_keys($field_objs) as $i) {
                 $fields[$field_objs[$i]->getVar('field_name')] = $field_objs[$i];
             }
@@ -603,7 +603,7 @@ class SonglistFieldHandler extends XoopsPersistableObjectHandler
      * @return bool FALSE if failed, TRUE if already present and unchanged or successful
      * @internal param bool $checkObject check if the object is dirty and clean the attributes
      */
-    public function insert(XoopsObject $obj, $force = false)
+    public function insert(\XoopsObject $obj, $force = false)
     {
         $objectsHandler = xoops_getModuleHandler('extras', 'songlist');
         $obj->setVar('field_name', str_replace(' ', '_', $obj->getVar('field_name')));
@@ -754,7 +754,7 @@ class SonglistFieldHandler extends XoopsPersistableObjectHandler
      * @param bool        $force
      * @return bool FALSE if failed.
      **/
-    public function delete(XoopsObject $obj, $force = false)
+    public function delete(\XoopsObject $obj, $force = false)
     {
         $objectsHandler = xoops_getModuleHandler('extras', 'songlist');
         // remove column from table
@@ -771,8 +771,8 @@ class SonglistFieldHandler extends XoopsPersistableObjectHandler
                 if (is_object($objects_module)) {
                     // Remove group permissions
                     $grouppermHandler = xoops_getHandler('groupperm');
-                    $criteria         = new CriteriaCompo(new Criteria('gperm_modid', $objects_module->getVar('mid')));
-                    $criteria->add(new Criteria('gperm_itemid', $obj->getVar('field_id')));
+                    $criteria         = new \CriteriaCompo(new \Criteria('gperm_modid', $objects_module->getVar('mid')));
+                    $criteria->add(new \Criteria('gperm_itemid', $obj->getVar('field_id')));
 
                     return $grouppermHandler->deleteAll($criteria);
                 }

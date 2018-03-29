@@ -5,20 +5,20 @@ include(__DIR__ . '/header.php');
 global $file, $op, $fct, $id, $value, $gid, $cid, $vcid, $start, $limit, $singer;
 
 $categoryHandler = xoops_getModuleHandler('category', 'songlist');
-$criteria_cat    = new CriteriaCompo();
+$criteria_cat    = new \CriteriaCompo();
 $cids            = $categoryHandler->GetCatAndSubCat($_SESSION['cid']);
 if ($_SESSION['cid'] > 0) {
     $cids[$_SESSION['cid']] = $_SESSION['cid'];
 }
 if (count($cids) > 0 && 0 != $_SESSION['cid']) {
-    $criteria_cat->add(new Criteria('`cid`', '(' . implode(',', $cids) . ')', 'IN'), 'OR');
+    $criteria_cat->add(new \Criteria('`cid`', '(' . implode(',', $cids) . ')', 'IN'), 'OR');
 } else {
-    $criteria_cat->add(new Criteria('1', '1'), 'OR');
+    $criteria_cat->add(new \Criteria('1', '1'), 'OR');
 }
 $criteria_cat->setSort('`created`');
 $criteria_cat->setOrder('ASC');
 
-$criteria = new Criteria('pid', $_SESSION['cid']);
+$criteria = new \Criteria('pid', $_SESSION['cid']);
 $criteria->setSort('`weight`');
 $criteria->setOrder('ASC');
 $categories = $categoryHandler->getObjects($criteria, false);
@@ -60,7 +60,7 @@ switch ($op) {
             default:
             case 'list':
 
-                $pagenav = new XoopsPageNav($songsHandler->getCount($criteria_cat), $limit, $start, 'start', "op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
+                $pagenav = new \XoopsPageNav($songsHandler->getCount($criteria_cat), $limit, $start, 'start', "op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
 
                 $criteria_cat->setLimit($limit);
                 $criteria_cat->setStart($start);
@@ -137,75 +137,75 @@ switch ($op) {
             default:
             case 'title':
 
-                $browse_criteria = new CriteriaCompo();
+                $browse_criteria = new \CriteriaCompo();
                 switch ($value) {
                     case '0':
                         for ($u = 0; $u < 10; ++$u) {
-                            $browse_criteria->add(new Criteria('`title`', $u . '%', 'LIKE'), 'OR');
+                            $browse_criteria->add(new \Criteria('`title`', $u . '%', 'LIKE'), 'OR');
                         }
                         break;
                     default:
-                        $browse_criteria->add(new Criteria('`title`', strtoupper($value) . '%', 'LIKE'), 'OR');
-                        $browse_criteria->add(new Criteria('`title`', strtolower($value) . '%', 'LIKE'), 'OR');
+                        $browse_criteria->add(new \Criteria('`title`', strtoupper($value) . '%', 'LIKE'), 'OR');
+                        $browse_criteria->add(new \Criteria('`title`', strtolower($value) . '%', 'LIKE'), 'OR');
                         break;
                 }
-                $criteria = new CriteriaCompo($criteria_cat, 'AND');
+                $criteria = new \CriteriaCompo($criteria_cat, 'AND');
                 $criteria->add($browse_criteria);
                 break;
 
             case 'lyrics':
 
-                $browse_criteria = new CriteriaCompo();
+                $browse_criteria = new \CriteriaCompo();
                 switch ($value) {
                     case '0':
                         for ($u = 0; $u < 10; ++$u) {
-                            $browse_criteria->add(new Criteria('`lyrics`', $u . '%', 'LIKE'), 'OR');
+                            $browse_criteria->add(new \Criteria('`lyrics`', $u . '%', 'LIKE'), 'OR');
                         }
                         break;
                     default:
-                        $browse_criteria->add(new Criteria('`lyrics`', strtoupper($value) . '%', 'LIKE'), 'OR');
-                        $browse_criteria->add(new Criteria('`lyrics`', strtolower($value) . '%', 'LIKE'), 'OR');
+                        $browse_criteria->add(new \Criteria('`lyrics`', strtoupper($value) . '%', 'LIKE'), 'OR');
+                        $browse_criteria->add(new \Criteria('`lyrics`', strtolower($value) . '%', 'LIKE'), 'OR');
                         break;
                 }
-                $criteria = new CriteriaCompo($criteria_cat, 'AND');
+                $criteria = new \CriteriaCompo($criteria_cat, 'AND');
                 $criteria->add($browse_criteria);
                 break;
 
             case 'artist':
 
-                $browse_criteria = new CriteriaCompo();
+                $browse_criteria = new \CriteriaCompo();
                 switch ($value) {
                     case '0':
                         for ($u = 0; $u < 10; ++$u) {
-                            $browse_criteria->add(new Criteria('`name`', $u . '%', 'LIKE'), 'OR');
+                            $browse_criteria->add(new \Criteria('`name`', $u . '%', 'LIKE'), 'OR');
                         }
                         break;
                     default:
-                        $browse_criteria->add(new Criteria('`name`', strtoupper($value) . '%', 'LIKE'), 'OR');
-                        $browse_criteria->add(new Criteria('`name`', strtolower($value) . '%', 'LIKE'), 'OR');
+                        $browse_criteria->add(new \Criteria('`name`', strtoupper($value) . '%', 'LIKE'), 'OR');
+                        $browse_criteria->add(new \Criteria('`name`', strtolower($value) . '%', 'LIKE'), 'OR');
                         break;
                 }
                 $artistsHandler   = xoops_getModuleHandler('artists', 'songlist');
-                $browse_criteriab = new CriteriaCompo();
+                $browse_criteriab = new \CriteriaCompo();
                 foreach ($artistsHandler->getObjects($browse_criteria, true) as $aid => $obj) {
-                    $browse_criteriab->add(new Criteria('`aids`', '%"' . $aid . '"%', 'LIKE'), 'OR');
+                    $browse_criteriab->add(new \Criteria('`aids`', '%"' . $aid . '"%', 'LIKE'), 'OR');
                 }
-                $criteria = new CriteriaCompo($criteria_cat, 'AND');
+                $criteria = new \CriteriaCompo($criteria_cat, 'AND');
                 $criteria->add($browse_criteriab);
                 break;
 
             case 'album':
 
-                $browse_criteria = new CriteriaCompo();
+                $browse_criteria = new \CriteriaCompo();
                 switch ($value) {
                     case '0':
                         for ($u = 0; $u < 10; ++$u) {
-                            $browse_criteria->add(new Criteria('`title`', $u . '%', 'LIKE'), 'OR');
+                            $browse_criteria->add(new \Criteria('`title`', $u . '%', 'LIKE'), 'OR');
                         }
                         break;
                     default:
-                        $browse_criteria->add(new Criteria('`title`', strtoupper($value) . '%', 'LIKE'), 'OR');
-                        $browse_criteria->add(new Criteria('`title`', strtolower($value) . '%', 'LIKE'), 'OR');
+                        $browse_criteria->add(new \Criteria('`title`', strtoupper($value) . '%', 'LIKE'), 'OR');
+                        $browse_criteria->add(new \Criteria('`title`', strtolower($value) . '%', 'LIKE'), 'OR');
                         break;
                 }
                 $ids           = [];
@@ -213,14 +213,14 @@ switch ($op) {
                 foreach ($albumsHandler->getObjects($browse_criteria, true) as $id => $obj) {
                     $ids[$id] = $id;
                 }
-                $criteria = new CriteriaCompo($criteria_cat, 'AND');
+                $criteria = new \CriteriaCompo($criteria_cat, 'AND');
                 if (count($ids) > 0) {
-                    $criteria->add(new Criteria('abid', '(' . implode(',', $ids) . ')', 'IN'));
+                    $criteria->add(new \Criteria('abid', '(' . implode(',', $ids) . ')', 'IN'));
                 }
                 break;
         }
 
-        $pagenav = new XoopsPageNav($songsHandler->getCount($criteria), $limit, $start, 'start', "op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
+        $pagenav = new \XoopsPageNav($songsHandler->getCount($criteria), $limit, $start, 'start', "op=$op&fct=$fct&id=$id&value=$value&limit=$limit");
 
         $criteria->setLimit($limit);
         $criteria->setStart($start);
@@ -281,64 +281,64 @@ switch ($op) {
         switch ($fct) {
             default:
             case 'titleandlyrics':
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 foreach (explode(' ', $value) as $keyword) {
-                    $criteria->add(new Criteria('`title`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
-                    $criteria->add(new Criteria('`lyrics`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
+                    $criteria->add(new \Criteria('`title`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
+                    $criteria->add(new \Criteria('`lyrics`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
                 }
                 break;
 
             case 'albums':
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 foreach (explode(' ', $value) as $keyword) {
-                    $criteria->add(new Criteria('`title`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
+                    $criteria->add(new \Criteria('`title`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
                 }
                 $albums   = $albumsHandler->getObject($criteria, true);
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 foreach ($albums as $abid => $album) {
-                    $criteria->add(new Criteria('`abid`', $abid), 'OR');
+                    $criteria->add(new \Criteria('`abid`', $abid), 'OR');
                 }
                 break;
 
             case 'artists':
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 foreach (explode(' ', $value) as $keyword) {
-                    $criteria->add(new Criteria('`name`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
+                    $criteria->add(new \Criteria('`name`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
                 }
                 $artists  = $artistsHandler->getObject($criteria, true);
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 foreach ($artists as $aid => $artist) {
-                    $criteria->add(new Criteria('`aids`', '%"' . $aid . '"%', 'LIKE'), 'OR');
+                    $criteria->add(new \Criteria('`aids`', '%"' . $aid . '"%', 'LIKE'), 'OR');
                 }
                 break;
 
             case 'lyrics':
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 foreach (explode(' ', $value) as $keyword) {
-                    $criteria->add(new Criteria('`lyrics`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
+                    $criteria->add(new \Criteria('`lyrics`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
                 }
                 break;
             case 'title':
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 foreach (explode(' ', $value) as $keyword) {
-                    $criteria->add(new Criteria('`title`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
+                    $criteria->add(new \Criteria('`title`', '%' . $utf8mapHandler->convert($keyword) . '%', 'LIKE'));
                 }
                 break;
         }
 
         if (0 != $gid && $GLOBALS['songlistModuleConfig']['genre']) {
-            $criteria->add(new Criteria('`gids`', '%"' . $gid . '"%', 'LIKE'));
+            $criteria->add(new \Criteria('`gids`', '%"' . $gid . '"%', 'LIKE'));
         }
 
         if (0 != $vcid && $GLOBALS['songlistModuleConfig']['voice']) {
-            $criteria->add(new Criteria('`vcid`', $vcid));
+            $criteria->add(new \Criteria('`vcid`', $vcid));
         }
 
         if (0 != (isset($_GET['cid']) ? ($_GET['cid']) : $cid)) {
-            $criteria->add(new Criteria('`cid`', (isset($_GET['cid']) ? ($_GET['cid']) : $cid)));
+            $criteria->add(new \Criteria('`cid`', (isset($_GET['cid']) ? ($_GET['cid']) : $cid)));
         }
 
-        $pagenav = new XoopsPageNav($songsHandler->getCount($criteria), $limit, $start, 'start', "op=$op&fct=$fct&gid=$gid&vcid=$vcid&value=$value&limit=$limit");
+        $pagenav = new \XoopsPageNav($songsHandler->getCount($criteria), $limit, $start, 'start', "op=$op&fct=$fct&gid=$gid&vcid=$vcid&value=$value&limit=$limit");
 
         $criteria->setLimit($limit);
         $criteria->setStart($start);

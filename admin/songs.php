@@ -29,7 +29,7 @@ switch ($op) {
                 $ttl             = $songsHandler->getCount($criteria);
                 $GLOBALS['sort'] = !empty($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : 'created';
 
-                $pagenav = new XoopsPageNav($ttl, $GLOBALS['limit'], $GLOBALS['start'], 'start', 'limit=' . $GLOBALS['limit'] . '&sort=' . $GLOBALS['sort'] . '&order=' . $GLOBALS['order'] . '&op=' . $GLOBALS['op'] . '&fct=' . $GLOBALS['fct'] . '&filter=' . $GLOBALS['filter']);
+                $pagenav = new \XoopsPageNav($ttl, $GLOBALS['limit'], $GLOBALS['start'], 'start', 'limit=' . $GLOBALS['limit'] . '&sort=' . $GLOBALS['sort'] . '&order=' . $GLOBALS['order'] . '&op=' . $GLOBALS['op'] . '&fct=' . $GLOBALS['fct'] . '&filter=' . $GLOBALS['filter']);
                 $GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
 
                 foreach ($songsHandler->filterFields() as $id => $key) {
@@ -42,7 +42,7 @@ switch ($op) {
                                                                                                   . '&sort='
                                                                                                   . $key
                                                                                                   . '&order='
-                                                                                                  . (($key == $GLOBALS['sort']) ? ('DESC' == $GLOBALS['order'] ? 'ASC' : 'DESC') : $GLOBALS['order'])
+                                                                                                  . (($key == $GLOBALS['sort']) ? ('DESC' === $GLOBALS['order'] ? 'ASC' : 'DESC') : $GLOBALS['order'])
                                                                                                   . '&op='
                                                                                                   . $GLOBALS['op']
                                                                                                   . '&filter='
@@ -164,11 +164,11 @@ switch ($op) {
                     $extrasHandler->insert($extra);
 
                     if ($GLOBALS['songlistModuleConfig']['tags'] && file_exists(XOOPS_ROOT_PATH . '/modules/tag/class/tag.php')) {
-                        $tagHandler = xoops_getModuleHandler('tag', 'tag');
+                        $tagHandler = \XoopsModules\Tag\Helper::getInstance()->getHandler('Tag'); // xoops_getModuleHandler('tag', 'tag');
                         $tagHandler->updateByItem($_POST['tags'], $id, $GLOBALS['songlistModule']->getVar('dirname'), $songs->getVar('cid'));
                     }
 
-                    if ('new' == $_REQUEST['state'][$_REQUEST['id']]) {
+                    if ('new' === $_REQUEST['state'][$_REQUEST['id']]) {
                         redirect_header(
                             $_SERVER['PHP_SELF'] . '?op=' . $GLOBALS['op'] . '&fct=edit&id=' . $_REQUEST['id'] . '&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'],
                             10,

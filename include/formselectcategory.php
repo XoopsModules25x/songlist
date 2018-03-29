@@ -37,7 +37,7 @@ License: See /docs - GPL 2.0
  * @author          John Neill <catzwolf@xoops.org>
  * @version         $Id: formselect.php 3988 2009-12-05 15:46:47Z trabis $
  */
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 xoops_load('XoopsFormElement');
 
@@ -137,7 +137,7 @@ class SonglistFormSelectCategory extends XoopsFormElement
     public function GetCategory($ownid)
     {
         $categoryHandler = xoops_getModuleHandler('category', 'songlist');
-        $criteria        = new Criteria('pid', '0');
+        $criteria        = new \Criteria('pid', '0');
         $criteria->setSort('`name`');
         $criteria->setOrder('ASC');
         $categories  = $categoryHandler->getObjects($criteria, true);
@@ -153,7 +153,7 @@ class SonglistFormSelectCategory extends XoopsFormElement
         foreach ($categories as $catid => $category) {
             if ($catid != $ownid) {
                 $langs_array[$previd][$catid]['item'] = str_repeat('--', $level) . $category->getVar('name');
-                $criteria                             = new Criteria('pid', $catid);
+                $criteria                             = new \Criteria('pid', $catid);
                 $criteria->setSort('`name`');
                 $criteria->setOrder('ASC');
                 if ($categoriesb = $categoryHandler->getObjects($criteria, true)) {
@@ -310,7 +310,7 @@ class SonglistFormSelectCategory extends XoopsFormElement
         // render custom validation code if any
         if (!empty($this->customValidationCode)) {
             return implode("\n", $this->customValidationCode);
-            // generate validation code if required
+        // generate validation code if required
         } elseif ($this->isRequired()) {
             $eltname    = $this->getName();
             $eltcaption = $this->getCaption();

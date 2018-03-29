@@ -21,7 +21,7 @@ function b_songlist_popular_albums_edit($options)
 {
     xoops_load('XoopsFormLoader');
     xoops_loadLanguage('blocks', 'songlist');
-    $num = new XoopsformText('', 'options[0]', 10, 10, $options[0]);
+    $num = new \XoopsformText('', 'options[0]', 10, 10, $options[0]);
 
     return _BL_SONGLIST_NUMBEROFITEMS . $num->render();
 }

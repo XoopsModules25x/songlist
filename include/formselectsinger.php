@@ -37,7 +37,7 @@ License: See /docs - GPL 2.0
  * @author          John Neill <catzwolf@xoops.org>
  * @version         $Id: formselect.php 3988 2009-12-05 15:46:47Z trabis $
  */
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 xoops_load('XoopsFormElement');
 
@@ -257,7 +257,7 @@ class SonglistFormSelectSinger extends XoopsFormElement
         // render custom validation code if any
         if (!empty($this->customValidationCode)) {
             return implode("\n", $this->customValidationCode);
-            // generate validation code if required
+        // generate validation code if required
         } elseif ($this->isRequired()) {
             $eltname    = $this->getName();
             $eltcaption = $this->getCaption();

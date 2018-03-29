@@ -37,7 +37,7 @@ License: See /docs - GPL 2.0
  * @author          John Neill <catzwolf@xoops.org>
  * @version         $Id: formselect.php 3988 2009-12-05 15:46:47Z trabis $
  */
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 xoops_load('XoopsFormElement');
 
@@ -112,7 +112,7 @@ class SonglistFormSelectAlbum extends XoopsFormElement
         $this->addOption('0', _MI_SONGLIST_NONE);
         if (!isset($_form_object_options['albums'])) {
             $albumsHandler = xoops_getModuleHandler('albums', 'songlist');
-            $criteria      = new Criteria('1', '1');
+            $criteria      = new \Criteria('1', '1');
             $criteria->setSort('`title`');
             $criteria->setOrder('ASC');
             foreach ($albumsHandler->getObjects($criteria, true) as $id => $obj) {
@@ -270,7 +270,7 @@ class SonglistFormSelectAlbum extends XoopsFormElement
         // render custom validation code if any
         if (!empty($this->customValidationCode)) {
             return implode("\n", $this->customValidationCode);
-            // generate validation code if required
+        // generate validation code if required
         } elseif ($this->isRequired()) {
             $eltname    = $this->getName();
             $eltcaption = $this->getCaption();

@@ -1,6 +1,6 @@
 <?php
 
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 class SonglistCategory extends XoopsObject
 {
@@ -45,8 +45,8 @@ class SonglistCategory extends XoopsObject
         $ret['rank']     = number_format(($this->getVar('rank') > 0 && $this->getVar('votes') > 0 ? $this->getVar('rank') / $this->getVar('votes') : 0), 2) . _MI_SONGLIST_OFTEN;
         $ret['url']      = $this->getURL();
         $categoryHandler = xoops_getModuleHandler('category', 'songlist');
-        if ($categoryHandler->getCount(new Criteria('pid', $this->getVar('cid')))) {
-            foreach ($categoryHandler->getObjects(new Criteria('pid', $this->getVar('cid')), true) as $cid => $cat) {
+        if ($categoryHandler->getCount(new \Criteria('pid', $this->getVar('cid')))) {
+            foreach ($categoryHandler->getObjects(new \Criteria('pid', $this->getVar('cid')), true) as $cid => $cat) {
                 $ret['subcategories'][$cid] = $cat->toArray();
             }
         }
@@ -92,25 +92,25 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
     public function getFilterCriteria($filter)
     {
         $parts    = explode('|', $filter);
-        $criteria = new CriteriaCompo();
+        $criteria = new \CriteriaCompo();
         foreach ($parts as $part) {
             $var = explode(',', $part);
             if (!empty($var[1]) && !is_numeric($var[0])) {
                 $object = $this->create();
                 if (XOBJ_DTYPE_TXTBOX == $object->vars[$var[0]]['data_type']
                     || XOBJ_DTYPE_TXTAREA == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new Criteria('`' . $var[0] . '`', '%' . $var[1] . '%', (isset($var[2]) ? $var[2] : 'LIKE')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', '%' . $var[1] . '%', (isset($var[2]) ? $var[2] : 'LIKE')));
                 } elseif (XOBJ_DTYPE_INT == $object->vars[$var[0]]['data_type']
                           || XOBJ_DTYPE_DECIMAL == $object->vars[$var[0]]['data_type']
                           || XOBJ_DTYPE_FLOAT == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
                 } elseif (XOBJ_DTYPE_ENUM == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
                 } elseif (XOBJ_DTYPE_ARRAY == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new Criteria('`' . $var[0] . '`', '%"' . $var[1] . '";%', (isset($var[2]) ? $var[2] : 'LIKE')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', '%"' . $var[1] . '";%', (isset($var[2]) ? $var[2] : 'LIKE')));
                 }
             } elseif (!empty($var[1]) && is_numeric($var[0])) {
-                $criteria->add(new Criteria($var[0], $var[1]));
+                $criteria->add(new \Criteria($var[0], $var[1]));
             }
         }
 
@@ -129,7 +129,7 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
 
     public function GetCatAndSubCat($pid = 0)
     {
-        $categories  = $this->getObjects(new Criteria('pid', $pid), true);
+        $categories  =& $this->getObjects(new \Criteria('pid', $pid), true);
         $langs_array = $this->TreeIDs([], $categories, -1);
 
         return $langs_array;
@@ -139,7 +139,7 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
     {
         foreach ($categories as $catid => $category) {
             $langs_array[$catid] = $catid;
-            if ($categoriesb = $this->getObjects(new Criteria('pid', $catid), true)) {
+            if ($categoriesb =& $this->getObjects(new \Criteria('pid', $catid), true)) {
                 $langs_array = $this->TreeIDs($langs_array, $categoriesb, $level);
             }
         }
@@ -147,7 +147,7 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
         return ($langs_array);
     }
 
-    public function insert(XoopsObject $obj, $force = true)
+    public function insert(\XoopsObject $obj, $force = true)
     {
         if ($obj->isNew()) {
             $obj->setVar('created', time());
@@ -176,7 +176,7 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
         return $this->_objects['object'][$id];
     }
 
-    public function delete(XoopsObject $object, $force = true)
+    public function delete(\XoopsObject $object, $force = true)
     {
         parent::delete($object, $force);
         $sql = 'UPDATE ' . $GLOBALS['xoopsDB']->prefix('songlist_songs') . ' SET `cid` = 0 WHERE `cid` = ' . $object->getVar('cid');
@@ -218,7 +218,7 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
         $results = $GLOBALS['xoopsDB']->queryF($sql);
         $ret     = [];
         $i       = 0;
-        while ($row = $GLOBALS['xoopsDB']->fetchArray($results)) {
+        while (false !== ($row = $GLOBALS['xoopsDB']->fetchArray($results))) {
             $ret[$i] = $this->create();
             $ret[$i]->assignVars($row);
             ++$i;

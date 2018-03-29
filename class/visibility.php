@@ -14,7 +14,7 @@ Owner: Frilogg
 License: See docs - End User Licence.pdf
 */
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || die('XOOPS root path not defined');
 
 class SonglistVisibility extends XoopsObject
 {
@@ -69,7 +69,7 @@ class SonglistVisibilityHandler extends XoopsPersistableObjectHandler
         }
         $result = $this->db->query($sql, $limit, $GLOBALS['start']);
         $ret    = [];
-        while ($row = $this->db->fetchArray($result)) {
+        while (false !== ($row = $this->db->fetchArray($result))) {
             $ret[$row['field_id']][] = $row;
         }
 
@@ -93,7 +93,7 @@ class SonglistVisibilityHandler extends XoopsPersistableObjectHandler
         $sql              .= ' AND user_group IN (' . implode(',', $user_groups) . ')';
         $field_ids        = [];
         if ($result = $this->db->query($sql)) {
-            while (list($field_id) = $this->db->fetchRow($result)) {
+            while (false !== (list($field_id) = $this->db->fetchRow($result))) {
                 $field_ids[] = $field_id;
             }
         }
