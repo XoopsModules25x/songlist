@@ -8,8 +8,8 @@ xoops_cp_header();
 
 $op     = isset($_REQUEST['op']) ? $_REQUEST['op'] : 'import';
 $fct    = isset($_REQUEST['fct']) ? $_REQUEST['fct'] : 'actiona';
-$limit  = isset($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 30;
-$start  = isset($_REQUEST['start']) ? (int)$_REQUEST['start'] : 0;
+$limit  = \Xmf\Request::getInt('limit', 30, 'REQUEST');
+$start  = \Xmf\Request::getInt('start', 0, 'REQUEST');
 $order  = isset($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
 $sort   = isset($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : 'created';
 $filter = isset($_REQUEST['filter']) ? '' . $_REQUEST['filter'] . '' : '1,1';

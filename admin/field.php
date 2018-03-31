@@ -195,7 +195,7 @@ switch ($op) {
             $obj->setVar('field_options', $options);
         }
         if ($obj->getVar('field_edit')) {
-            $required = isset($_REQUEST['field_required']) ? $_REQUEST['field_required'] : 0;
+            $required = \Xmf\Request::getInt('field_required', 0, REQUEST);
             $obj->setVar('field_required', $required); //0 = no, 1 = yes
             if (isset($_REQUEST['field_maxlength'])) {
                 $obj->setVar('field_maxlength', $_REQUEST['field_maxlength']);

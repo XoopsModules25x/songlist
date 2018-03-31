@@ -7,7 +7,7 @@ xoops_loadLanguage('admin', 'songlist');
 xoops_cp_header();
 
 $op     = isset($_REQUEST['op']) ? $_REQUEST['op'] : 'votes';
-$fct    = isset($_REQUEST['fct']) ? $_REQUEST['fct'] : '';
+$fct    = \Xmf\Request::getString('fct', '', 'REQUEST');
 $limit  = !empty($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 30;
 $start  = !empty($_REQUEST['start']) ? (int)$_REQUEST['start'] : 0;
 $order  = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
