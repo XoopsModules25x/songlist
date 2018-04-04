@@ -91,7 +91,6 @@ class Services_JSON
      *                                   By default, a deeply-nested resource will
      *                                   bubble up with an error, so all return values
      *                                   from encode() should be checked with isError()
-     * @return Services_JSON
      */
     public function __construct($use = 0)
     {
@@ -749,7 +748,7 @@ class Services_JSON
         if (class_exists('pear')) {
             return PEAR::isError($data, $code);
         } elseif (is_object($data)
-                  && ('services_json_error' === get_class($data)
+                  && ($data instanceof \services_json_error
                       || is_subclass_of($data, 'services_json_error'))) {
             return true;
         }

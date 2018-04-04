@@ -95,7 +95,6 @@ class SonglistFormSelectCategory extends XoopsFormElement
      * @param int    $size     Number or rows. "1" makes a drop-down-list
      * @param bool   $multiple Allow multiple selections?
      * @param int    $ownid
-     * @return SonglistFormSelectCategory
      */
     public function __construct($caption, $name, $value = null, $size = 1, $multiple = false, $ownid = 0)
     {

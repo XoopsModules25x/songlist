@@ -94,7 +94,6 @@ class SonglistFormSelectGenre extends XoopsFormElement
      * @param mixed  $value    Pre-selected value (or array of them).
      * @param int    $size     Number or rows. "1" makes a drop-down-list
      * @param bool   $multiple Allow multiple selections?
-     * @return SonglistFormSelectGenre
      */
     public function __construct($caption, $name, $value = null, $size = 1, $multiple = false)
     {

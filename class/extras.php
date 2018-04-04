@@ -126,7 +126,7 @@ class SonglistExtrasHandler extends XoopsPersistableObjectHandler
      * @param object $field
      * @param bool   $force
      *
-     * @return bool
+     * @return void
      */
     public function insertField($field, $force = false)
     {
@@ -139,7 +139,7 @@ class SonglistExtrasHandler extends XoopsPersistableObjectHandler
      * @param object $field
      * @param bool   $force
      *
-     * @return bool
+     * @return void
      */
     public function deleteField($field, $force = false)
     {
@@ -208,9 +208,9 @@ class SonglistExtrasHandler extends XoopsPersistableObjectHandler
     /**
      * insert a new object in the database
      *
-     * @param object $obj         reference to the object
-     * @param bool   $force       whether to force the query execution despite security settings
-     * @param bool   $checkObject check if the object is dirty and clean the attributes
+     * @param \XoopsObject $obj         reference to the object
+     * @param bool         $force       whether to force the query execution despite security settings
+     * @param bool         $checkObject check if the object is dirty and clean the attributes
      *
      * @return bool FALSE if failed, TRUE if already present and unchanged or successful
      */

@@ -274,7 +274,7 @@ function songlist_getUserSearchForm($action = false)
     // Get fields
     $fields = $songlistHandler->loadFields();
 
-    $gpermHandler  = xoops_getHandler('groupperm');
+    $grouppermHandler  = xoops_getHandler('groupperm');
     $configHandler = xoops_getHandler('config');
     $groups        = is_object($GLOBALS['xoopsUser']) ? $GLOBALS['xoopsUser']->getGroups() : [XOOPS_GROUP_ANONYMOUS];
     $moduleHandler = xoops_getHandler('module');
@@ -282,9 +282,9 @@ function songlist_getUserSearchForm($action = false)
     $modid         = $xoModule->getVar('mid');
 
     // Get ids of fields that can be edited
-    $gpermHandler = xoops_getHandler('groupperm');
+    $grouppermHandler = xoops_getHandler('groupperm');
 
-    $editable_fields = $gpermHandler->getItemIds('songlist_search', $groups, $modid);
+    $editable_fields = $grouppermHandler->getItemIds('songlist_search', $groups, $modid);
 
     $catHandler = xoops_getModuleHandler('category');
 
@@ -1064,7 +1064,7 @@ function songlist_songs_get_form($object, $as_array = false)
 
     // Dynamic fields
     $extrasHandler = xoops_getModuleHandler('extras');
-    $gpermHandler  = xoops_getHandler('groupperm');
+    $grouppermHandler  = xoops_getHandler('groupperm');
     $moduleHandler = xoops_getHandler('module');
     $xoModule      = $moduleHandler->getByDirname('songlist');
     $modid         = $xoModule->getVar('mid');
@@ -1089,8 +1089,8 @@ function songlist_songs_get_form($object, $as_array = false)
     $allnames = [];
     if (is_array($fields)) {
         foreach (array_keys($fields) as $i) {
-            if ((0 <> $object->getVar('sid') && $gpermHandler->checkRight('songlist_edit', $fields[$i]->getVar('field_id'), $groups, $modid))
-                || (0 == $object->getVar('sid') && $gpermHandler->checkRight('songlist_post', $fields[$i]->getVar('field_id'), $groups, $modid))) {
+            if ((0 <> $object->getVar('sid') && $grouppermHandler->checkRight('songlist_edit', $fields[$i]->getVar('field_id'), $groups, $modid))
+                || (0 == $object->getVar('sid') && $grouppermHandler->checkRight('songlist_post', $fields[$i]->getVar('field_id'), $groups, $modid))) {
                 $fieldinfo['element']  = $fields[$i]->getEditElement($object, $extra);
                 $fieldinfo['required'] = $fields[$i]->getVar('field_required');
                 foreach ($fields[$i]->getVar('cids') as $catidid => $cid) {

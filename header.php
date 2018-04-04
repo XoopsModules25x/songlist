@@ -49,16 +49,16 @@ require_once XOOPS_ROOT_PATH . '/modules/' . $GLOBALS['songlistModule']->getVar(
 
 xoops_loadLanguage('main', 'songlist');
 
-$GLOBALS['file']  = isset($_REQUEST['file']) ? $_REQUEST['file'] : substr(basename($_SERVER['PHP_SELF']), 0, strlen(basename($_SERVER['PHP_SELF'])) - 4);
+$GLOBALS['file']  = isset($_REQUEST['file']) ? $_REQUEST['file'] : substr(basename($_SERVER['PHP_SELF']), 0, -4);
 $GLOBALS['op']    = isset($_REQUEST['op']) ? $_REQUEST['op'] : 'item';
 $GLOBALS['fct']   = isset($_REQUEST['fct']) ? $_REQUEST['fct'] : 'list';
-$GLOBALS['id']    = \Xmf\Request::getInt('id', 0, REQUEST);
+$GLOBALS['id']    = \Xmf\Request::getInt('id', 0, 'REQUEST');
 $GLOBALS['value'] = isset($_REQUEST['value']) ? $_REQUEST['value'] : '%';
-$GLOBALS['gid']   = \Xmf\Request::getInt('gid', 0, REQUEST);
-$GLOBALS['vid']   = \Xmf\Request::getInt('vid', 0, REQUEST);
-$GLOBALS['vcid']  = \Xmf\Request::getInt('vcid', 0, REQUEST);
+$GLOBALS['gid']   = \Xmf\Request::getInt('gid', 0, 'REQUEST');
+$GLOBALS['vid']   = \Xmf\Request::getInt('vid', 0, 'REQUEST');
+$GLOBALS['vcid']  = \Xmf\Request::getInt('vcid', 0, 'REQUEST');
 $GLOBALS['cid']   = (((isset($_POST['cid']) ? $_POST['cid'] : isset($_GET['cid'])) ? $_GET['cid'] : isset($_SESSION['cid'])) ? $_SESSION['cid'] : 0);
-$GLOBALS['start'] = \Xmf\Request::getInt('start', 0, REQUEST);
+$GLOBALS['start'] = \Xmf\Request::getInt('start', 0, 'REQUEST');
 $GLOBALS['limit'] = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : $GLOBALS['songlistModuleConfig']['cols'] * $GLOBALS['songlistModuleConfig']['rows'];
 
 if (!isset($_SESSION['cid'])) {

@@ -36,7 +36,6 @@ class SonglistMediaUploader
      * @param   int    $maxWidth
      * @param   int    $maxHeight
      * @param   array  $allowedExtensions
-     * @return SonglistMediaUploader
      * @internal param int $cmodvalue
      */
     public function __construct($uploadDir, $allowedMimeTypes, $maxFileSize, $maxWidth = null, $maxHeight = null, $allowedExtensions = null)

@@ -73,7 +73,7 @@ class SonglistField extends XoopsObject
     public function getEditElement($user, $profile)
     {
         $value = in_array($this->getVar('field_name'), $this->getPostVars()) ? $user->getVar($this->getVar('field_name'), 'e') : $profile->getVar($this->getVar('field_name'), 'e');
-        if (is_null($value)) {
+        if (null === $value) {
             $value = $this->getVar('field_default');
         }
         $caption = $this->getVar('field_title');

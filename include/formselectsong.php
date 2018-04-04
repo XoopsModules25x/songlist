@@ -96,7 +96,6 @@ class SonglistFormSelectSong extends XoopsFormElement
      * @param bool   $multiple Allow multiple selections?
      * @param int    $id
      * @param string $field
-     * @return SonglistFormSelectSong
      */
     public function __construct($caption, $name, $value = null, $size = 1, $multiple = false, $id = -1, $field = 'cid')
     {
