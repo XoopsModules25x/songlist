@@ -120,11 +120,11 @@ switch ($op) {
                     if (!empty($_POST['record']) && strlen($_POST['record']) > 0) {
                         foreach ($xmlarray[$_POST['collection']][$_POST['record']] as $recid => $data) {
                             if (isset($_POST['limiting'])) {
-                                if (true === (int)$_POST['limiting']) {
+                                if (true === \Xmf\Request::getInt('limiting', 0, 'POST')) {
                                     ++$record;
-                                    if ($record > (int)$_POST['records']) {
+                                    if ($record > \Xmf\Request::getInt('records', 0, 'POST')) {
                                         $start = time();
-                                        while (time() - $start < (int)$_POST['wait']) {
+                                        while (time() - $start < \Xmf\Request::getInt('wait', 0, 'POST')) {
                                         }
                                         $records = 0;
                                     }
@@ -271,11 +271,11 @@ switch ($op) {
                     } else {
                         foreach ($xmlarray[$_POST['collection']] as $id => $records) {
                             if (isset($_POST['limiting'])) {
-                                if (true === (int)$_POST['limiting']) {
+                                if (true === \Xmf\Request::getInt('limiting', 0, 'POST')) {
                                     ++$record;
-                                    if ($record > (int)$_POST['records']) {
+                                    if ($record > \Xmf\Request::getInt('records', 0, 'POST')) {
                                         $start = time();
-                                        while (time() - $start < (int)$_POST['wait']) {
+                                        while (time() - $start < \Xmf\Request::getInt('wait', 0, 'POST')) {
                                         }
                                         $records = 0;
                                     }
@@ -428,11 +428,11 @@ switch ($op) {
                         $aids = [];
                         $abid = [];
                         if (isset($_POST['limiting'])) {
-                            if (true === (int)$_POST['limiting']) {
+                            if (true === \Xmf\Request::getInt('limiting', 0, 'POST')) {
                                 ++$record;
-                                if ($record > (int)$_POST['records']) {
+                                if ($record > \Xmf\Request::getInt('records', 0, 'POST')) {
                                     $start = time();
-                                    while (time() - $start < (int)$_POST['wait']) {
+                                    while (time() - $start < \Xmf\Request::getInt('wait', 0, 'POST')) {
                                     }
                                     $records = 0;
                                 }

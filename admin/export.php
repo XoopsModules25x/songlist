@@ -8,8 +8,8 @@ xoops_cp_header();
 
 $op     = isset($_REQUEST['op']) ? $_REQUEST['op'] : 'dashboard';
 $fct    = \Xmf\Request::getString('fct', '', 'REQUEST');
-$limit  = !empty($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 30;
-$start  = !empty($_REQUEST['start']) ? (int)$_REQUEST['start'] : 0;
+$limit  = \Xmf\Request::getInt('limit', 30, 'REQUEST');
+$start  = \Xmf\Request::getInt('start', 0, 'REQUEST');
 $order  = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
 $sort   = !empty($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : 'created';
 $filter = !empty($_REQUEST['filter']) ? '' . $_REQUEST['filter'] . '' : '1,1';

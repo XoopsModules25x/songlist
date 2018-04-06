@@ -42,9 +42,9 @@ if (isset($_REQUEST['submit'])) {
     $visibilityHandler->insert($visibility, true);
 }
 if ('del' === $op) {
-    $criteria = new \CriteriaCompo(new \Criteria('field_id', (int)$_REQUEST['field_id']));
-    $criteria->add(new \Criteria('user_group', (int)$_REQUEST['ug']));
-    $criteria->add(new \Criteria('profile_group', (int)$_REQUEST['pg']));
+    $criteria = new \CriteriaCompo(new \Criteria('field_id', \Xmf\Request::getInt('field_id', 0, 'REQUEST')));
+    $criteria->add(new \Criteria('user_group', \Xmf\Request::getInt('ug', 0, 'REQUEST')));
+    $criteria->add(new \Criteria('profile_group', \Xmf\Request::getInt('pg', 0, 'REQUEST')));
     $visibilityHandler->deleteAll($criteria, true);
     redirect_header('field_visibility.php', 2, sprintf(_AM_SONGLIST_DELETEDSUCCESS, _AM_SONGLIST_PROF_VISIBLE));
 }

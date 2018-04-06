@@ -129,7 +129,7 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
 
     public function GetCatAndSubCat($pid = 0)
     {
-        $categories  =& $this->getObjects(new \Criteria('pid', $pid), true);
+        $categories  = $this->getObjects(new \Criteria('pid', $pid), true);
         $langs_array = $this->TreeIDs([], $categories, -1);
 
         return $langs_array;
@@ -139,7 +139,7 @@ class SonglistCategoryHandler extends XoopsPersistableObjectHandler
     {
         foreach ($categories as $catid => $category) {
             $langs_array[$catid] = $catid;
-            if ($categoriesb =& $this->getObjects(new \Criteria('pid', $catid), true)) {
+            if ($categoriesb = $this->getObjects(new \Criteria('pid', $catid), true)) {
                 $langs_array = $this->TreeIDs($langs_array, $categoriesb, $level);
             }
         }

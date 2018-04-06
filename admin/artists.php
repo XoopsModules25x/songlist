@@ -8,8 +8,8 @@ xoops_cp_header();
 
 $op     = isset($_REQUEST['op']) ? $_REQUEST['op'] : 'artists';
 $fct    = isset($_REQUEST['fct']) ? $_REQUEST['fct'] : 'list';
-$limit  = !empty($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 30;
-$start  = !empty($_REQUEST['start']) ? (int)$_REQUEST['start'] : 0;
+$limit  = \Xmf\Request::getInt('limit', 30, 'REQUEST');
+$start  = \Xmf\Request::getInt('start', 0, 'REQUEST');
 $order  = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
 $sort   = !empty($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : 'created';
 $filter = !empty($_REQUEST['filter']) ? '' . $_REQUEST['filter'] . '' : '1,1';
@@ -88,7 +88,7 @@ switch ($op) {
 
                 $artistsHandler = xoops_getModuleHandler('artists', 'songlist');
                 if (isset($_REQUEST['id'])) {
-                    $artists = $artistsHandler->get((int)$_REQUEST['id']);
+                    $artists = $artistsHandler->get(\Xmf\Request::getInt('id', 0, 'REQUEST'));
                 } else {
                     $artists = $artistsHandler->create();
                 }
@@ -101,7 +101,7 @@ switch ($op) {
 
                 $artistsHandler = xoops_getModuleHandler('artists', 'songlist');
                 $id             = 0;
-                if ($id = (int)$_REQUEST['id']) {
+                if ($id = \Xmf\Request::getInt('id', 0, 'REQUEST')) {
                     $artists = $artistsHandler->get($id);
                 } else {
                     $artists = $artistsHandler->create();
@@ -142,7 +142,7 @@ switch ($op) {
 
                 $artistsHandler = xoops_getModuleHandler('artists', 'songlist');
                 $id             = 0;
-                if (isset($_POST['id']) && $id = (int)$_POST['id']) {
+                if (isset($_POST['id']) && $id = \Xmf\Request::getInt('id', 0, 'POST')) {
                     $artists = $artistsHandler->get($id);
                     if (!$artistsHandler->delete($artists)) {
                         redirect_header(
@@ -156,7 +156,7 @@ switch ($op) {
                         exit(0);
                     }
                 } else {
-                    $artists = $artistsHandler->get((int)$_REQUEST['id']);
+                    $artists = $artistsHandler->get(\Xmf\Request::getInt('id', 0, 'REQUEST'));
                     xoops_confirm(
                         ['id' => $_REQUEST['id'], 'op' => $_REQUEST['op'], 'fct' => $_REQUEST['fct'], 'limit' => $_REQUEST['limit'], 'start' => $_REQUEST['start'], 'order' => $_REQUEST['order'], 'sort' => $_REQUEST['sort'], 'filter' => $_REQUEST['filter']],
                         $_SERVER['PHP_SELF'],

@@ -8,8 +8,8 @@ xoops_cp_header();
 
 $op     = isset($_REQUEST['op']) ? $_REQUEST['op'] : 'songs';
 $fct    = isset($_REQUEST['fct']) ? $_REQUEST['fct'] : 'list';
-$limit  = !empty($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 30;
-$start  = !empty($_REQUEST['start']) ? (int)$_REQUEST['start'] : 0;
+$limit  = \Xmf\Request::getInt('limit', 30, 'REQUEST');
+$start  = \Xmf\Request::getInt('start', 0, 'REQUEST');
 $order  = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
 $sort   = !empty($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : 'created';
 $filter = !empty($_REQUEST['filter']) ? '' . $_REQUEST['filter'] . '' : '1,1';
@@ -90,7 +90,7 @@ switch ($op) {
 
                 $songsHandler = xoops_getModuleHandler('songs', 'songlist');
                 if (isset($_REQUEST['id'])) {
-                    $songs = $songsHandler->get((int)$_REQUEST['id']);
+                    $songs = $songsHandler->get(\Xmf\Request::getInt('id', 0, 'REQUEST'));
                 } else {
                     $songs = $songsHandler->create();
                 }
@@ -104,7 +104,7 @@ switch ($op) {
                 $songsHandler  = xoops_getModuleHandler('songs', 'songlist');
                 $extrasHandler = xoops_getModuleHandler('extras', 'songlist');
                 $id            = 0;
-                if ($id = (int)$_REQUEST['id']) {
+                if ($id = \Xmf\Request::getInt('id', 0, 'REQUEST')) {
                     $songs = $songsHandler->get($id);
                 } else {
                     $songs = $songsHandler->create();
@@ -242,7 +242,7 @@ switch ($op) {
 
                 $songsHandler = xoops_getModuleHandler('songs', 'songlist');
                 $id           = 0;
-                if (isset($_POST['id']) && $id = (int)$_POST['id']) {
+                if (isset($_POST['id']) && $id = \Xmf\Request::getInt('id', 0, 'POST')) {
                     $songs = $songsHandler->get($id);
                     if (!$songsHandler->delete($songs)) {
                         redirect_header($_SERVER['PHP_SELF'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_SONGS_FAILEDTODELETE);
@@ -252,7 +252,7 @@ switch ($op) {
                         exit(0);
                     }
                 } else {
-                    $songs = $songsHandler->get((int)$_REQUEST['id']);
+                    $songs = $songsHandler->get(\Xmf\Request::getInt('id', 0, 'REQUEST'));
                     xoops_confirm(
                         ['id' => $_REQUEST['id'], 'op' => $_REQUEST['op'], 'fct' => $_REQUEST['fct'], 'limit' => $_REQUEST['limit'], 'start' => $_REQUEST['start'], 'order' => $_REQUEST['order'], 'sort' => $_REQUEST['sort'], 'filter' => $_REQUEST['filter']],
                         $_SERVER['PHP_SELF'],

@@ -298,7 +298,7 @@ if (!function_exists('songlist_getFilterURLComponents')) {
         $pagenav          = [];
         $pagenav['op']    = isset($_REQUEST['op']) ? $_REQUEST['op'] : 'videos';
         $pagenav['fct']   = isset($_REQUEST['fct']) ? $_REQUEST['fct'] : 'list';
-        $pagenav['limit'] = !empty($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 30;
+        $pagenav['limit'] = \Xmf\Request::getInt('limit', 30, 'REQUEST');
         $pagenav['start'] = 0;
         $pagenav['order'] = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
         $pagenav['sort']  = !empty($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : $sort;

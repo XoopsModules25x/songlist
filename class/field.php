@@ -586,7 +586,7 @@ class SonglistFieldHandler extends XoopsPersistableObjectHandler
             if (0 == $this->getCount($criteria)) {
                 return false;
             }
-            $field_objs =& $this->getObjects($criteria);
+            $field_objs = $this->getObjects($criteria);
             foreach (array_keys($field_objs) as $i) {
                 $fields[$field_objs[$i]->getVar('field_name')] = $field_objs[$i];
             }

@@ -288,14 +288,14 @@ function songlist_getUserSearchForm($action = false)
 
     $catHandler = xoops_getModuleHandler('category');
 
-    $selcat = new \XoopsFormSelectForum('Forum', 'cid', (!empty($_REQUEST['cid'])) ? (int)$_REQUEST['cid'] : 0, 1, false, false, false, true);
+    $selcat = new \XoopsFormSelectForum('Forum', 'cid', (!empty($_REQUEST['cid'])) ? \Xmf\Request::getInt('cid', 0, 'REQUEST') : 0, 1, false, false, false, true);
     $selcat->setExtra(' onChange="window.location=\'' . XOOPS_URL . '/modules/objects/search.php?op=search&fct=form&cid=\'+document.search.cid.options[document.search.cid.selectedIndex].value"');
 
     $form->addElement($selcat, true);
 
     $categories = [];
 
-    $criteria       = new \CriteriaCompo(new \Criteria('cid', (!empty($_REQUEST['cid'])) ? (int)$_REQUEST['cid'] : '0'), 'OR');
+    $criteria       = new \CriteriaCompo(new \Criteria('cid', (!empty($_REQUEST['cid'])) ? \Xmf\Request::getInt('cid', 0, 'REQUEST') : '0'), 'OR');
     $all_categories = $catHandler->getObjects($criteria, true, false);
     $count_fields   = count($fields);
 
@@ -487,8 +487,8 @@ function songlist_genre_get_form($object, $as_array = false)
     }
     $ele['sort']   = new \XoopsFormHidden('sort', isset($_REQUEST['sort']) ? $_REQUEST['sort'] : 'created');
     $ele['order']  = new \XoopsFormHidden('order', isset($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC');
-    $ele['start']  = new \XoopsFormHidden('start', isset($_REQUEST['start']) ? (int)$_REQUEST['start'] : 0);
-    $ele['limit']  = new \XoopsFormHidden('limit', isset($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 0);
+    $ele['start']  = new \XoopsFormHidden('start',\Xmf\Request::getInt('start', 0, 'REQUEST'));
+    $ele['limit']  = new \XoopsFormHidden('limit',\Xmf\Request::getInt('limit', 0, 'REQUEST'));
     $ele['filter'] = new \XoopsFormHidden('filter', isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '1,1');
 
     $ele['name'] = new \XoopsFormText((false === $as_array ? _FRM_SONGLIST_FORM_GENRE_NAME : ''), $id . '[name]', (false === $as_array ? 55 : 21), 128, $object->getVar('name'));
@@ -558,8 +558,8 @@ function songlist_voice_get_form($object, $as_array = false)
     }
     $ele['sort']   = new \XoopsFormHidden('sort', isset($_REQUEST['sort']) ? $_REQUEST['sort'] : 'created');
     $ele['order']  = new \XoopsFormHidden('order', isset($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC');
-    $ele['start']  = new \XoopsFormHidden('start', isset($_REQUEST['start']) ? (int)$_REQUEST['start'] : 0);
-    $ele['limit']  = new \XoopsFormHidden('limit', isset($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 0);
+    $ele['start']  = new \XoopsFormHidden('start',\Xmf\Request::getInt('start', 0, 'REQUEST'));
+    $ele['limit']  = new \XoopsFormHidden('limit',\Xmf\Request::getInt('limit', 0, 'REQUEST'));
     $ele['filter'] = new \XoopsFormHidden('filter', isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '1,1');
 
     $ele['name'] = new \XoopsFormText((false === $as_array ? _FRM_SONGLIST_FORM_VOICE_NAME : ''), $id . '[name]', (false === $as_array ? 55 : 21), 128, $object->getVar('name'));
@@ -629,8 +629,8 @@ function songlist_albums_get_form($object, $as_array = false)
     }
     $ele['sort']   = new \XoopsFormHidden('sort', isset($_REQUEST['sort']) ? $_REQUEST['sort'] : 'created');
     $ele['order']  = new \XoopsFormHidden('order', isset($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC');
-    $ele['start']  = new \XoopsFormHidden('start', isset($_REQUEST['start']) ? (int)$_REQUEST['start'] : 0);
-    $ele['limit']  = new \XoopsFormHidden('limit', isset($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 0);
+    $ele['start']  = new \XoopsFormHidden('start',\Xmf\Request::getInt('start', 0, 'REQUEST'));
+    $ele['limit']  = new \XoopsFormHidden('limit',\Xmf\Request::getInt('limit', 0, 'REQUEST'));
     $ele['filter'] = new \XoopsFormHidden('filter', isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '1,1');
 
     $ele['cid'] = new SonglistFormSelectCategory((false === $as_array ? _FRM_SONGLIST_FORM_ALBUMS_CATEGORY : ''), $id . '[cid]', $object->getVar('cid'), 1, false, false, false);
@@ -705,8 +705,8 @@ function songlist_artists_get_form($object, $as_array = false)
     }
     $ele['sort']   = new \XoopsFormHidden('sort', isset($_REQUEST['sort']) ? $_REQUEST['sort'] : 'created');
     $ele['order']  = new \XoopsFormHidden('order', isset($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC');
-    $ele['start']  = new \XoopsFormHidden('start', isset($_REQUEST['start']) ? (int)$_REQUEST['start'] : 0);
-    $ele['limit']  = new \XoopsFormHidden('limit', isset($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 0);
+    $ele['start']  = new \XoopsFormHidden('start',\Xmf\Request::getInt('start', 0, 'REQUEST'));
+    $ele['limit']  = new \XoopsFormHidden('limit',\Xmf\Request::getInt('limit', 0, 'REQUEST'));
     $ele['filter'] = new \XoopsFormHidden('filter', isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '1,1');
 
     $ele['cids'] = new SonglistFormSelectCategory((false === $as_array ? _FRM_SONGLIST_FORM_ARTISTS_CATEGORY : ''), $id . '[cids]', $object->getVar('cids'), 7, true, false, false);
@@ -779,8 +779,8 @@ function songlist_category_get_form($object, $as_array = false)
     }
     $ele['sort']   = new \XoopsFormHidden('sort', isset($_REQUEST['sort']) ? $_REQUEST['sort'] : 'created');
     $ele['order']  = new \XoopsFormHidden('order', isset($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC');
-    $ele['start']  = new \XoopsFormHidden('start', isset($_REQUEST['start']) ? (int)$_REQUEST['start'] : 0);
-    $ele['limit']  = new \XoopsFormHidden('limit', isset($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 0);
+    $ele['start']  = new \XoopsFormHidden('start',\Xmf\Request::getInt('start', 0, 'REQUEST'));
+    $ele['limit']  = new \XoopsFormHidden('limit',\Xmf\Request::getInt('limit', 0, 'REQUEST'));
     $ele['filter'] = new \XoopsFormHidden('filter', isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '1,1');
 
     $ele['pid'] = new SonglistFormSelectCategory((false === $as_array ? _FRM_SONGLIST_FORM_CATEGORY_PARENT : ''), $id . '[pid]', $object->getVar('pid'), 1, false, $object->getVar('cid'));
@@ -866,8 +866,8 @@ function songlist_utf8map_get_form($object, $as_array = false)
     }
     $ele['sort']   = new \XoopsFormHidden('sort', isset($_REQUEST['sort']) ? $_REQUEST['sort'] : 'created');
     $ele['order']  = new \XoopsFormHidden('order', isset($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC');
-    $ele['start']  = new \XoopsFormHidden('start', isset($_REQUEST['start']) ? (int)$_REQUEST['start'] : 0);
-    $ele['limit']  = new \XoopsFormHidden('limit', isset($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 0);
+    $ele['start']  = new \XoopsFormHidden('start',\Xmf\Request::getInt('start', 0, 'REQUEST'));
+    $ele['limit']  = new \XoopsFormHidden('limit',\Xmf\Request::getInt('limit', 0, 'REQUEST'));
     $ele['filter'] = new \XoopsFormHidden('filter', isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '1,1');
 
     $ele['from'] = new \XoopsFormText((false === $as_array ? _FRM_SONGLIST_FORM_UTF8MAP_FROM : ''), $id . '[from]', (false === $as_array ? 6 : 4), 2, $object->getVar('from'));
@@ -935,8 +935,8 @@ function songlist_requests_get_form($object, $as_array = false)
     }
     $ele['sort']   = new \XoopsFormHidden('sort', isset($_REQUEST['sort']) ? $_REQUEST['sort'] : 'created');
     $ele['order']  = new \XoopsFormHidden('order', isset($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC');
-    $ele['start']  = new \XoopsFormHidden('start', isset($_REQUEST['start']) ? (int)$_REQUEST['start'] : 0);
-    $ele['limit']  = new \XoopsFormHidden('limit', isset($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 0);
+    $ele['start']  = new \XoopsFormHidden('start',\Xmf\Request::getInt('start', 0, 'REQUEST'));
+    $ele['limit']  = new \XoopsFormHidden('limit',\Xmf\Request::getInt('limit', 0, 'REQUEST'));
     $ele['filter'] = new \XoopsFormHidden('filter', isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '1,1');
 
     $ele['artist'] = new \XoopsFormText((false === $as_array ? _FRM_SONGLIST_FORM_REQUESTS_ARTIST : ''), $id . '[artist]', (false === $as_array ? 55 : 21), 128, $object->getVar('artist'));
@@ -1021,8 +1021,8 @@ function songlist_songs_get_form($object, $as_array = false)
     }
     $ele['sort']   = new \XoopsFormHidden('sort', isset($_REQUEST['sort']) ? $_REQUEST['sort'] : 'created');
     $ele['order']  = new \XoopsFormHidden('order', isset($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC');
-    $ele['start']  = new \XoopsFormHidden('start', isset($_REQUEST['start']) ? (int)$_REQUEST['start'] : 0);
-    $ele['limit']  = new \XoopsFormHidden('limit', isset($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 0);
+    $ele['start']  = new \XoopsFormHidden('start',\Xmf\Request::getInt('start', 0, 'REQUEST'));
+    $ele['limit']  = new \XoopsFormHidden('limit',\Xmf\Request::getInt('limit', 0, 'REQUEST'));
     $ele['filter'] = new \XoopsFormHidden('filter', isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '1,1');
 
     $ele['cid'] = new SonglistFormSelectCategory((false === $as_array ? _FRM_SONGLIST_FORM_SONGS_CATEGORY : ''), $id . '[cid]', (isset($_REQUEST['cid']) ? $_REQUEST['cid'] : $object->getVar('cid')), 1, false);
@@ -1059,7 +1059,7 @@ function songlist_songs_get_form($object, $as_array = false)
     $ele['mp3'] = new \XoopsFormFile((false === $as_array ? _FRM_SONGLIST_FORM_SONGS_MP3 : ''), 'mp3' . $id, $GLOBALS['songlistModuleConfig']['mp3_filesize']);
     $ele['mp3']->setDescription((false === $as_array ? _FRM_SONGLIST_FORM_SONGS_MP3_DESC : ''));
     $categoryHandler = xoops_getModuleHandler('category', 'songlist');
-    $criteria        = new \CriteriaCompo(new \Criteria('cid', (!empty($_REQUEST['cid'])) ? (int)$_REQUEST['cid'] : $object->getVar('cid')));
+    $criteria        = new \CriteriaCompo(new \Criteria('cid', (!empty($_REQUEST['cid'])) ? \Xmf\Request::getInt('cid', 0, 'REQUEST') : $object->getVar('cid')));
     $all_categories  = $categoryHandler->getObjects($criteria, true, false);
 
     // Dynamic fields
@@ -1096,7 +1096,7 @@ function songlist_songs_get_form($object, $as_array = false)
                 foreach ($fields[$i]->getVar('cids') as $catidid => $cid) {
                     if (!in_array($fields[$i]->getVar('field_name'), $allnames)) {
                         $allnames[] = $fields[$i]->getVar('field_name');
-                        if (in_array($cid, array_keys($all_categories)) || $cid == ((!empty($_REQUEST['cid'])) ? (int)$_REQUEST['cid'] : $object->getVar('cid'))) {
+                        if (in_array($cid, array_keys($all_categories)) || $cid == ((!empty($_REQUEST['cid'])) ? \Xmf\Request::getInt('cid', 0, 'REQUEST') : $object->getVar('cid'))) {
                             $key              = $all_categories[$cid]['weight'] * $count_fields + $object->getVar('cid');
                             $elements[$key][] = $fieldinfo;
                             $weights[$key][]  = $fields[$i]->getVar('field_weight');
@@ -1188,8 +1188,8 @@ function songlist_votes_get_form($object, $as_array = false)
     }
     $ele['sort']   = new \XoopsFormHidden('sort', isset($_REQUEST['sort']) ? $_REQUEST['sort'] : 'created');
     $ele['order']  = new \XoopsFormHidden('order', isset($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC');
-    $ele['start']  = new \XoopsFormHidden('start', isset($_REQUEST['start']) ? (int)$_REQUEST['start'] : 0);
-    $ele['limit']  = new \XoopsFormHidden('limit', isset($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 0);
+    $ele['start']  = new \XoopsFormHidden('start',\Xmf\Request::getInt('start', 0, 'REQUEST'));
+    $ele['limit']  = new \XoopsFormHidden('limit',\Xmf\Request::getInt('limit', 0, 'REQUEST'));
     $ele['filter'] = new \XoopsFormHidden('filter', isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '1,1');
 
     $songsHandler = xoops_getModuleHandler('songs', 'songlist');
