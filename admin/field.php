@@ -183,7 +183,7 @@ switch ($op) {
                 $redirect_to_edit = true;
             }
 
-            if (!empty($_REQUEST['addOption'])) {
+           if (\Xmf\Request::hasVar('addOption', 'REQUEST')) {
                 foreach ($_REQUEST['addOption'] as $option) {
                     if (empty($option['value'])) {
                         continue;
