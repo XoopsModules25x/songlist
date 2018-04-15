@@ -54,8 +54,8 @@ $GLOBALS['songlistImageIcon']  = \Xmf\Module\Admin::iconUrl('', 16);
 $GLOBALS['songlistImageAdmin'] = \Xmf\Module\Admin::iconUrl('', 32);
 
 if ($GLOBALS['xoopsUser']) {
-    $modulepermHandler = xoops_getHandler('groupperm');
-    if (!$modulepermHandler->checkRight('module_admin', $GLOBALS['songlistModule']->getVar('mid'), $GLOBALS['xoopsUser']->getGroups())) {
+    $grouppermHandler = xoops_getHandler('groupperm');
+    if (!$grouppermHandler->checkRight('module_admin', $GLOBALS['songlistModule']->getVar('mid'), $GLOBALS['xoopsUser']->getGroups())) {
         redirect_header(XOOPS_URL, 1, _NOPERM);
     }
 } else {

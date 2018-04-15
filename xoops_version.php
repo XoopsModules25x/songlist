@@ -3,6 +3,7 @@
 require_once __DIR__ . '/preloads/autoloader.php';
 
 error_reporting(E_ALL);
+$moduleDirName = basename(dirname(__DIR__));
 
 $moduleHandler             = xoops_getHandler('module');
 $configHandler             = xoops_getHandler('config');
@@ -45,6 +46,7 @@ $modversion['support_site_name']   = 'Chronolabs';
 $modversion['submit_feature']      = 'http://www.chronolabs.coop/';
 $modversion['submit_bug']          = 'http://www.chronolabs.coop/';
 
+
 // Sql file
 $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 
@@ -62,6 +64,25 @@ $modversion['tables'][9]  = 'songlist_utf8map';
 $modversion['tables'][10] = 'songlist_visibility';
 $modversion['tables'][11] = 'songlist_votes';
 
+//$modversion = [
+//    // ------------------- Mysql -----------------------------
+//    'sqlfile' => ['mysql' => 'sql/mysql.sql'],
+//    // ------------------- Tables ----------------------------
+//    'tables'  => [
+//        $moduleDirName . '_' . 'albums',
+//        $moduleDirName . '_' . 'artists',
+//        $moduleDirName . '_' . 'category',
+//        $moduleDirName . '_' . 'extra',
+//        $moduleDirName . '_' . 'field',
+//        $moduleDirName . '_' . 'genre',
+//        $moduleDirName . '_' . 'voice',
+//        $moduleDirName . '_' . 'requests',
+//        $moduleDirName . '_' . 'songs',
+//        $moduleDirName . '_' . 'utf8map',
+//        $moduleDirName . '_' . 'visibility',
+//        $moduleDirName . '_' . 'votes',
+//    ],
+//];
 // Admin things
 $modversion['system_menu'] = 1;
 $modversion['hasAdmin']    = 1;

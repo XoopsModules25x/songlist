@@ -30,7 +30,7 @@ require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
  *
  * Note: this is a __patchy__ solution. We should have a more extensible and flexible group permission management: not only for data architecture but also for management interface
  */
-class forum_XoopsGroupPermForm extends XoopsGroupPermForm
+class forum_XoopsGroupPermForm extends \XoopsGroupPermForm
 {
     public function __construct($title, $modid, $permname, $permdesc, $url = '')
     {
@@ -83,7 +83,7 @@ class forum_XoopsGroupPermForm extends XoopsGroupPermForm
     }
 }
 
-class forum_XoopsGroupFormCheckBox extends XoopsGroupFormCheckBox
+class forum_XoopsGroupFormCheckBox extends \XoopsGroupFormCheckBox
 {
     public function __construct($caption, $name, $groupId, $values = null)
     {

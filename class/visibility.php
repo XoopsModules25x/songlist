@@ -16,7 +16,7 @@ License: See docs - End User Licence.pdf
 
 defined('XOOPS_ROOT_PATH') || die('XOOPS root path not defined');
 
-class SonglistVisibility extends XoopsObject
+class SonglistVisibility extends \XoopsObject
 {
     public function __construct()
     {
@@ -31,7 +31,7 @@ class SonglistVisibility extends XoopsObject
     }
 }
 
-class SonglistVisibilityHandler extends XoopsPersistableObjectHandler
+class SonglistVisibilityHandler extends \XoopsPersistableObjectHandler
 {
     public function __construct($db)
     {

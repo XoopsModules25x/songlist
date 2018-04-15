@@ -6,7 +6,7 @@ defined('XOOPS_ROOT_PATH') || die('XOOPS root path not defined');
  * @package   kernel
  * @copyright copyright &copy; 2000 XOOPS.org
  */
-class SonglistField extends XoopsObject
+class SonglistField extends \XoopsObject
 {
     public function __construct()
     {
@@ -193,7 +193,7 @@ class SonglistField extends XoopsObject
                 $element = new \XoopsFormSelect($caption, $name, $value);
 
                 require_once $GLOBALS['xoops']->path('class/xoopslists.php');
-                $ranks = XoopsLists::getUserRankList();
+                $ranks = \XoopsLists::getUserRankList();
                 $element->addOption(0, '--------------');
                 $element->addOptionArray($ranks);
                 break;
@@ -346,7 +346,7 @@ class SonglistField extends XoopsObject
                 $element = new \XoopsFormSelect($caption, $name, $value);
 
                 require_once $GLOBALS['xoops']->path('class/xoopslists.php');
-                $ranks = XoopsLists::getUserRankList();
+                $ranks = \XoopsLists::getUserRankList();
                 $element->addOption(0, '--------------');
                 $element->addOptionArray($ranks);
                 break;
@@ -492,7 +492,7 @@ class SonglistField extends XoopsObject
 
             case 'timezone':
                 require_once $GLOBALS['xoops']->path('class/xoopslists.php');
-                $timezones = XoopsLists::getTimeZoneList();
+                $timezones = \XoopsLists::getTimeZoneList();
                 $value     = empty($value) ? '0' : (string)$value;
 
                 return $timezones[str_replace('.0', '', $value)];
@@ -563,7 +563,7 @@ class SonglistField extends XoopsObject
  * @package   kernel
  * @copyright copyright &copy; 2000 XOOPS.org
  */
-class SonglistFieldHandler extends XoopsPersistableObjectHandler
+class SonglistFieldHandler extends \XoopsPersistableObjectHandler
 {
     public function __construct($db)
     {

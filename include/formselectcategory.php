@@ -52,7 +52,7 @@ xoops_load('XoopsFormElement');
  * @subpackage  form
  * @access      public
  */
-class SonglistFormSelectCategory extends XoopsFormElement
+class SonglistFormSelectCategory extends \XoopsFormElement
 {
     /**
      * Options

@@ -5,7 +5,7 @@ defined('XOOPS_ROOT_PATH') || die('Restricted access');
 include_once(dirname(__DIR__) . '/include/songlist.object.php');
 include_once(dirname(__DIR__) . '/include/songlist.form.php');
 
-class SonglistArtists extends XoopsObject
+class SonglistArtists extends \XoopsObject
 {
     public function __construct($fid = null)
     {
@@ -128,7 +128,7 @@ class SonglistArtists extends XoopsObject
     }
 }
 
-class SonglistArtistsHandler extends XoopsPersistableObjectHandler
+class SonglistArtistsHandler extends \XoopsPersistableObjectHandler
 {
     public function __construct($db)
     {

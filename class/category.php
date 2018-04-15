@@ -2,7 +2,7 @@
 
 defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-class SonglistCategory extends XoopsObject
+class SonglistCategory extends \XoopsObject
 {
     public function __construct($fid = null)
     {
@@ -77,7 +77,7 @@ class SonglistCategory extends XoopsObject
     }
 }
 
-class SonglistCategoryHandler extends XoopsPersistableObjectHandler
+class SonglistCategoryHandler extends \XoopsPersistableObjectHandler
 {
     public function __construct($db)
     {

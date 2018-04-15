@@ -2,7 +2,7 @@
 
 defined('XOOPS_ROOT_PATH') || die('XOOPS root path not defined');
 
-class SonglistExtras extends XoopsObject
+class SonglistExtras extends \XoopsObject
 {
     public $handler;
 
@@ -30,7 +30,7 @@ class SonglistExtras extends XoopsObject
  * @package   kernel
  * @copyright copyright &copy; 2000 XOOPS.org
  */
-class SonglistExtrasHandler extends XoopsPersistableObjectHandler
+class SonglistExtrasHandler extends \XoopsPersistableObjectHandler
 {
     /**
      * holds reference to {@link ObjectsFieldHandler} object
