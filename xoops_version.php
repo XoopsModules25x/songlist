@@ -18,8 +18,8 @@ if (is_object($GLOBALS['songlistModule'])) {
 // $Id: xoops_version.php,v 4.04 2008/06/05 15:35:59 wishcraft Exp $
 
 $modversion['version']             = '2.0.0';
-$modversion['module_status']       = 'Alpha 1 NOT RELEASED';
-$modversion['release_date']        = '2021/12/22';
+$modversion['module_status']       = 'Alpha 1';
+$modversion['release_date']        = '2022/07/03';
 $modversion['name']                = _MI_SONGLIST_NAME;
 $modversion['description']         = _MI_SONGLIST_DESC;
 $modversion['credits']             = 'Orginally Written by wishcraft, Testing Phil and Michael Beck';
@@ -28,7 +28,7 @@ $modversion['help']                = 'page=help';
 $modversion['license']             = 'GNU General Public License (GPL) see LICENSE';
 $modversion['dirname']             = $moduleDirName;
 $modversion['image']               = 'assets/images/logoModule.png';
-$modversion['releasedate']         = 'Thursday, 05th April, 2012';
+$modversion['releasedate']         = 'Thursday, 03rd July, 2022';
 $modversion['website']             = 'www.chronolabs.coop';
 $modversion['release_info']        = 'Stable 2012/08/16';
 $modversion['release_file']        = XOOPS_URL . '/modules/xforum/docs/changelog.txt';
@@ -49,42 +49,26 @@ $modversion['support_site_name']   = 'Chronolabs';
 $modversion['submit_feature']      = 'https://www.chronolabs.coop/';
 $modversion['submit_bug']          = 'https://www.chronolabs.coop/';
 
-// Sql file
-$modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
+$modversion = [
+    // ------------------- Mysql -----------------------------
+    'sqlfile' => ['mysql' => 'sql/mysql.sql'],
+    // ------------------- Tables ----------------------------
+    'tables'  => [
+        $moduleDirName . '_' . 'albums',
+        $moduleDirName . '_' . 'artists',
+        $moduleDirName . '_' . 'category',
+        $moduleDirName . '_' . 'extra',
+        $moduleDirName . '_' . 'field',
+        $moduleDirName . '_' . 'genre',
+        $moduleDirName . '_' . 'voice',
+        $moduleDirName . '_' . 'requests',
+        $moduleDirName . '_' . 'songs',
+        $moduleDirName . '_' . 'utf8map',
+        $moduleDirName . '_' . 'visibility',
+        $moduleDirName . '_' . 'votes',
+    ],
+];
 
-// Tables created by sql file (without prefix!)
-$modversion['tables'][0]  = 'songlist_albums';
-$modversion['tables'][1]  = 'songlist_artists';
-$modversion['tables'][2]  = 'songlist_category';
-$modversion['tables'][3]  = 'songlist_extra';
-$modversion['tables'][4]  = 'songlist_field';
-$modversion['tables'][5]  = 'songlist_genre';
-$modversion['tables'][6]  = 'songlist_voice';
-$modversion['tables'][7]  = 'songlist_requests';
-$modversion['tables'][8]  = 'songlist_songs';
-$modversion['tables'][9]  = 'songlist_utf8map';
-$modversion['tables'][10] = 'songlist_visibility';
-$modversion['tables'][11] = 'songlist_votes';
-
-//$modversion = [
-//    // ------------------- Mysql -----------------------------
-//    'sqlfile' => ['mysql' => 'sql/mysql.sql'],
-//    // ------------------- Tables ----------------------------
-//    'tables'  => [
-//        $moduleDirName . '_' . 'albums',
-//        $moduleDirName . '_' . 'artists',
-//        $moduleDirName . '_' . 'category',
-//        $moduleDirName . '_' . 'extra',
-//        $moduleDirName . '_' . 'field',
-//        $moduleDirName . '_' . 'genre',
-//        $moduleDirName . '_' . 'voice',
-//        $moduleDirName . '_' . 'requests',
-//        $moduleDirName . '_' . 'songs',
-//        $moduleDirName . '_' . 'utf8map',
-//        $moduleDirName . '_' . 'visibility',
-//        $moduleDirName . '_' . 'votes',
-//    ],
-//];
 // Admin things
 $modversion['system_menu'] = 1;
 $modversion['hasAdmin']    = 1;
