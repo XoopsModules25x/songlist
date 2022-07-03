@@ -1,34 +1,44 @@
-<?php
+<?php declare(strict_types=1);
 
-include __DIR__ . '/header.php';
+use Xmf\Module\Admin;
+use Xmf\Request;
+use XoopsModules\Songlist\Helper;
+use XoopsModules\Songlist\Form\FormController;
+
+require_once __DIR__ . '/header.php';
 xoops_cp_header();
 
 $op           = (!empty($_GET['op']) ? $_GET['op'] : (!empty($_POST['op']) ? $_POST['op'] : (!empty($_REQUEST['id']) ? 'edit' : 'list')));
-$fieldHandler = xoops_getModuleHandler('field', 'songlist');
+$fieldHandler = Helper::getInstance()
+                      ->getHandler('Field');
 switch ($op) {
     default:
     case 'list':
-        $adminObject = \Xmf\Module\Admin::getInstance();
+        $adminObject = Admin::getInstance();
         $adminObject->displayNavigation(basename(__FILE__));
 
         $fields = $fieldHandler->getObjects(null, false, false);
 
+        /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $modules       = $moduleHandler->getObjects(null, true);
 
         $categories = [];
         $weights    = [];
 
-        $GLOBALS['categoryHandler'] = xoops_getModuleHandler('category');
+        $GLOBALS['categoryHandler'] = Helper::getInstance()
+                                            ->getHandler('Category');
         $criteria                   = new \CriteriaCompo();
         $criteria->setSort('weight');
-        if ($categorys = $GLOBALS['categoryHandler']->getObjects($criteria, true)) {
+        $category        = $GLOBALS['categoryHandler']->getObjects($criteria, true);
+        $fieldcategories = [];
+        if ($category) {
             unset($criteria);
 
             $categories[0] = ['cid' => 0, 'name' => _AM_SONGLIST_FIELDS_DEFAULT];
-            if (count($categorys) > 0) {
-                foreach (array_keys($categorys) as $i) {
-                    $categories[$categorys[$i]->getVar('cid')] = ['cid' => $categorys[$i]->getVar('cid'), 'name' => $categorys[$i]->getVar('name')];
+            if (count($category) > 0) {
+                foreach (array_keys($category) as $i) {
+                    $categories[$category[$i]->getVar('cid')] = ['cid' => $category[$i]->getVar('cid'), 'name' => $category[$i]->getVar('name')];
                 }
             }
             $GLOBALS['xoopsTpl']->assign('categories', $categories);
@@ -42,7 +52,7 @@ switch ($op) {
             XOBJ_DTYPE_TXTBOX  => _AM_SONGLIST_FIELDS_TXTBOX,
             XOBJ_DTYPE_URL     => _AM_SONGLIST_FIELDS_URL,
             XOBJ_DTYPE_OTHER   => _AM_SONGLIST_FIELDS_OTHER,
-            XOBJ_DTYPE_MTIME   => _AM_SONGLIST_FIELDS_DATE
+            XOBJ_DTYPE_MTIME   => _AM_SONGLIST_FIELDS_DATE,
         ];
 
         $fieldtypes = [
@@ -64,7 +74,7 @@ switch ($op) {
             'longdate'     => _AM_SONGLIST_FIELDS_LONGDATE,
             'theme'        => _AM_SONGLIST_FIELDS_THEME,
             'autotext'     => _AM_SONGLIST_FIELDS_AUTOTEXT,
-            'rank'         => _AM_SONGLIST_FIELDS_RANK
+            'rank'         => _AM_SONGLIST_FIELDS_RANK,
         ];
 
         foreach (array_keys($fields) as $i) {
@@ -76,43 +86,62 @@ switch ($op) {
             $weights[$i]             = $fields[$i]['field_weight'];
         }
         //sort fields order in categories
+//        ray('$fields', $fields);
         foreach (array_keys($fields) as $i) {
-            array_multisort($weights[$i], SORT_ASC, array_keys($fieldcategories[$i]), SORT_ASC, $categories[$i]);
+//            ray('$i = ' . $i)->red();
+//            ray('$weights: <br>' , $weights)->red();
+//            ray('$fieldcategories: <br>' , $fieldcategories)->red();
+//            ray('array_keys($fieldcategories)', array_keys($fieldcategories))->red();
+//            ray('$categories: <br>', $categories)->red();
+//            ray('$categories[$i]: <br>', $categories[$i])->red();
+
+            array_multisort(
+                $weights
+                ,
+                SORT_ASC
+                ,
+                array_keys($fieldcategories)
+                ,
+                SORT_ASC
+                ,
+                $categories[$i]
+            );
+//            ray($i)->blue();
+//            ray('$weights: <br>', $weights)->blue();
+//            ray('$fieldcategories: <br>', $fieldcategories)->blue();
+//            ray(array_keys($fieldcategories))->blue();
+//            ray('Categories: <br>', $categories)->blue();
+//            ray('$categories[$i]: <br>', $categories[$i])->blue();
         }
+
         ksort($categories);
         $GLOBALS['xoopsTpl']->assign('fieldcategories', $fieldcategories);
         $GLOBALS['xoopsTpl']->assign('token', $GLOBALS['xoopsSecurity']->getTokenHTML());
-        $template_main = 'songlist_cpanel_fieldlist.html';
+        $template_main = 'songlist_cpanel_fieldlist.tpl';
         break;
-
     case 'new':
-
-        $adminObject = \Xmf\Module\Admin::getInstance();
+        $adminObject = Admin::getInstance();
         $adminObject->displayNavigation(basename(__FILE__));
         $obj  = $fieldHandler->create();
-        $form = songlist_getFieldForm($obj);
+        $form = FormController::getFieldForm($obj);
         $form->display();
         break;
-
     case 'edit':
-
-        $adminObject = \Xmf\Module\Admin::getInstance();
+        $adminObject = Admin::getInstance();
         $adminObject->displayNavigation(basename(__FILE__));
         $obj = $fieldHandler->get($_REQUEST['id']);
         if (!$obj->getVar('field_config') && !$obj->getVar('field_show') && !$obj->getVar('field_edit')) { //If no configs exist
             redirect_header('field.php', 2, _AM_SONGLIST_FIELDS_FIELDNOTCONFIGURABLE);
         }
-        $form = songlist_getFieldForm($obj);
+        $form = FormController::getFieldForm($obj);
         $form->display();
         break;
-
     case 'reorder':
-
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header('field.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
         }
 
-        if (isset($_POST['field_ids']) && count($_POST['field_ids']) > 0) {
+        if (Request::hasVar('field_ids', 'POST') && count($_POST['field_ids']) > 0) {
             $oldweight     = $_POST['oldweight'];
             $oldcat        = $_POST['oldcat'];
             $oldcategories = $_POST['oldcategories'];
@@ -128,7 +157,8 @@ switch ($op) {
             if (count($ids) > 0) {
                 $errors = [];
                 //if there are changed fields, fetch the fieldcategory objects
-                $fieldHandler = xoops_getModuleHandler('field');
+                $fieldHandler = Helper::getInstance()
+                                      ->getHandler('Field');
                 $fields       = $fieldHandler->getObjects(new \Criteria('field_id', '(' . implode(',', $ids) . ')', 'IN'), true);
                 foreach ($ids as $i) {
                     $fields[$i]->setVar('field_weight', (int)$weight[$i]);
@@ -147,13 +177,12 @@ switch ($op) {
         }
         redirect_header('field.php', 2, sprintf(_AM_SONGLIST_FIELDS_SAVEDSUCCESS, _AM_SONGLIST_FIELDS_FIELDS));
         break;
-
     case 'save':
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header('field.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
         }
         $redirect_to_edit = false;
-        if (isset($_REQUEST['id'])) {
+        if (Request::hasVar('id', 'REQUEST')) {
             $obj = $fieldHandler->get($_REQUEST['id']);
             if (!$obj->getVar('field_config') && !$obj->getVar('field_show') && !$obj->getVar('field_edit')) { //If no configs exist
                 redirect_header('fields.php', 2, _AM_SONGLIST_FIELDS_FIELDNOTCONFIGURABLE);
@@ -171,19 +200,19 @@ switch ($op) {
         $obj->setVar('field_description', $_REQUEST['field_description']);
         if ($obj->getVar('field_config')) {
             $obj->setVar('field_type', $_REQUEST['field_type']);
-            if (isset($_REQUEST['field_valuetype'])) {
+            if (Request::hasVar('field_valuetype', 'REQUEST')) {
                 $obj->setVar('field_valuetype', $_REQUEST['field_valuetype']);
             }
             $options = $obj->getVar('field_options');
 
-            if (isset($_REQUEST['removeOptions']) && is_array($_REQUEST['removeOptions'])) {
+            if (Request::hasVar('removeOptions', 'REQUEST') && is_array($_REQUEST['removeOptions'])) {
                 foreach ($_REQUEST['removeOptions'] as $index) {
                     unset($options[$index]);
                 }
                 $redirect_to_edit = true;
             }
 
-           if (\Xmf\Request::hasVar('addOption', 'REQUEST')) {
+            if (Request::hasVar('addOption', 'REQUEST')) {
                 foreach ($_REQUEST['addOption'] as $option) {
                     if (empty($option['value'])) {
                         continue;
@@ -195,12 +224,12 @@ switch ($op) {
             $obj->setVar('field_options', $options);
         }
         if ($obj->getVar('field_edit')) {
-            $required = \Xmf\Request::getInt('field_required', 0, 'REQUEST');
+            $required = Request::getInt('field_required', 0, 'REQUEST');
             $obj->setVar('field_required', $required); //0 = no, 1 = yes
-            if (isset($_REQUEST['field_maxlength'])) {
+            if (Request::hasVar('field_maxlength', 'REQUEST')) {
                 $obj->setVar('field_maxlength', $_REQUEST['field_maxlength']);
             }
-            if (isset($_REQUEST['field_default'])) {
+            if (Request::hasVar('field_default', 'REQUEST')) {
                 $field_default = $obj->getValueForSave($_REQUEST['field_default']);
                 //Check for multiple selections
                 if (is_array($field_default)) {
@@ -215,6 +244,7 @@ switch ($op) {
         $obj->setVar('cids', $_REQUEST['cids']);
 
         if ($fieldHandler->insert($obj)) {
+            /** @var \XoopsGroupPermHandler $grouppermHandler */
             $grouppermHandler = xoops_getHandler('groupperm');
 
             $perm_arr = [];
@@ -271,16 +301,15 @@ switch ($op) {
         }
 
         echo $obj->getHtmlErrors();
-        $form = songlist_getFieldForm($obj);
+        $form = FormController::getFieldForm($obj);
         $form->display();
         break;
-
     case 'delete':
         $obj = $fieldHandler->get($_REQUEST['id']);
         if (!$obj->getVar('field_config')) {
             redirect_header('index.php', 2, _AM_SONGLIST_FIELDS_FIELDNOTCONFIGURABLE);
         }
-        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
+        if (Request::hasVar('ok', 'REQUEST') && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('field.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }

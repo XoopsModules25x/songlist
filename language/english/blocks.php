@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 // blocks
 define('_BL_SONGLIST_NUMBEROFITEMS', 'Number of items:&nbsp;');

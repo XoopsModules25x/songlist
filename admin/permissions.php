@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -11,13 +11,14 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @author         XOOPS Development Team
  */
 
-include __DIR__ . '/header.php';
+use Xmf\Module\Admin;
+use XoopsModules\Songlist\Helper;
+
+require_once __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/modules/' . $GLOBALS['songlistModule']->getVar('dirname') . '/class/xoopsformloader.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
 
@@ -32,19 +33,32 @@ require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
  */
 class forum_XoopsGroupPermForm extends \XoopsGroupPermForm
 {
+    /**
+     * forum_XoopsGroupPermForm constructor.
+     * @param        $title
+     * @param        $modid
+     * @param        $permname
+     * @param        $permdesc
+     * @param string $url
+     */
     public function __construct($title, $modid, $permname, $permdesc, $url = '')
     {
         parent::__construct($title, $modid, $permname, $permdesc, $url);
     }
 
-    public function render()
+    /**
+     * @return string
+     */
+    public function render(): string
     {
         // load all child ids for javascript codes
         foreach (array_keys($this->_itemTree) as $item_id) {
             $this->_itemTree[$item_id]['allchild'] = [];
             $this->_loadAllChildItemIds($item_id, $this->_itemTree[$item_id]['allchild']);
         }
-        $grouppermHandler  = xoops_getHandler('groupperm');
+        /** @var \XoopsGroupPermHandler $grouppermHandler */
+        $grouppermHandler = xoops_getHandler('groupperm');
+        /** @var \XoopsMemberHandler $memberHandler */
         $memberHandler = xoops_getHandler('member');
         $glist         = $memberHandler->getGroupList();
         foreach (array_keys($glist) as $i) {
@@ -66,14 +80,14 @@ class forum_XoopsGroupPermForm extends \XoopsGroupPermForm
         foreach (array_keys($elements) as $i) {
             if (!is_object($elements[$i])) {
                 $ret .= $elements[$i];
-            } elseif (!$elements[$i]->isHidden()) {
+            } elseif ($elements[$i]->isHidden()) {
+                $hidden .= $elements[$i]->render();
+            } else {
                 $ret .= "<tr valign='top' align='left'><td class='head'>" . $elements[$i]->getCaption();
                 if ('' != $elements[$i]->getDescription()) {
                     $ret .= '<br><br><span style="font-weight: normal;">' . $elements[$i]->getDescription() . '</span>';
                 }
                 $ret .= "</td>\n<td class='even'>\n" . $elements[$i]->render() . "\n</td></tr>\n";
-            } else {
-                $hidden .= $elements[$i]->render();
             }
         }
         $ret .= "</table>$hidden</form>";
@@ -83,8 +97,18 @@ class forum_XoopsGroupPermForm extends \XoopsGroupPermForm
     }
 }
 
+/**
+ * Class forum_XoopsGroupFormCheckBox
+ */
 class forum_XoopsGroupFormCheckBox extends \XoopsGroupFormCheckBox
 {
+    /**
+     * forum_XoopsGroupFormCheckBox constructor.
+     * @param      $caption
+     * @param      $name
+     * @param      $groupId
+     * @param null $values
+     */
     public function __construct($caption, $name, $groupId, $values = null)
     {
         parent::__construct($caption, $name, $groupId, $values);
@@ -94,9 +118,8 @@ class forum_XoopsGroupFormCheckBox extends \XoopsGroupFormCheckBox
      * Renders checkbox options for this group
      *
      * @return string
-     * @access public
      */
-    public function render()
+    public function render(): string
     {
         $ret  = '<table class="outer"><tr><td class="odd"><table><tr>';
         $cols = 1;
@@ -125,46 +148,42 @@ class forum_XoopsGroupFormCheckBox extends \XoopsGroupFormCheckBox
         return $ret;
     }
 
-    public function _renderOptionTree(&$tree, $option, $prefix, $parentIds = [])
+    /**
+     * @param string $tree
+     * @param array  $option
+     * @param string $prefix
+     * @param array  $parentIds
+     */
+    public function _renderOptionTree(&$tree, $option, $prefix, $parentIds = []): void
     {
-        if ($option['id'] > 0):
+        if ($option['id'] > 0) :
             $tree .= $prefix . '<input type="checkbox" name="' . $this->getName() . '[groups][' . $this->_groupId . '][' . $option['id'] . ']" id="' . $this->getName() . '[groups][' . $this->_groupId . '][' . $option['id'] . ']" onclick="';
-        foreach ($parentIds as $pid) {
-            if ($pid <= 0) {
-                continue;
+            foreach ($parentIds as $pid) {
+                if ($pid <= 0) {
+                    continue;
+                }
+                $parent_ele = $this->getName() . '[groups][' . $this->_groupId . '][' . $pid . ']';
+                $tree       .= "var ele = xoopsGetElementById('" . $parent_ele . "'); if(ele.checked !== true) {ele.checked = this.checked;}";
             }
-            $parent_ele = $this->getName() . '[groups][' . $this->_groupId . '][' . $pid . ']';
-            $tree       .= "var ele = xoopsGetElementById('" . $parent_ele . "'); if(ele.checked !== true) {ele.checked = this.checked;}";
-        }
-        foreach ($option['allchild'] as $cid) {
-            $child_ele = $this->getName() . '[groups][' . $this->_groupId . '][' . $cid . ']';
-            $tree      .= "var ele = xoopsGetElementById('" . $child_ele . "'); if(this.checked !== true) {ele.checked = false;}";
-        }
-        $tree .= '" value="1"';
-        if (in_array($option['id'], $this->_value)) {
-            $tree .= ' checked';
-        }
-        $tree .= '>'
-                 . $option['name']
-                 . '<input type="hidden" name="'
-                 . $this->getName()
-                 . '[parents]['
-                 . $option['id']
-                 . ']" value="'
-                 . implode(':', $parentIds)
-                 . '"><input type="hidden" name="'
-                 . $this->getName()
-                 . '[itemname]['
-                 . $option['id']
-                 . ']" value="'
-                 . htmlspecialchars($option['name'], ENT_QUOTES | ENT_HTML5)
-                 . "\"><br>\n"; else:
+            foreach ($option['allchild'] as $cid) {
+                $child_ele = $this->getName() . '[groups][' . $this->_groupId . '][' . $cid . ']';
+                $tree      .= "var ele = xoopsGetElementById('" . $child_ele . "'); if(this.checked !== true) {ele.checked = false;}";
+            }
+            $tree .= '" value="1"';
+            if (in_array($option['id'], $this->_value, true)) {
+                $tree .= ' checked';
+            }
+            $tree .= '>' . $option['name'] . '<input type="hidden" name="' . $this->getName() . '[parents][' . $option['id'] . ']" value="' . implode(':', $parentIds) . '"><input type="hidden" name="' . $this->getName() . '[itemname][' . $option['id'] . ']" value="' . htmlspecialchars(
+                    $option['name'],
+                    ENT_QUOTES | ENT_HTML5
+                ) . "\"><br>\n";
+        else :
             $tree .= $prefix . $option['name'] . '<input type="hidden" id="' . $this->getName() . '[groups][' . $this->_groupId . '][' . $option['id'] . "]\"><br>\n";
         endif;
         if (isset($option['children'])) {
             foreach ($option['children'] as $child) {
                 if ($option['id'] > 0) {
-                    array_push($parentIds, $option['id']);
+                    $parentIds[] = $option['id'];
                 }
                 $this->_renderOptionTree($tree, $this->_optionTree[$child], $prefix . '&nbsp;-', $parentIds);
             }
@@ -174,30 +193,33 @@ class forum_XoopsGroupFormCheckBox extends \XoopsGroupFormCheckBox
 
 xoops_cp_header();
 
-$adminObject = \Xmf\Module\Admin::getInstance();
+$adminObject = Admin::getInstance();
 $adminObject->displayNavigation(basename(__FILE__));
-$action    = isset($_REQUEST['action']) ? strtolower($_REQUEST['action']) : '';
+$action    = isset($_REQUEST['action']) ? \mb_strtolower($_REQUEST['action']) : '';
 $module_id = $GLOBALS['songlistModule']->getVar('mid');
-$perms     = array_map('trim', explode(',', FORUM_PERM_ITEMS));
+$perms     = array_map('\trim', explode(',', FORUM_PERM_ITEMS));
 
 switch ($action) {
     case 'template':
         $opform    = new \XoopsSimpleForm(_AM_SONGLIST_PERM_ACTION, 'actionform', 'permissions.php', 'get');
         $op_select = new \XoopsFormSelect('', 'action');
         $op_select->setExtra('onchange="document.forms.actionform.submit()"');
-        $op_select->addOptionArray([
-                                       'no'       => _SELECT,
-                                       'template' => _AM_SONGLIST_PERM_TEMPLATE,
-                                       'apply'    => _AM_SONGLIST_PERM_TEMPLATEAPP,
-                                       'default'  => _AM_SONGLIST_PERM_SETBYGROUP
-                                   ]);
+        $op_select->addOptionArray(
+            [
+                'no'       => _SELECT,
+                'template' => _AM_SONGLIST_PERM_TEMPLATE,
+                'apply'    => _AM_SONGLIST_PERM_TEMPLATEAPP,
+                'default'  => _AM_SONGLIST_PERM_SETBYGROUP,
+            ]
+        );
         $opform->addElement($op_select);
         $opform->display();
 
+        /** @var \XoopsMemberHandler $memberHandler */
         $memberHandler       = xoops_getHandler('member');
         $glist               = $memberHandler->getGroupList();
         $elements            = [];
-        $songlistpermHandler = xoops_getModuleHandler('permission', 'songlist');
+        $songlistpermHandler = Helper::getInstance()->getHandler('Permission');
         $perm_template       = $songlistpermHandler->getTemplate($groupid = 0);
         foreach (array_keys($glist) as $i) {
             $selected   = !empty($perm_template[$i]) ? array_keys($perm_template[$i]) : [];
@@ -211,10 +233,10 @@ switch ($action) {
                 if (0 == $ii % 5) {
                     $ret_ele .= '</tr><tr>';
                 }
-                $checked      = in_array('forum_' . $perm, $selected) ? ' checked' : '';
+                $checked      = in_array('forum_' . $perm, $selected, true) ? ' checked' : '';
                 $option_id    = $perm . '_' . $i;
                 $option_ids[] = $option_id;
-                $ret_ele      .= '<td><input name="perms[' . $i . '][' . 'forum_' . $perm . ']" id="' . $option_id . '" onclick="" value="1" type="checkbox"' . $checked . '>' . constant('_AM_SONGLIST_CAN_' . strtoupper($perm)) . '<br></td>';
+                $ret_ele      .= '<td><input name="perms[' . $i . '][' . 'forum_' . $perm . ']" id="' . $option_id . '" onclick="" value="1" type="checkbox"' . $checked . '>' . constant('_AM_SONGLIST_CAN_' . \mb_strtoupper($perm)) . '<br></td>';
             }
             $ret_ele    .= '</tr></table></td><td class="even">';
             $ret_ele    .= _ALL . ' <input id="checkall[' . $i . ']" type="checkbox" value="" onclick="var optionids = new Array(' . implode(', ', $option_ids) . '); xoopsCheckAllElements(optionids, \'checkall[' . $i . ']\')">';
@@ -235,9 +257,8 @@ switch ($action) {
         $ret .= '</table></form>';
         echo $ret;
         break;
-
     case 'template_save':
-        $songlistpermHandler = xoops_getModuleHandler('permission', 'songlist');
+        $songlistpermHandler = Helper::getInstance()->getHandler('Permission');
         $res                 = $songlistpermHandler->setTemplate($_POST['perms'], $groupid = 0);
         if ($res) {
             redirect_header('permissions.php?action=template', 2, _AM_SONGLIST_PERM_TEMPLATE_CREATED);
@@ -245,9 +266,8 @@ switch ($action) {
             redirect_header('permissions.php?action=template', 2, _AM_SONGLIST_PERM_TEMPLATE_ERROR);
         }
         break;
-
     case 'apply':
-        $songlistpermHandler = xoops_getModuleHandler('permission', 'songlist');
+        $songlistpermHandler = Helper::getInstance()->getHandler('Permission');
         $perm_template       = $songlistpermHandler->getTemplate();
         if (null === $perm_template) {
             redirect_header('permissions.php?action=template', 2, _AM_SONGLIST_PERM_TEMPLATE);
@@ -260,10 +280,10 @@ switch ($action) {
         $opform->addElement($op_select);
         $opform->display();
 
-        $categoryHandler = xoops_getModuleHandler('category', 'songlist');
+        $categoryHandler = Helper::getInstance()->getHandler('Category');
         $categories      = $categoryHandler->getAllCats('', true, false, true);
 
-        $GLOBALS['forumHandler'] = xoops_getModuleHandler('forum', 'songlist');
+        $GLOBALS['forumHandler'] = Helper::getInstance()->getHandler('Forum');
         $songlists               = $GLOBALS['forumHandler']->getForumsByCategory(0, '', false, false, true);
         $fm_options              = [];
         foreach (array_keys($categories) as $c) {
@@ -290,12 +310,11 @@ switch ($action) {
         $fmform->addElement($tray);
         $fmform->display();
         break;
-
     case 'apply_save':
         if (empty($_POST['forums'])) {
             break;
         }
-        $songlistpermHandler = xoops_getModuleHandler('permission', 'songlist');
+        $songlistpermHandler = Helper::getInstance()->getHandler('Permission');
         foreach ($_POST['forums'] as $songlist) {
             if ($songlist < 1) {
                 continue;
@@ -304,42 +323,42 @@ switch ($action) {
         }
         redirect_header('permissions.php', 2, _AM_SONGLIST_PERM_TEMPLATE_APPLIED);
         break;
-
     default:
-
         $opform    = new \XoopsSimpleForm(_AM_SONGLIST_PERM_ACTION, 'actionform', 'permissions.php', 'get');
         $op_select = new \XoopsFormSelect('', 'action');
         $op_select->setExtra('onchange="document.forms.actionform.submit()"');
-        $op_select->addOptionArray([
-                                       'no'       => _SELECT,
-                                       'template' => _AM_SONGLIST_PERM_TEMPLATE,
-                                       'apply'    => _AM_SONGLIST_PERM_TEMPLATEAPP,
-                                       'default'  => _AM_SONGLIST_PERM_SETBYGROUP
-                                   ]);
+        $op_select->addOptionArray(
+            [
+                'no'       => _SELECT,
+                'template' => _AM_SONGLIST_PERM_TEMPLATE,
+                'apply'    => _AM_SONGLIST_PERM_TEMPLATEAPP,
+                'default'  => _AM_SONGLIST_PERM_SETBYGROUP,
+            ]
+        );
         $opform->addElement($op_select);
         $opform->display();
 
-        $GLOBALS['forumHandler'] = xoops_getModuleHandler('forum', 'songlist');
+        $GLOBALS['forumHandler'] = Helper::getInstance()->getHandler('Forum');
         $songlists               = $GLOBALS['forumHandler']->getForumsByCategory(0, '', false, false, true);
         $op_options              = ['category' => _AM_SONGLIST_CAT_ACCESS];
         $fm_options              = ['category' => ['title' => _AM_SONGLIST_CAT_ACCESS, 'item' => 'category_access', 'desc' => '', 'anonymous' => true]];
         foreach ($perms as $perm) {
-            $op_options[$perm] = constant('_AM_SONGLIST_CAN_' . strtoupper($perm));
-            $fm_options[$perm] = ['title' => constant('_AM_SONGLIST_CAN_' . strtoupper($perm)), 'item' => 'forum_' . $perm, 'desc' => '', 'anonymous' => true];
+            $op_options[$perm] = constant('_AM_SONGLIST_CAN_' . \mb_strtoupper($perm));
+            $fm_options[$perm] = ['title' => constant('_AM_SONGLIST_CAN_' . \mb_strtoupper($perm)), 'item' => 'forum_' . $perm, 'desc' => '', 'anonymous' => true];
         }
 
         $op_keys = array_keys($op_options);
-        $op      = isset($_GET['op']) ? strtolower($_GET['op']) : (isset($_COOKIE['op']) ? strtolower($_COOKIE['op']) : '');
+        $op      = isset($_GET['op']) ? \mb_strtolower($_GET['op']) : (isset($_COOKIE['op']) ? \mb_strtolower($_COOKIE['op']) : '');
         if (empty($op)) {
             $op = $op_keys[0];
-            setcookie('op', isset($op_keys[1]) ? $op_keys[1] : '');
+            setcookie('op', $op_keys[1] ?? '');
         } else {
-            for ($i = 0; $i < count($op_keys); ++$i) {
+            for ($i = 0, $iMax = count($op_keys); $i < $iMax; ++$i) {
                 if ($op_keys[$i] == $op) {
                     break;
                 }
             }
-            setcookie('op', isset($op_keys[$i + 1]) ? $op_keys[$i + 1] : '');
+            setcookie('op', $op_keys[$i + 1] ?? '');
         }
 
         $opform    = new \XoopsSimpleForm('', 'opform', 'permissions.php', 'get');
@@ -353,7 +372,7 @@ switch ($action) {
 
         $form = new forum_XoopsGroupPermForm($fm_options[$op]['title'], $module_id, $fm_options[$op]['item'], $fm_options[$op]['desc'], 'admin/permissions.php', $fm_options[$op]['anonymous']);
 
-        $categoryHandler = xoops_getModuleHandler('category', 'songlist');
+        $categoryHandler = Helper::getInstance()->getHandler('Category');
         $categories      = $categoryHandler->getObjects(null, true);
         if ('category' === $op) {
             foreach (array_keys($categories) as $c) {

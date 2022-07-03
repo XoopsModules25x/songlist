@@ -1,0 +1,105 @@
+-
+    abid: '1'
+    cid: '1'
+    aids: ''
+    sids: 'a:1:{i:1;i:1;}'
+    title: 'Bitches Brew'
+    image: 22c75f8024bd062a5cbee02e3c0.78422006.jpg
+    path: /uploads/songlist/albums/
+    artists: '0'
+    songs: '0'
+    hits: '13'
+    rank: '0.000'
+    votes: '0'
+    created: '1638145107'
+    updated: '1655032814'
+-
+    abid: '2'
+    cid: '3'
+    aids: null
+    sids: 'a:1:{i:3;i:3;}'
+    title: 'Sgt. Pepper\''s Lonely Hearts Club Band'
+    image: da0bb533ba9fe62a5ec6e6adf03.93709364.jpg
+    path: /uploads/songlist/albums/
+    artists: '1'
+    songs: '1'
+    hits: '14'
+    rank: '0.000'
+    votes: '0'
+    created: '1655036139'
+    updated: '1655041134'
+-
+    abid: '3'
+    cid: '3'
+    aids: null
+    sids: null
+    title: 'Abbey Road'
+    image: 1e139fcac9b2562a5ddddb3e2e9.89354772.jpg
+    path: /uploads/songlist/albums/
+    artists: '0'
+    songs: '0'
+    hits: '0'
+    rank: '0.000'
+    votes: '0'
+    created: '1655037405'
+    updated: '1655037405'
+-
+    abid: '4'
+    cid: '3'
+    aids: null
+    sids: null
+    title: 'Rubber Soul'
+    image: 489bd817b43d262a5de0a0c8ee3.01781408.jpg
+    path: /uploads/songlist/albums/
+    artists: '0'
+    songs: '0'
+    hits: '0'
+    rank: '0.000'
+    votes: '0'
+    created: '1655037423'
+    updated: '1655037450'
+-
+    abid: '5'
+    cid: '5'
+    aids: null
+    sids: 'a:1:{i:4;i:4;}'
+    title: 'Azucar & Salsa'
+    image: 2513ea607189e62a5df8d0359d0.64814506.jpg
+    path: /uploads/songlist/albums/
+    artists: '1'
+    songs: '1'
+    hits: '12'
+    rank: '0.000'
+    votes: '0'
+    created: '1655037837'
+    updated: '1655038124'
+-
+    abid: '6'
+    cid: '6'
+    aids: null
+    sids: 'a:1:{i:5;i:5;}'
+    title: 'Led Zeppelin III'
+    image: d78bc88c970c962a5dfc1653ab8.52285915.jpg
+    path: /uploads/songlist/albums/
+    artists: '1'
+    songs: '1'
+    hits: '15'
+    rank: '0.000'
+    votes: '0'
+    created: '1655037889'
+    updated: '1655038300'
+-
+    abid: '7'
+    cid: '5'
+    aids: null
+    sids: null
+    title: 'En Cuarentena'
+    image: a3a03cf53fd1662a5dfd929c6f4.55648793.jpg
+    path: /uploads/songlist/albums/
+    artists: '0'
+    songs: '0'
+    hits: '0'
+    rank: '0.000'
+    votes: '0'
+    created: '1655037913'
+    updated: '1655037913'

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 // Dashboard
 define('_AM_SONGLIST_COUNT', 'Number of items counted');
@@ -235,6 +235,7 @@ define('_AM_SONGLIST_FIELDNOTVISIBLE', '--&nbsp;Field Not Visible&nbsp;--');
 define('_AM_SONGLIST_FIELDVISIBLEFOR', '&nbsp;Visible For&nbsp;');
 define('_AM_SONGLIST_FIELDVISIBLEON', '&nbsp;On&nbsp;');
 define('_AM_SONGLIST_FIELDVISIBLE', 'Field Visible:&nbsp;');
+define('_AM_SONGLIST_FIELDVISIBLETOALL', 'Field Visible to All&nbsp;');
 
 // Field Permissions
 define('_AM_SONGLIST_PROF_VISIBLE', 'Field Visiblity');
@@ -245,7 +246,7 @@ define('_AM_SONGLIST_PROF_SEARCH', 'Field Searchable');
 // Import Wizards
 define('_AM_SONGLIST_IMPORT_NOFILE', 'No File Specified!');
 define('_AM_SONGLIST_IMPORT_ACTIONA_H1', 'Upload XML File to Import');
-define('_AM_SONGLIST_IMPORT_ACTIONA_P', 'SELECT an XML File you have exported FROM Excel OR other platform TO IMPORT.');
+define('_AM_SONGLIST_IMPORT_ACTIONA_P', 'SELECT an XML File you have exported FROM Excel or other platform TO IMPORT.');
 define('_AM_SONGLIST_IMPORT_ACTIONB_H1', 'Specify Element Names');
 define('_AM_SONGLIST_IMPORT_ACTIONB_P', 'You have to specify from the example the elements that exists in this XML file to import, may vary from file to file and also if you specify no element name the field type is ignored..');
 define('_AM_SONGLIST_XMLFILE_COMPLETE', 'XML File Import and Comparison Complete!');
@@ -261,3 +262,23 @@ define('_AM_SONGLIST_ERROR_COLUMN', 'Could not create column in database : %s');
 define('_AM_SONGLIST_ERROR_BAD_XOOPS', 'This module requires XOOPS %s+ (%s installed)');
 define('_AM_SONGLIST_ERROR_BAD_PHP', 'This module requires PHP version %s+ (%s installed)');
 define('_AM_SONGLIST_ERROR_TAG_REMOVAL', 'Could not remove tags from Tag Module');
+
+define('_AM_SONGLIST_XMLFILE_UPLOADED', 'Uploaded');
+define('_AM_SONGLIST_OBJS_MF_SITEDEFAULT', 'Site default');
+define('_AM_SONGLIST_FIELDS_RUSUREDEL', 'Are you sure to delete?');
+
+define('_AM_SONGLIST_DELETEDSUCCESS', 'Deleted Successfully');
+
+define('_AM_SONGLIST_PERM_ACTION', 'Action');
+define('_AM_SONGLIST_PERM_TEMPLATE', 'Template');
+define('_AM_SONGLIST_PERM_TEMPLATEAPP', 'Template App');
+define('_AM_SONGLIST_PERM_SETBYGROUP', 'Set by Group');
+define('_AM_SONGLIST_PERM_TEMPLATE_DESC', 'Template Description');
+define('_AM_SONGLIST_PERM_TEMPLATE_CREATED', 'Created');
+define('_AM_SONGLIST_PERM_TEMPLATE_ERROR', 'Error');
+define('_AM_SONGLIST_PERM_FORUMS', 'Rank');
+define('_AM_SONGLIST_PERM_TEMPLATE_APPLIED', 'Template Applied');
+define('_AM_SONGLIST_CAT_ACCESS', 'Access');
+
+
+

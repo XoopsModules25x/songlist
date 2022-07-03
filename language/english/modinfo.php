@@ -1,11 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 // XOOPS Version
 define('_MI_SONGLIST_NAME', 'Songlist');
 define('_MI_SONGLIST_DESC', 'Karioki Songlist - a module for keeping karioki song lists and ranking of them.');
 //define('_MI_SONGLIST_DIRNAME', 'songlist');
 
-// Form langauges
+// Form languages
 define('_MI_SONGLIST_NONE', 'None');
 define('_MI_SONGLIST_ALL', 'All');
 define('_MI_SONGLIST_OFTEN', ' of 10.00');
@@ -16,7 +16,7 @@ define('_MI_SONGLIST_STYLESHEET', '/modules/songlist/css/songlist.css');
 
 // Admin Menus
 define('_MI_SONGLIST_ADMENU_DASHBOARD', 'Dashboard');
-define('_MI_SONGLIST_ADMENU_CATEGORY', 'Category\'s');
+define('_MI_SONGLIST_ADMENU_CATEGORY', 'Categories');
 define('_MI_SONGLIST_ADMENU_ALBUMS', 'Albums');
 define('_MI_SONGLIST_ADMENU_ARTISTS', 'Artists');
 define('_MI_SONGLIST_ADMENU_SONGS', 'Songs');
@@ -29,7 +29,7 @@ define('_MI_SONGLIST_ADMENU_UTF8MAP', 'UTF8 Map');
 define('_MI_SONGLIST_ADMENU_IMPORT', 'Import');
 define('_MI_SONGLIST_ADMENU_FIELDS', 'Fields');
 define('_MI_SONGLIST_ADMENU_FIELDSPERMS', 'Field Permissions');
-define('_MI_SONGLIST_ADMENU_ABOUT', 'About Songlist');
+define('_MI_SONGLIST_ADMENU_ABOUT', 'About');
 
 //User Menus
 define('_MI_SONGLIST_MENU_ARTISTS', 'Browse Artists');
@@ -108,8 +108,8 @@ define('_MI_SONGLIST_LYRICS_DESC', 'If you enable this the lyrics will be displa
 
 //1.14
 //Help
-define('_MI_SONGLIST_DIRNAME', basename(dirname(dirname(__DIR__))));
-define('_MI_SONGLIST_HELP_HEADER', __DIR__.'/help/helpheader.tpl');
+define('_MI_SONGLIST_DIRNAME', basename(dirname(__DIR__, 2)));
+define('_MI_SONGLIST_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
 define('_MI_SONGLIST_BACK_2_ADMIN', 'Back to Administration of ');
 define('_MI_SONGLIST_OVERVIEW', 'Overview');
 
@@ -119,3 +119,5 @@ define('_MI_SONGLIST_OVERVIEW', 'Overview');
 define('_MI_SONGLIST_DISCLAIMER', 'Disclaimer');
 define('_MI_SONGLIST_LICENSE', 'License');
 define('_MI_SONGLIST_SUPPORT', 'Support');
+
+define('_MI_SONGLIST_DATENOTSET', 'Date not set');

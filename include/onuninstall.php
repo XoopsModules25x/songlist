@@ -1,67 +1,56 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * uninstall.php - cleanup on module uninstall
  *
  * @author          XOOPS Module Development Team
  * @copyright       {@link https://xoops.org 2001-2016 XOOPS Project}
- * @license         {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @license         {@link https://www.fsf.org/copyleft/gpl.html GNU public license}
  * @link            https://xoops.org XOOPS
  */
 
 use XoopsModules\Songlist;
+use XoopsModules\Songlist\Helper;
 
 /**
  * Prepares system prior to attempting to uninstall module
- * @param XoopsModule $module {@link XoopsModule}
+ * @param \XoopsModule $module {@link XoopsModule}
  *
  * @return bool true if ready to uninstall, false if not
  */
-
-function xoops_module_pre_uninstall_songlist(\XoopsModule $module)
+function xoops_module_pre_uninstall_songlist(\XoopsModule $module): bool
 {
     // Do some synchronization
     return true;
 }
 
 /**
- *
  * Performs tasks required during uninstallation of the module
- * @param XoopsModule $module {@link XoopsModule}
+ * @param \XoopsModule $module {@link XoopsModule}
  *
  * @return bool true if uninstallation successful, false if not
  */
-function xoops_module_uninstall_songlist(\XoopsModule $module)
+function xoops_module_uninstall_songlist(\XoopsModule $module): bool
 {
-//    return true;
-
-    $moduleDirName = basename(dirname(__DIR__));
-    $moduleDirNameUpper = strtoupper($moduleDirName);
-     $helper      =Songlist\Helper::getInstance();
-
-    /** @var Songlist\Utility $utility */
-    $utility     = new Songlist\Utility();
-
+    $moduleDirName      = \basename(\dirname(__DIR__));
+    $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
+    $helper             = Helper::getInstance();
 
     $success = true;
     $helper->loadLanguage('admin');
 
-
-    //------------------------------------------------------------------
-    // Remove uploads folder (and all subfolders) if they exist
-    //------------------------------------------------------------------
-
-    $old_directories = [$GLOBALS['xoops']->path("uploads/{$moduleDirName}")];
-    foreach ($old_directories as $old_dir) {
-        $dirInfo = new \SplFileInfo($old_dir);
-        if ($dirInfo->isDir()) {
-            // The directory exists so delete it
-            if (false === $utility::rrmdir($old_dir)) {
-                $module->setErrors(sprintf(constant('CO_' . $moduleDirNameUpper . '_ERROR_BAD_DEL_PATH'), $old_dir));
-                $success = false;
-            }
+    // Rename uploads folder to BAK and add date to name
+    $uploadDirectory = $GLOBALS['xoops']->path("uploads/$moduleDirName");
+    $dirInfo = new \SplFileInfo($uploadDirectory);
+    if ($dirInfo->isDir()) {
+        // The directory exists so rename it
+        $date = date('Y-m-d');
+        if (!rename($uploadDirectory, $uploadDirectory . "_bak_$date")) {
+            $module->setErrors(sprintf(constant('CO_' . $moduleDirNameUpper . '_' . 'ERROR_FOLDER_RENAME_FAILED'), $uploadDirectory));
+            $success = false;
         }
-        unset($dirInfo);
     }
+    unset($dirInfo);
     /*
     //------------ START ----------------
     //------------------------------------------------------------------

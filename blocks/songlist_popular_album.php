@@ -1,17 +1,26 @@
-<?php
+<?php declare(strict_types=1);
 
-function b_songlist_popular_album_show($options)
+use XoopsModules\Songlist\Helper;
+
+/**
+ * @param $options
+ * @return array|null
+ */
+function b_songlist_popular_album_show($options): ?array
 {
     xoops_loadLanguage('blocks', 'songlist');
-    $handler = xoops_getModuleHandler('albums', 'songlist');
+    $handler = Helper::getInstance()->getHandler('Albums');
     $objects = $handler->getTop(1);
     if (is_object($objects[0])) {
         return $objects[0]->toArray(true);
     }
 
-    return false;
+    return null;
 }
 
-function b_songlist_popular_album_edit($options)
+/**
+ * @param $options
+ */
+function b_songlist_popular_album_edit($options): void
 {
 }

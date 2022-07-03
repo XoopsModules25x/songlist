@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
 Module: Objects
@@ -14,7 +14,10 @@ Owner: Frilogg
 License: See docs - End User Licence.pdf
 */
 
-include __DIR__ . '/header.php';
+use Xmf\Request;
+use XoopsModules\Songlist\Helper;
+
+require_once __DIR__ . '/header.php';
 xoops_cp_header();
 
 $op = (!empty($_GET['op']) ? $_GET['op'] : (!empty($_POST['op']) ? $_POST['op'] : 'visibility'));
@@ -30,11 +33,11 @@ $op_select->addOption('edit', _AM_SONGLIST_PROF_EDITABLE);
 $opform->addElement($op_select);
 $opform->display();
 
-$visibilityHandler = xoops_getModuleHandler('visibility');
-$fieldHandler      = xoops_getModuleHandler('field');
+$visibilityHandler = Helper::getInstance()->getHandler('Visibility');
+$fieldHandler      = Helper::getInstance()->getHandler('Field');
 $fields            = $fieldHandler->getList();
 
-if (isset($_REQUEST['submit'])) {
+if (Request::hasVar('submit', 'REQUEST')) {
     $visibility = $visibilityHandler->create();
     $visibility->setVar('field_id', $_REQUEST['field_id']);
     $visibility->setVar('user_group', $_REQUEST['ug']);
@@ -42,9 +45,9 @@ if (isset($_REQUEST['submit'])) {
     $visibilityHandler->insert($visibility, true);
 }
 if ('del' === $op) {
-    $criteria = new \CriteriaCompo(new \Criteria('field_id', \Xmf\Request::getInt('field_id', 0, 'REQUEST')));
-    $criteria->add(new \Criteria('user_group', \Xmf\Request::getInt('ug', 0, 'REQUEST')));
-    $criteria->add(new \Criteria('profile_group', \Xmf\Request::getInt('pg', 0, 'REQUEST')));
+    $criteria = new \CriteriaCompo(new \Criteria('field_id', Request::getInt('field_id', 0, 'REQUEST')));
+    $criteria->add(new \Criteria('user_group', Request::getInt('ug', 0, 'REQUEST')));
+    $criteria->add(new \Criteria('profile_group', Request::getInt('pg', 0, 'REQUEST')));
     $visibilityHandler->deleteAll($criteria, true);
     redirect_header('field_visibility.php', 2, sprintf(_AM_SONGLIST_DELETEDSUCCESS, _AM_SONGLIST_PROF_VISIBLE));
 }
@@ -53,6 +56,7 @@ $criteria = new \CriteriaCompo();
 $criteria->setGroupBy('field_id, user_group, profile_group');
 $visibilities = $visibilityHandler->getAll($criteria);
 
+/** @var \XoopsMemberHandler $memberHandler */
 $memberHandler = xoops_getHandler('member');
 $groups        = $memberHandler->getGroupList();
 $groups[0]     = _AM_SONGLIST_FIELDVISIBLETOALL;
@@ -81,6 +85,6 @@ $add_form->addElement($sel_pg);
 $add_form->addElement(new \XoopsFormButton('', 'submit', _ADD, 'submit'));
 $add_form->assign($GLOBALS['xoopsTpl']);
 
-$GLOBALS['xoopsTpl']->display('db:songlist_cpanel_visibility.html');
+$GLOBALS['xoopsTpl']->display('db:songlist_cpanel_visibility.tpl');
 
 xoops_cp_footer();

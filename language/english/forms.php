@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 // Category Form
 define('_FRM_SONGLIST_FORM_ISNEW_CATEGORY', 'New Category');
@@ -153,6 +153,12 @@ define('_FRM_SONGLIST_FIELDS_PROF_EDITABLE', 'Songs Field Editable?');
 define('_FRM_SONGLIST_FIELDS_VALUETYPE', 'Field Value Type?');
 define('_FRM_SONGLIST_FIELDS_MAXLENGTH', 'Field Maximum Length?');
 define('_FRM_SONGLIST_FIELDS_PROF_SEARCH', 'Songs Field Searchable?');
+define('_FRM_SONGLIST_FIELDS_ADDOPTION', 'Add Options');
+define('_FRM_SONGLIST_FIELDS_REMOVEOPTIONS', 'Remove Options');
+define('_FRM_SONGLIST_FIELDS_KEY', 'Key');
+define('_FRM_SONGLIST_FIELDS_VALUE', 'Value');
+define('_FRM_SONGLIST_FIELDS_FLOAT', 'Float');
+define('_FRM_SONGLIST_FIELDS_DECIMAL', 'Decimal');
 
 //Field Redirection Messages
 define('_FRM_SONGLIST_FIELDS_FIELDNOTCONFIGURABLE', 'Field not Configurable!');
@@ -193,7 +199,7 @@ define('_FRM_SONGLIST_FIELDS_RANK', 'Rank');
 define('_FRM_SONGLIST_FORM_ISNEW_IMPORT', 'New Import Task');
 define('_FRM_SONGLIST_FORM_EDIT_IMPORT', 'Edit Import Task');
 define('_FRM_SONGLIST_FORM_IMPORT_UPLOAD_XML', 'XML File to import');
-define('_FRM_SONGLIST_FORM_IMPORT_UPLOAD_XML_DESC', 'SELECT the XML File you wish TO IMPORT FROM your system.');
+define('_FRM_SONGLIST_FORM_IMPORT_UPLOAD_XML_DESC', 'SELECT the XML File you wish TO IMPORT FROM your SYSTEM.');
 define('_FRM_SONGLIST_FORM_IMPORT_EXISTING_XML', 'Use Existing File instead of Uploading');
 define('_FRM_SONGLIST_FORM_IMPORT_EXISTING_XML_DESC', 'Upload Existing XML file to: ' . $GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas']));
 
@@ -233,3 +239,17 @@ define('_FRM_SONGLIST_FORM_IMPORT_RECORDS', 'Import Sessioning Record Count');
 define('_FRM_SONGLIST_FORM_IMPORT_RECORDS_DESC', 'This is how many records to pause on and sleep');
 define('_FRM_SONGLIST_FORM_IMPORT_WAIT', 'Import Sessioning Seconds Waited');
 define('_FRM_SONGLIST_FORM_IMPORT_WAIT_DESC', 'This is the number of seconds to limit and sleep to when the number of records are reached!');
+
+define('_FRM_SONGLIST_FIELDS_SEARCH', 'Rank');
+define('_FRM_SONGLIST_FORM_DEFAULT', 'Default');
+define('_FRM_SONGLIST_FORM_ALBUMS_POSTER', 'Poster');
+define('_FRM_SONGLIST_FORM_ALBUMS_POSTER_DESC', 'User who posted the album');
+define('_FRM_SONGLIST_FORM_CATEGORY_POSTER', 'Category Poster');
+define('_FRM_SONGLIST_FORM_CATEGORY_POSTER_DESC', 'User who posted the Category');
+define('_FRM_SONGLIST_FORM_ISNEW_CART', 'New cart');
+define('_FRM_SONGLIST_FORM_EDIT_CART', 'Edit Cart');
+define('_FRM_SONGLIST_FORM_VOTES_SONG', 'Voted Song');
+define('_FRM_SONGLIST_FORM_VOTES_USER', 'Voter');
+define('_FRM_SONGLIST_FORM_VOTES_IP', 'Voter IP');
+define('_FRM_SONGLIST_FORM_VOTES_NETADDY', 'Vote Net Add');
+define('_FRM_SONGLIST_FORM_VOTES_RANK', 'Vote Rank');

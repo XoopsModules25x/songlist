@@ -1,15 +1,21 @@
-<?php
+<?php declare(strict_types=1);
 
-include('header.php');
+use Xmf\Module\Admin;
+use Xmf\Request;
+use XoopsModules\Songlist\Helper;
+use XoopsModules\Songlist\Utf8mapHandler;
+use XoopsModules\Songlist\Form\FormController;
+
+require __DIR__ . '/header.php';
 
 xoops_loadLanguage('admin', 'songlist');
 
 xoops_cp_header();
 
-$op     = isset($_REQUEST['op']) ? $_REQUEST['op'] : 'utf8map';
-$fct    = isset($_REQUEST['fct']) ? $_REQUEST['fct'] : 'list';
-$limit  = \Xmf\Request::getInt('limit', 30, 'REQUEST');
-$start  = \Xmf\Request::getInt('start', 0, 'REQUEST');
+$op     = $_REQUEST['op'] ?? 'utf8map';
+$fct    = $_REQUEST['fct'] ?? 'list';
+$limit  = Request::getInt('limit', 30, 'REQUEST');
+$start  = Request::getInt('start', 0, 'REQUEST');
 $order  = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
 $sort   = !empty($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : 'created';
 $filter = !empty($_REQUEST['filter']) ? '' . $_REQUEST['filter'] . '' : '1,1';
@@ -20,10 +26,11 @@ switch ($op) {
         switch ($fct) {
             default:
             case 'list':
-                $adminObject = \Xmf\Module\Admin::getInstance();
+                $adminObject = Admin::getInstance();
                 $adminObject->displayNavigation(basename(__FILE__));
 
-                $utf8mapHandler = xoops_getModuleHandler('utf8map', 'songlist');
+                /** @var Utf8mapHandler $utf8mapHandler */
+                $utf8mapHandler = Helper::getInstance()->getHandler('Utf8map');
 
                 $criteria        = $utf8mapHandler->getFilterCriteria($GLOBALS['filter']);
                 $ttl             = $utf8mapHandler->getCount($criteria);
@@ -33,28 +40,27 @@ switch ($op) {
                 $GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
 
                 foreach ($utf8mapHandler->filterFields() as $id => $key) {
-                    $GLOBALS['xoopsTpl']->assign(strtolower(str_replace('-', '_', $key) . '_th'), '<a href="'
-                                                                                                  . $_SERVER['PHP_SELF']
-                                                                                                  . '?start='
-                                                                                                  . $GLOBALS['start']
-                                                                                                  . '&limit='
-                                                                                                  . $GLOBALS['limit']
-                                                                                                  . '&sort='
-                                                                                                  . $key
-                                                                                                  . '&order='
-                                                                                                  . (($key == $GLOBALS['sort']) ? ('DESC' === $GLOBALS['order'] ? 'ASC' : 'DESC') : $GLOBALS['order'])
-                                                                                                  . '&op='
-                                                                                                  . $GLOBALS['op']
-                                                                                                  . '&filter='
-                                                                                                  . $GLOBALS['filter']
-                                                                                                  . '">'
-                                                                                                  . (defined('_AM_SONGLIST_TH_' . strtoupper(str_replace('-', '_', $key))) ? constant('_AM_SONGLIST_TH_' . strtoupper(str_replace('-', '_', $key))) : '_AM_SONGLIST_TH_' . strtoupper(str_replace(
-                                                                                                      '-',
-                                                                                                      '_',
-                                                                                                                                                                                                                                                                                                  $key
-                                                                                                  )))
-                                                                                                  . '</a>');
-                    $GLOBALS['xoopsTpl']->assign('filter_' . strtolower(str_replace('-', '_', $key)) . '_th', $utf8mapHandler->getFilterForm($GLOBALS['filter'], $key, $GLOBALS['sort'], $GLOBALS['op'], $GLOBALS['fct']));
+                    $GLOBALS['xoopsTpl']->assign(
+                        \mb_strtolower(str_replace('-', '_', $key) . '_th'),
+                        '<a href="'
+                        . $_SERVER['SCRIPT_NAME']
+                        . '?start='
+                        . $GLOBALS['start']
+                        . '&limit='
+                        . $GLOBALS['limit']
+                        . '&sort='
+                        . $key
+                        . '&order='
+                        . (($key == $GLOBALS['sort']) ? ('DESC' === $GLOBALS['order'] ? 'ASC' : 'DESC') : $GLOBALS['order'])
+                        . '&op='
+                        . $GLOBALS['op']
+                        . '&filter='
+                        . $GLOBALS['filter']
+                        . '">'
+                        . (defined('_AM_SONGLIST_TH_' . \mb_strtoupper(str_replace('-', '_', $key))) ? constant('_AM_SONGLIST_TH_' . \mb_strtoupper(str_replace('-', '_', $key))) : '_AM_SONGLIST_TH_' . \mb_strtoupper(str_replace('-', '_', $key)))
+                        . '</a>'
+                    );
+                    $GLOBALS['xoopsTpl']->assign('filter_' . \mb_strtolower(str_replace('-', '_', $key)) . '_th', $utf8mapHandler->getFilterForm($GLOBALS['filter'], $key, $GLOBALS['sort'], $GLOBALS['op'], $GLOBALS['fct']));
                 }
 
                 $GLOBALS['xoopsTpl']->assign('limit', $GLOBALS['limit']);
@@ -75,33 +81,31 @@ switch ($op) {
                         $GLOBALS['xoopsTpl']->append('utf8map', $utf8map->toArray());
                     }
                 }
-                $GLOBALS['xoopsTpl']->assign('form', songlist_utf8map_get_form(false));
-                $GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['PHP_SELF']);
-                $GLOBALS['xoopsTpl']->display('db:songlist_cpanel_utf8map_list.html');
+                $GLOBALS['xoopsTpl']->assign('form', FormController::getFormUtf8map(false));
+                $GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['SCRIPT_NAME']);
+                $GLOBALS['xoopsTpl']->display('db:songlist_cpanel_utf8map_list.tpl');
                 break;
-
             case 'new':
             case 'edit':
-
-                $adminObject = \Xmf\Module\Admin::getInstance();
+                $adminObject = Admin::getInstance();
                 $adminObject->displayNavigation(basename(__FILE__));
 
-                $utf8mapHandler = xoops_getModuleHandler('utf8map', 'songlist');
-                if (isset($_REQUEST['id'])) {
-                    $utf8map = $utf8mapHandler->get(\Xmf\Request::getInt('id', 0, 'REQUEST'));
+                $utf8mapHandler = Helper::getInstance()->getHandler('Utf8map');
+                if (Request::hasVar('id', 'REQUEST')) {
+                    $utf8map = $utf8mapHandler->get(Request::getInt('id', 0, 'REQUEST'));
                 } else {
                     $utf8map = $utf8mapHandler->create();
                 }
 
                 $GLOBALS['xoopsTpl']->assign('form', $utf8map->getForm());
-                $GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['PHP_SELF']);
-                $GLOBALS['xoopsTpl']->display('db:songlist_cpanel_utf8map_edit.html');
+                $GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['SCRIPT_NAME']);
+                $GLOBALS['xoopsTpl']->display('db:songlist_cpanel_utf8map_edit.tpl');
                 break;
             case 'save':
-
-                $utf8mapHandler = xoops_getModuleHandler('utf8map', 'songlist');
+                $utf8mapHandler = Helper::getInstance()->getHandler('Utf8map');
                 $id             = 0;
-                if ($id = \Xmf\Request::getInt('id', 0, 'REQUEST')) {
+                $id             = Request::getInt('id', 0, 'REQUEST');
+                if ($id) {
                     $utf8map = $utf8mapHandler->get($id);
                 } else {
                     $utf8map = $utf8mapHandler->create();
@@ -109,64 +113,64 @@ switch ($op) {
                 $utf8map->setVars($_POST[$id]);
 
                 if (!$id = $utf8mapHandler->insert($utf8map)) {
-                    redirect_header($_SERVER['PHP_SELF'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_UTF8MAP_FAILEDTOSAVE);
-                    exit(0);
-                } else {
-                    if ('new' === $_REQUEST['state'][$_REQUEST['id']]) {
-                        redirect_header(
-                            $_SERVER['PHP_SELF'] . '?op=' . $GLOBALS['op'] . '&fct=edit&id=' . $_REQUEST['id'] . '&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'],
-                            10,
-                                        _AM_SONGLIST_MSG_UTF8MAP_SAVEDOKEY
-                        );
-                    } else {
-                        redirect_header($_SERVER['PHP_SELF'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_UTF8MAP_SAVEDOKEY);
-                    }
+                    redirect_header($_SERVER['SCRIPT_NAME'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_UTF8MAP_FAILEDTOSAVE);
                     exit(0);
                 }
+                if ('new' === $_REQUEST['state'][$_REQUEST['id']]) {
+                    redirect_header(
+                        $_SERVER['SCRIPT_NAME'] . '?op=' . $GLOBALS['op'] . '&fct=edit&id=' . $_REQUEST['id'] . '&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'],
+                        10,
+                        _AM_SONGLIST_MSG_UTF8MAP_SAVEDOKEY
+                    );
+                } else {
+                    redirect_header($_SERVER['SCRIPT_NAME'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_UTF8MAP_SAVEDOKEY);
+                }
+                exit(0);
+
                 break;
             case 'savelist':
-
-                $utf8mapHandler = xoops_getModuleHandler('utf8map', 'songlist');
+                $utf8mapHandler = Helper::getInstance()->getHandler('Utf8map');
                 foreach ($_REQUEST['id'] as $id) {
                     $utf8map = $utf8mapHandler->get($id);
                     $utf8map->setVars($_POST[$id]);
                     if (!$utf8mapHandler->insert($utf8map)) {
-                        redirect_header($_SERVER['PHP_SELF'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_UTF8MAP_FAILEDTOSAVE);
+                        redirect_header(
+                            $_SERVER['SCRIPT_NAME'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'],
+                            10,
+                            _AM_SONGLIST_MSG_UTF8MAP_FAILEDTOSAVE
+                        );
                         exit(0);
                     }
                 }
-                redirect_header($_SERVER['PHP_SELF'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_UTF8MAP_SAVEDOKEY);
+                redirect_header($_SERVER['SCRIPT_NAME'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_UTF8MAP_SAVEDOKEY);
                 exit(0);
                 break;
             case 'delete':
-
-                $utf8mapHandler = xoops_getModuleHandler('utf8map', 'songlist');
+                $utf8mapHandler = Helper::getInstance()->getHandler('Utf8map');
                 $id             = 0;
-                if (isset($_POST['id']) && $id = \Xmf\Request::getInt('id', 0, 'POST')) {
+                if (Request::hasVar('id', 'POST') && $id = Request::getInt('id', 0, 'POST')) {
                     $utf8map = $utf8mapHandler->get($id);
                     if (!$utf8mapHandler->delete($utf8map)) {
                         redirect_header(
-                            $_SERVER['PHP_SELF'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'],
+                            $_SERVER['SCRIPT_NAME'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'],
                             10,
-                                        _AM_SONGLIST_MSG_UTF8MAP_FAILEDTODELETE
+                            _AM_SONGLIST_MSG_UTF8MAP_FAILEDTODELETE
                         );
                         exit(0);
-                    } else {
-                        redirect_header($_SERVER['PHP_SELF'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_UTF8MAP_DELETED);
-                        exit(0);
                     }
-                } else {
-                    $utf8map = $utf8mapHandler->get(\Xmf\Request::getInt('id', 0, 'REQUEST'));
-                    xoops_confirm(
-                        ['id' => $_REQUEST['id'], 'op' => $_REQUEST['op'], 'fct' => $_REQUEST['fct'], 'limit' => $_REQUEST['limit'], 'start' => $_REQUEST['start'], 'order' => $_REQUEST['order'], 'sort' => $_REQUEST['sort'], 'filter' => $_REQUEST['filter']],
-                        $_SERVER['PHP_SELF'],
-                        sprintf(_AM_SONGLIST_MSG_UTF8MAP_DELETE, $utf8map->getVar('from'), $utf8map->getVar('to'))
-                    );
+                    redirect_header($_SERVER['SCRIPT_NAME'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_UTF8MAP_DELETED);
+                    exit(0);
                 }
+                $utf8map = $utf8mapHandler->get(Request::getInt('id', 0, 'REQUEST'));
+                xoops_confirm(
+                    ['id' => $_REQUEST['id'], 'op' => $_REQUEST['op'], 'fct' => $_REQUEST['fct'], 'limit' => $_REQUEST['limit'], 'start' => $_REQUEST['start'], 'order' => $_REQUEST['order'], 'sort' => $_REQUEST['sort'], 'filter' => $_REQUEST['filter']],
+                    $_SERVER['SCRIPT_NAME'],
+                    sprintf(_AM_SONGLIST_MSG_UTF8MAP_DELETE, $utf8map->getVar('from'), $utf8map->getVar('to'))
+                );
+
                 break;
         }
         break;
-
 }
 
 xoops_cp_footer();

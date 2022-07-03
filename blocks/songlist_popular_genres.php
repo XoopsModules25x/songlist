@@ -1,9 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 
-function b_songlist_popular_genres_show($options)
+use XoopsModules\Songlist\Helper;
+
+/**
+ * @param $options
+ * @return array|null
+ */
+function b_songlist_popular_genres_show($options): ?array
 {
     xoops_loadLanguage('blocks', 'songlist');
-    $handler = xoops_getModuleHandler('genre', 'songlist');
+    $handler = Helper::getInstance()->getHandler('Genre');
     $objects = $handler->getTop($options[0]);
     if (count($objects) > 0) {
         $ret = [];
@@ -14,10 +20,14 @@ function b_songlist_popular_genres_show($options)
         return $ret;
     }
 
-    return false;
+    return null;
 }
 
-function b_songlist_popular_genres_edit($options)
+/**
+ * @param $options
+ * @return string
+ */
+function b_songlist_popular_genres_edit($options): string
 {
     xoops_load('XoopsFormLoader');
     xoops_loadLanguage('blocks', 'songlist');

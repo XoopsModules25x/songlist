@@ -1,6 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
-function xoops_module_update_songlist(&$module)
+/**
+ * @param $module
+ * @return bool
+ */
+function xoops_module_update_songlist(&$module): bool
 {
     $sql = [];
 
@@ -15,7 +19,11 @@ function xoops_module_update_songlist(&$module)
     return xoops_module_update_vs_executesql($sql);
 }
 
-function xoops_module_update_vs_executesql($sql)
+/**
+ * @param $sql
+ * @return bool
+ */
+function xoops_module_update_vs_executesql($sql): bool
 {
     if (is_string($sql)) {
         if ($GLOBALS['xoopsDB']->queryF($sql)) {
@@ -30,15 +38,13 @@ function xoops_module_update_vs_executesql($sql)
                         xoops_module_update_vs_executesql($questionb);
                     }
                 }
-            } else {
-                if ($GLOBALS['xoopsDB']->queryF($id)) {
+            } elseif ($GLOBALS['xoopsDB']->queryF($id)) {
                     xoops_error($id, 'SQL Executed Successfully!!!');
                     if ($GLOBALS['xoopsDB']->queryF($question)) {
                         xoops_error($question, 'SQL Executed Successfully!!!');
                     }
                 } elseif ($GLOBALS['xoopsDB']->queryF($question)) {
                     xoops_error($question, 'SQL Executed Successfully!!!');
-                }
             }
         }
     } else {

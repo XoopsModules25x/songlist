@@ -1,12 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
-defined('XOOPS_ROOT_PATH') || die('Restricted access');
+require_once \dirname(__DIR__) . '/include/songlist.object.php';
+require_once \dirname(__DIR__) . '/include/songlist.form.php';
 
-include_once(dirname(__DIR__) . '/include/songlist.object.php');
-include_once(dirname(__DIR__) . '/include/songlist.form.php');
-
-class SonglistUtf8map extends \XoopsObject
+/**
+ * Class Utf8map
+ */
+class Utf8map extends \XoopsObject
 {
+    /**
+     * Utf8map constructor.
+     * @param null $fid
+     */
     public function __construct($fid = null)
     {
         $this->initVar('utfid', XOBJ_DTYPE_INT, 0, false);
@@ -16,17 +21,24 @@ class SonglistUtf8map extends \XoopsObject
         $this->initVar('updated', XOBJ_DTYPE_INT, 0, false);
     }
 
+    /**
+     * @param bool $as_array
+     * @return array|string
+     */
     public function getForm($as_array = false)
     {
         return songlist_utf8map_get_form($this, $as_array);
     }
 
-    public function toArray()
+    /**
+     * @return array
+     */
+    public function toArray(): array
     {
         $ret  = parent::toArray();
         $form = $this->getForm(true);
         foreach ($form as $key => $element) {
-            $ret['form'][$key] = $form[$key]->render();
+            $ret['form'][$key] = $element->render();
         }
         foreach (['created', 'updated'] as $key) {
             if ($this->getVar($key) > 0) {
@@ -39,19 +51,33 @@ class SonglistUtf8map extends \XoopsObject
     }
 }
 
-class SonglistUtf8mapHandler extends \XoopsPersistableObjectHandler
+/**
+ * Class Utf8mapHandler
+ */
+class Utf8mapHandler extends \XoopsPersistableObjectHandler
 {
-    public function __construct($db)
+    /**
+     * Utf8mapHandler constructor.
+     * @param \XoopsDatabase $db
+     */
+    public function __construct(\XoopsDatabase $db)
     {
-        parent::__construct($db, 'songlist_utf8map', 'SonglistUtf8map', 'utfid', 'from');
+        parent::__construct($db, 'songlist_utf8map', Utf8map::class, 'utfid', 'from');
     }
 
-    public function filterFields()
+    /**
+     * @return array
+     */
+    public function filterFields(): array
     {
         return ['utfid', 'from', 'to', 'created', 'updated'];
     }
 
-    public function getFilterCriteria($filter)
+    /**
+     * @param $filter
+     * @return \CriteriaCompo
+     */
+    public function getFilterCriteria($filter): \CriteriaCompo
     {
         $parts    = explode('|', $filter);
         $criteria = new \CriteriaCompo();
@@ -61,15 +87,13 @@ class SonglistUtf8mapHandler extends \XoopsPersistableObjectHandler
                 $object = $this->create();
                 if (XOBJ_DTYPE_TXTBOX == $object->vars[$var[0]]['data_type']
                     || XOBJ_DTYPE_TXTAREA == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new \Criteria('`' . $var[0] . '`', '%' . $var[1] . '%', (isset($var[2]) ? $var[2] : 'LIKE')));
-                } elseif (XOBJ_DTYPE_INT == $object->vars[$var[0]]['data_type']
-                          || XOBJ_DTYPE_DECIMAL == $object->vars[$var[0]]['data_type']
-                          || XOBJ_DTYPE_FLOAT == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new \Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', '%' . $var[1] . '%', ($var[2] ?? 'LIKE')));
+                } elseif (in_array($object->vars[$var[0]]['data_type'], [XOBJ_DTYPE_INT, XOBJ_DTYPE_DECIMAL, XOBJ_DTYPE_FLOAT])) {
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', $var[1], ($var[2] ?? '=')));
                 } elseif (XOBJ_DTYPE_ENUM == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new \Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', $var[1], ($var[2] ?? '=')));
                 } elseif (XOBJ_DTYPE_ARRAY == $object->vars[$var[0]]['data_type']) {
-                    $criteria->add(new \Criteria('`' . $var[0] . '`', '%"' . $var[1] . '";%', (isset($var[2]) ? $var[2] : 'LIKE')));
+                    $criteria->add(new \Criteria('`' . $var[0] . '`', '%"' . $var[1] . '";%', ($var[2] ?? 'LIKE')));
                 }
             } elseif (!empty($var[1]) && is_numeric($var[0])) {
                 $criteria->add(new \Criteria($var[0], $var[1]));
@@ -79,16 +103,28 @@ class SonglistUtf8mapHandler extends \XoopsPersistableObjectHandler
         return $criteria;
     }
 
-    public function getFilterForm($filter, $field, $sort = 'created', $op = 'dashboard', $fct = 'list')
+    /**
+     * @param        $filter
+     * @param        $field
+     * @param string $sort
+     * @param string $op
+     * @param string $fct
+     * @return string
+     */
+    public function getFilterForm($filter, $field, $sort = 'created', $op = 'dashboard', $fct = 'list'): string
     {
         $ele = songlist_getFilterElement($filter, $field, $sort, $op, $fct);
         if (is_object($ele)) {
             return $ele->render();
-        } else {
-            return '&nbsp;';
         }
+
+        return '&nbsp;';
     }
 
+    /**
+     * @param bool $force
+     * @return mixed
+     */
     public function insert(\XoopsObject $obj, $force = true)
     {
         if ($obj->isNew()) {
@@ -100,11 +136,16 @@ class SonglistUtf8mapHandler extends \XoopsPersistableObjectHandler
         return parent::insert($obj, $force);
     }
 
+    /**
+     * @param string $phrase
+     * @param null   $criteria
+     * @return string|string[]
+     */
     public function convert($phrase = '', $criteria = null)
     {
         foreach ($this->getObjects($criteria, true) as $utfid => $utf8) {
-            $phrase = str_replace(strtolower($utf8->getVar('from')), strtolower($utf8->getVar('to')), $phrase);
-            $phrase = str_replace(strtoupper($utf8->getVar('from')), strtoupper($utf8->getVar('to')), $phrase);
+            $phrase = str_replace(mb_strtolower($utf8->getVar('from')), \mb_strtolower($utf8->getVar('to')), $phrase);
+            $phrase = str_replace(mb_strtoupper($utf8->getVar('from')), \mb_strtoupper($utf8->getVar('to')), $phrase);
         }
 
         return $phrase;

@@ -1,21 +1,36 @@
-<?php
+<?php declare(strict_types=1);
+
+use Xmf\Request;
+use XoopsModules\Songlist\Form\SelectAlbumForm;
+use XoopsModules\Songlist\Form\SelectArtistForm;
+use XoopsModules\Songlist\Form\SelectCategoryForm;
+use XoopsModules\Songlist\Form\SelectGenreForm;
+use XoopsModules\Songlist\Form\SelectSongForm;
+use XoopsModules\Songlist\Form\SelectVoiceForm;
 
 if (!function_exists('songlist_getToken')) {
+    /**
+     * @return mixed
+     */
     function songlist_getToken()
     {
         $sql    = 'SELECT md5(rand()/rand()*rand()/rand()*rand()*rand()/rand()*rand()) as `salt`';
         $result = $GLOBALS['xoopsDB']->queryF($sql);
-        list($salt) = $GLOBALS['xoopsDB']->fetchRow($result);
+        [$salt] = $GLOBALS['xoopsDB']->fetchRow($result);
 
         return $salt;
     }
 }
 
 if (!function_exists('ucword')) {
-    function ucword($string)
+    /**
+     * @param $string
+     * @return string
+     */
+    function ucword($string): string
     {
         $ret = [];
-        foreach (explode(' ', strtolower($string)) as $part) {
+        foreach (explode(' ', \mb_strtolower($string)) as $part) {
             $ret[] = ucfirst($part);
         }
 
@@ -24,7 +39,11 @@ if (!function_exists('ucword')) {
 }
 
 if (!function_exists('songlist_getIPData')) {
-    function songlist_getIPData($ip = false)
+    /**
+     * @param bool|string $ip
+     * @return array
+     */
+    function songlist_getIPData($ip = false): array
     {
         $ret = [];
         if (is_object($GLOBALS['xoopsUser'])) {
@@ -33,13 +52,24 @@ if (!function_exists('songlist_getIPData')) {
             $ret['email'] = $GLOBALS['xoopsUser']->getVar('email');
         } else {
             $ret['uid']   = 0;
-            $ret['uname'] = (isset($_REQUEST['uname']) ? $_REQUEST['uname'] : '');
-            $ret['email'] = (isset($_REQUEST['email']) ? $_REQUEST['email'] : '');
+            $ret['uname'] = ($_REQUEST['uname'] ?? '');
+            $ret['email'] = ($_REQUEST['email'] ?? '');
         }
         $ret['agent'] = $_SERVER['HTTP_USER_AGENT'];
-        if (!$ip) {
-            if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-                $ip                  = (string)$_SERVER['HTTP_X_FORWARDED_FOR'];
+        if ($ip) {
+            $ret['is_proxied']   = false;
+            $ret['network-addy'] = @gethostbyaddr($ip);
+            $ret['long']         = @ip2long($ip);
+            if (is_ipv6($ip)) {
+                $ret['ip6'] = true;
+                $ret['ip4'] = false;
+            } else {
+                $ret['ip4'] = true;
+                $ret['ip6'] = false;
+            }
+            $ret['ip'] = $ip;
+        } elseif (Request::hasVar('HTTP_X_FORWARDED_FOR', 'SERVER')) {
+                $ip                  = $_SERVER['HTTP_X_FORWARDED_FOR'];
                 $ret['is_proxied']   = true;
                 $proxy_ip            = $_SERVER['REMOTE_ADDR'];
                 $ret['network-addy'] = @gethostbyaddr($ip);
@@ -59,7 +89,7 @@ if (!function_exists('songlist_getIPData')) {
                 $ret['proxy-ip'] = $proxy_ip;
             } else {
                 $ret['is_proxied']   = false;
-                $ip                  = (string)$_SERVER['REMOTE_ADDR'];
+                $ip                  = $_SERVER['REMOTE_ADDR'];
                 $ret['network-addy'] = @gethostbyaddr($ip);
                 $ret['long']         = @ip2long($ip);
                 if (is_ipv6($ip)) {
@@ -70,19 +100,6 @@ if (!function_exists('songlist_getIPData')) {
                     $ret['ip6'] = false;
                 }
                 $ret['ip'] = $ip;
-            }
-        } else {
-            $ret['is_proxied']   = false;
-            $ret['network-addy'] = @gethostbyaddr($ip);
-            $ret['long']         = @ip2long($ip);
-            if (is_ipv6($ip)) {
-                $ret['ip6'] = true;
-                $ret['ip4'] = false;
-            } else {
-                $ret['ip4'] = true;
-                $ret['ip6'] = false;
-            }
-            $ret['ip'] = $ip;
         }
         $ret['made'] = time();
 
@@ -91,149 +108,175 @@ if (!function_exists('songlist_getIPData')) {
 }
 
 if (!function_exists('is_ipv6')) {
-    function is_ipv6($ip = '')
+    /**
+     * @param string $ip
+     * @return bool
+     */
+    function is_ipv6($ip = ''): bool
     {
         if ('' == $ip) {
             return false;
         }
 
-        if (substr_count($ip, ':') > 0) {
+        if (mb_substr_count($ip, ':') > 0) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 }
 
 if (!function_exists('songlist_getFilterElement')) {
+    /**
+     * @param        $filter
+     * @param        $field
+     * @param string $sort
+     * @param string $op
+     * @param string $fct
+     * @return bool|\XoopsModules\Songlist\Form\SelectAlbumForm|\XoopsModules\Songlist\Form\SelectArtistForm|\XoopsModules\Songlist\Form\SelectCategoryForm|\XoopsModules\Songlist\Form\SelectGenreForm|\XoopsModules\Songlist\Form\SelectVoiceForm
+     */
     function songlist_getFilterElement($filter, $field, $sort = 'created', $op = '', $fct = '')
     {
         $components = songlist_getFilterURLComponents($filter, $field, $sort);
         $ele        = false;
-        include_once('songlist.object.php');
+        require_once __DIR__ . '/songlist.object.php';
         switch ($field) {
             case 'gid':
                 if ('genre' !== $op) {
-                    $ele = new SonglistFormSelectGenre('', 'filter_' . $field . '', $components['value'], 1, false);
-                    $ele->setExtra('onchange="window.open(\''
-                                   . $_SERVER['PHP_SELF']
-                                   . '?'
-                                   . $components['extra']
-                                   . '&filter='
-                                   . $components['filter']
-                                   . (!empty($components['filter']) ? '|' : '')
-                                   . $field
-                                   . ',\'+this.options[this.selectedIndex].value'
-                                   . (!empty($components['operator']) ? '+\','
-                                                                        . $components['operator']
-                                                                        . '\'' : '')
-                                   . ',\'_self\')"');
+                    $ele = new SelectGenreForm('', 'filter_' . $field . '', $components['value'], 1, false);
+                    $ele->setExtra(
+                        'onchange="window.open(\''
+                        . $_SERVER['SCRIPT_NAME']
+                        . '?'
+                        . $components['extra']
+                        . '&filter='
+                        . $components['filter']
+                        . (!empty($components['filter']) ? '|' : '')
+                        . $field
+                        . ',\'+this.options[this.selectedIndex].value'
+                        . (!empty($components['operator']) ? '+\','
+                                                             . $components['operator']
+                                                             . '\'' : '')
+                        . ',\'_self\')"'
+                    );
                 }
                 break;
             case 'vcid':
                 if ('voice' !== $op) {
-                    $ele = new SonglistFormSelectVoice('', 'filter_' . $field . '', $components['value'], 1, false);
-                    $ele->setExtra('onchange="window.open(\''
-                                   . $_SERVER['PHP_SELF']
-                                   . '?'
-                                   . $components['extra']
-                                   . '&filter='
-                                   . $components['filter']
-                                   . (!empty($components['filter']) ? '|' : '')
-                                   . $field
-                                   . ',\'+this.options[this.selectedIndex].value'
-                                   . (!empty($components['operator']) ? '+\','
-                                                                        . $components['operator']
-                                                                        . '\'' : '')
-                                   . ',\'_self\')"');
+                    $ele = new SelectVoiceForm('', 'filter_' . $field . '', $components['value'], 1, false);
+                    $ele->setExtra(
+                        'onchange="window.open(\''
+                        . $_SERVER['SCRIPT_NAME']
+                        . '?'
+                        . $components['extra']
+                        . '&filter='
+                        . $components['filter']
+                        . (!empty($components['filter']) ? '|' : '')
+                        . $field
+                        . ',\'+this.options[this.selectedIndex].value'
+                        . (!empty($components['operator']) ? '+\','
+                                                             . $components['operator']
+                                                             . '\'' : '')
+                        . ',\'_self\')"'
+                    );
                 }
                 break;
             case 'cid':
                 if ('category' !== $op) {
-                    $ele = new SonglistFormSelectCategory('', 'filter_' . $field . '', $components['value'], 1, false);
-                    $ele->setExtra('onchange="window.open(\''
-                                   . $_SERVER['PHP_SELF']
-                                   . '?'
-                                   . $components['extra']
-                                   . '&filter='
-                                   . $components['filter']
-                                   . (!empty($components['filter']) ? '|' : '')
-                                   . $field
-                                   . ',\'+this.options[this.selectedIndex].value'
-                                   . (!empty($components['operator']) ? '+\','
-                                                                        . $components['operator']
-                                                                        . '\'' : '')
-                                   . ',\'_self\')"');
+                    $ele = new SelectCategoryForm('', 'filter_' . $field . '', $components['value'], 1, false);
+                    $ele->setExtra(
+                        'onchange="window.open(\''
+                        . $_SERVER['SCRIPT_NAME']
+                        . '?'
+                        . $components['extra']
+                        . '&filter='
+                        . $components['filter']
+                        . (!empty($components['filter']) ? '|' : '')
+                        . $field
+                        . ',\'+this.options[this.selectedIndex].value'
+                        . (!empty($components['operator']) ? '+\','
+                                                             . $components['operator']
+                                                             . '\'' : '')
+                        . ',\'_self\')"'
+                    );
                 }
                 break;
             case 'pid':
-                $ele = new SonglistFormSelectCategory('', 'filter_' . $field . '', $components['value'], 1, false);
-                $ele->setExtra('onchange="window.open(\''
-                               . $_SERVER['PHP_SELF']
-                               . '?'
-                               . $components['extra']
-                               . '&filter='
-                               . $components['filter']
-                               . (!empty($components['filter']) ? '|' : '')
-                               . $field
-                               . ',\'+this.options[this.selectedIndex].value'
-                               . (!empty($components['operator']) ? '+\','
-                                                                    . $components['operator']
-                                                                    . '\'' : '')
-                               . ',\'_self\')"');
+                $ele = new SelectCategoryForm('', 'filter_' . $field . '', $components['value'], 1, false);
+                $ele->setExtra(
+                    'onchange="window.open(\''
+                    . $_SERVER['SCRIPT_NAME']
+                    . '?'
+                    . $components['extra']
+                    . '&filter='
+                    . $components['filter']
+                    . (!empty($components['filter']) ? '|' : '')
+                    . $field
+                    . ',\'+this.options[this.selectedIndex].value'
+                    . (!empty($components['operator']) ? '+\','
+                                                         . $components['operator']
+                                                         . '\'' : '')
+                    . ',\'_self\')"'
+                );
                 break;
             case 'abid':
                 if ('albums' !== $op) {
-                    $ele = new SonglistFormSelectAlbum('', 'filter_' . $field . '', $components['value'], 1, false);
-                    $ele->setExtra('onchange="window.open(\''
-                                   . $_SERVER['PHP_SELF']
-                                   . '?'
-                                   . $components['extra']
-                                   . '&filter='
-                                   . $components['filter']
-                                   . (!empty($components['filter']) ? '|' : '')
-                                   . $field
-                                   . ',\'+this.options[this.selectedIndex].value'
-                                   . (!empty($components['operator']) ? '+\','
-                                                                        . $components['operator']
-                                                                        . '\'' : '')
-                                   . ',\'_self\')"');
+                    $ele = new SelectAlbumForm('', 'filter_' . $field . '', $components['value'], 1, false);
+                    $ele->setExtra(
+                        'onchange="window.open(\''
+                        . $_SERVER['SCRIPT_NAME']
+                        . '?'
+                        . $components['extra']
+                        . '&filter='
+                        . $components['filter']
+                        . (!empty($components['filter']) ? '|' : '')
+                        . $field
+                        . ',\'+this.options[this.selectedIndex].value'
+                        . (!empty($components['operator']) ? '+\','
+                                                             . $components['operator']
+                                                             . '\'' : '')
+                        . ',\'_self\')"'
+                    );
                 }
                 break;
             case 'aid':
                 if ('artists' !== $op) {
-                    $ele = new SonglistFormSelectArtist('', 'filter_' . $field . '', $components['value'], 1, false);
-                    $ele->setExtra('onchange="window.open(\''
-                                   . $_SERVER['PHP_SELF']
-                                   . '?'
-                                   . $components['extra']
-                                   . '&filter='
-                                   . $components['filter']
-                                   . (!empty($components['filter']) ? '|' : '')
-                                   . $field
-                                   . ',\'+this.options[this.selectedIndex].value'
-                                   . (!empty($components['operator']) ? '+\','
-                                                                        . $components['operator']
-                                                                        . '\'' : '')
-                                   . ',\'_self\')"');
+                    $ele = new SelectArtistForm('', 'filter_' . $field . '', $components['value'], 1, false);
+                    $ele->setExtra(
+                        'onchange="window.open(\''
+                        . $_SERVER['SCRIPT_NAME']
+                        . '?'
+                        . $components['extra']
+                        . '&filter='
+                        . $components['filter']
+                        . (!empty($components['filter']) ? '|' : '')
+                        . $field
+                        . ',\'+this.options[this.selectedIndex].value'
+                        . (!empty($components['operator']) ? '+\','
+                                                             . $components['operator']
+                                                             . '\'' : '')
+                        . ',\'_self\')"'
+                    );
                 }
                 break;
             case 'sid':
                 if ('songs' !== $op) {
-                    $ele = new SonglistFormSelectSong('', 'filter_' . $field . '', $components['value'], 1, false);
-                    $ele->setExtra('onchange="window.open(\''
-                                   . $_SERVER['PHP_SELF']
-                                   . '?'
-                                   . $components['extra']
-                                   . '&filter='
-                                   . $components['filter']
-                                   . (!empty($components['filter']) ? '|' : '')
-                                   . $field
-                                   . ',\'+this.options[this.selectedIndex].value'
-                                   . (!empty($components['operator']) ? '+\','
-                                                                        . $components['operator']
-                                                                        . '\'' : '')
-                                   . ',\'_self\')"');
+                    $ele = new SelectSongForm('', 'filter_' . $field . '', $components['value'], 1, false);
+                    $ele->setExtra(
+                        'onchange="window.open(\''
+                        . $_SERVER['SCRIPT_NAME']
+                        . '?'
+                        . $components['extra']
+                        . '&filter='
+                        . $components['filter']
+                        . (!empty($components['filter']) ? '|' : '')
+                        . $field
+                        . ',\'+this.options[this.selectedIndex].value'
+                        . (!empty($components['operator']) ? '+\','
+                                                             . $components['operator']
+                                                             . '\'' : '')
+                        . ',\'_self\')"'
+                    );
                 }
                 break;
             case 'name':
@@ -251,21 +294,23 @@ if (!function_exists('songlist_getFilterElement')) {
                 $ele = new \XoopsFormElementTray('');
                 $ele->addElement(new \XoopsFormText('', 'filter_' . $field . '', 11, 40, $components['value']));
                 $button = new \XoopsFormButton('', 'button_' . $field . '', '[+]');
-                $button->setExtra('onclick="window.open(\''
-                                  . $_SERVER['PHP_SELF']
-                                  . '?'
-                                  . $components['extra']
-                                  . '&filter='
-                                  . $components['filter']
-                                  . (!empty($components['filter']) ? '|' : '')
-                                  . $field
-                                  . ',\'+$(\'#filter_'
-                                  . $field
-                                  . '\').val()'
-                                  . (!empty($components['operator']) ? '+\','
-                                                                       . $components['operator']
-                                                                       . '\'' : '')
-                                  . ',\'_self\')"');
+                $button->setExtra(
+                    'onclick="window.open(\''
+                    . $_SERVER['SCRIPT_NAME']
+                    . '?'
+                    . $components['extra']
+                    . '&filter='
+                    . $components['filter']
+                    . (!empty($components['filter']) ? '|' : '')
+                    . $field
+                    . ',\'+$(\'#filter_'
+                    . $field
+                    . '\').val()'
+                    . (!empty($components['operator']) ? '+\','
+                                                         . $components['operator']
+                                                         . '\'' : '')
+                    . ',\'_self\')"'
+                );
                 $ele->addElement($button);
                 break;
         }
@@ -275,7 +320,13 @@ if (!function_exists('songlist_getFilterElement')) {
 }
 
 if (!function_exists('songlist_getFilterURLComponents')) {
-    function songlist_getFilterURLComponents($filter, $field, $sort = 'created')
+    /**
+     * @param        $filter
+     * @param        $field
+     * @param string $sort
+     * @return array
+     */
+    function songlist_getFilterURLComponents($filter, $field, $sort = 'created'): array
     {
         $parts     = explode('|', $filter);
         $ret       = [];
@@ -296,9 +347,9 @@ if (!function_exists('songlist_getFilterURLComponents')) {
             }
         }
         $pagenav          = [];
-        $pagenav['op']    = isset($_REQUEST['op']) ? $_REQUEST['op'] : 'videos';
-        $pagenav['fct']   = isset($_REQUEST['fct']) ? $_REQUEST['fct'] : 'list';
-        $pagenav['limit'] = \Xmf\Request::getInt('limit', 30, 'REQUEST');
+        $pagenav['op']    = $_REQUEST['op'] ?? 'videos';
+        $pagenav['fct']   = $_REQUEST['fct'] ?? 'list';
+        $pagenav['limit'] = Request::getInt('limit', 30, 'REQUEST');
         $pagenav['start'] = 0;
         $pagenav['order'] = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
         $pagenav['sort']  = !empty($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : $sort;
@@ -312,7 +363,11 @@ if (!function_exists('songlist_getFilterURLComponents')) {
 }
 
 if (!function_exists('songlist_obj2array')) {
-    function songlist_obj2array($objects)
+    /**
+     * @param $objects
+     * @return array
+     */
+    function songlist_obj2array($objects): array
     {
         $ret = [];
         foreach ((array)$objects as $key => $value) {
@@ -330,9 +385,15 @@ if (!function_exists('songlist_obj2array')) {
 }
 
 if (!function_exists('songlist_shortenurl')) {
+    /**
+     * @param $url
+     * @return mixed
+     */
     function songlist_shortenurl($url)
     {
-        $moduleHandler                   = xoops_getHandler('module');
+        /** @var \XoopsModuleHandler $moduleHandler */
+        $moduleHandler = xoops_getHandler('module');
+        /** @var \XoopsConfigHandler $configHandler */
         $configHandler                   = xoops_getHandler('config');
         $GLOBALS['songlistModule']       = $moduleHandler->getByDirname('songlist');
         $GLOBALS['songlistModuleConfig'] = $configHandler->getConfigList($GLOBALS['songlistModule']->getVar('mid'));
@@ -350,23 +411,30 @@ if (!function_exists('songlist_shortenurl')) {
             curl_setopt($ch, CURLOPT_TIMEOUT, $GLOBALS['songlistModuleConfig']['curl_timeout']);
             $data = curl_exec($ch);
             curl_close($ch);
-            $result = songlist_object2array(json_decode($data));
-            if ($result['status_code'] = 200) {
+            $result                = songlist_object2array(json_decode($data));
+            $result['status_code'] = 200;
+            if ($result['status_code']) {
                 if (!empty($result['data']['url'])) {
                     return $result['data']['url'];
-                } else {
-                    return $url;
                 }
+
+                return $url;
             }
 
             return $url;
-        } else {
-            return $url;
         }
+
+        return $url;
     }
 }
 
 if (!function_exists('songlist_xml2array')) {
+    /**
+     * @param        $contents
+     * @param int    $get_attributes
+     * @param string $priority
+     * @return array|void
+     */
     function songlist_xml2array($contents, $get_attributes = 1, $priority = 'tag')
     {
         if (!$contents) {
@@ -379,7 +447,7 @@ if (!function_exists('songlist_xml2array')) {
 
         //Get the XML parser of PHP - PHP must have this module for the parser to work
         $parser = xml_parser_create('');
-        xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'UTF-8'); # http://minutillo.com/steve/weblog/2004/6/17/php-xml-and-character-encodings-a-tale-of-sadness-rage-and-data-loss
+        xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'UTF-8'); # https://minutillo.com/steve/weblog/2004/6/17/php-xml-and-character-encodings-a-tale-of-sadness-rage-and-data-loss
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
         xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1);
         xml_parse_into_struct($parser, trim($contents), $xml_values);
@@ -395,16 +463,16 @@ if (!function_exists('songlist_xml2array')) {
         $opened_tags = [];
         $arr         = [];
 
-        $current =& $xml_array; //Refference
+        $current = &$xml_array; //Refference
 
         //Go through the tags.
-        $repeated_tag_index = [];//Multiple tags with same name will be turned into an array
+        $repeated_tag_index = []; //Multiple tags with same name will be turned into an array
         foreach ($xml_values as $data) {
-            unset($attributes, $value);//Remove existing values, or there will be trouble
+            unset($attributes, $value); //Remove existing values, or there will be trouble
 
             //This command will extract these variables into the foreach scope
             // tag(string), type(string), level(int), attributes(array).
-            extract($data);//We could use the array by itself, but this cooler.
+            extract($data); //We could use the array by itself, but this cooler.
 
             $result          = [];
             $attributes_data = [];
@@ -430,22 +498,21 @@ if (!function_exists('songlist_xml2array')) {
 
             //See tag status and do the needed.
             if ('open' === $type) {//The starting of the tag '<tag>'
-                $parent[$level - 1] =& $current;
-                if (!is_array($current) or (!in_array($tag, array_keys($current)))) { //Insert New tag
+                $parent[$level - 1] = &$current;
+                if (!is_array($current) or (!array_key_exists($tag, $current))) { //Insert New tag
                     $current[$tag] = $result;
                     if ($attributes_data) {
                         $current[$tag . '_attr'] = $attributes_data;
                     }
                     $repeated_tag_index[$tag . '_' . $level] = 1;
 
-                    $current =& $current[$tag];
+                    $current = &$current[$tag];
                 } else { //There was another element with the same tag name
-
                     if (isset($current[$tag][0])) {//If there is a 0th element it is already an array
                         $current[$tag][$repeated_tag_index[$tag . '_' . $level]] = $result;
                         $repeated_tag_index[$tag . '_' . $level]++;
                     } else {//This section will make the value an array if multiple tags with the same name appear together
-                        $current[$tag]                           = [$current[$tag], $result];//This will combine the existing item and the new item together to make an array
+                        $current[$tag]                           = [$current[$tag], $result]; //This will combine the existing item and the new item together to make an array
                         $repeated_tag_index[$tag . '_' . $level] = 2;
 
                         if (isset($current[$tag . '_attr'])) { //The attribute of the last(0th) tag must be moved as well
@@ -454,19 +521,12 @@ if (!function_exists('songlist_xml2array')) {
                         }
                     }
                     $last_item_index = $repeated_tag_index[$tag . '_' . $level] - 1;
-                    $current         =& $current[$tag][$last_item_index];
+                    $current         = &$current[$tag][$last_item_index];
                 }
             } elseif ('complete' === $type) { //Tags that ends in 1 line '<tag>'
                 //See if the key is already taken.
-                if (!isset($current[$tag])) { //New Key
-                    $current[$tag]                           = $result;
-                    $repeated_tag_index[$tag . '_' . $level] = 1;
-                    if ('tag' === $priority and $attributes_data) {
-                        $current[$tag . '_attr'] = $attributes_data;
-                    }
-                } else { //If taken, put all things inside a list(array)
+                if (isset($current[$tag])) { //If taken, put all things inside a list(array)
                     if (isset($current[$tag][0]) and is_array($current[$tag])) {//If it is already an array...
-
                         // ...push the new element into that array.
                         $current[$tag][$repeated_tag_index[$tag . '_' . $level]] = $result;
 
@@ -479,7 +539,6 @@ if (!function_exists('songlist_xml2array')) {
                         $repeated_tag_index[$tag . '_' . $level] = 1;
                         if ('tag' === $priority and $get_attributes) {
                             if (isset($current[$tag . '_attr'])) { //The attribute of the last(0th) tag must be moved as well
-
                                 $current[$tag]['0_attr'] = $current[$tag . '_attr'];
                                 unset($current[$tag . '_attr']);
                             }
@@ -490,19 +549,34 @@ if (!function_exists('songlist_xml2array')) {
                         }
                         $repeated_tag_index[$tag . '_' . $level]++; //0 and 1 index is already taken
                     }
+                } else { //New Key
+                    $current[$tag]                           = $result;
+                    $repeated_tag_index[$tag . '_' . $level] = 1;
+                    if ('tag' === $priority and $attributes_data) {
+                        $current[$tag . '_attr'] = $attributes_data;
+                    }
                 }
             } elseif ('close' === $type) { //End of tag '</tag>'
-                $current =& $parent[$level - 1];
+                $current = &$parent[$level - 1];
             }
         }
 
-        return ($xml_array);
+        return $xml_array;
     }
 }
 
 if (!function_exists('songlist_toXml')) {
-    function songlist_toXml($array, $name, $standalone = false, $beginning = true, $nested)
+    /**
+     * @param $array
+     * @param $name
+     * @param $standalone
+     * @param $beginning
+     * @param $nested
+     * @return string
+     */
+    function songlist_toXml($array, $name, $standalone, $beginning, $nested): string
     {
+        $output = '';
         if ($beginning) {
             if ($standalone) {
                 header('content-type:text/xml;charset=' . _CHARSET);
@@ -516,23 +590,21 @@ if (!function_exists('songlist_toXml')) {
             foreach ($array as $key => $value) {
                 ++$nested;
                 if (is_array($value)) {
-                    $output .= str_repeat("\t", (1 * $nested)) . '<' . (is_string($key) ? $key : $name . '_' . $key) . '>' . "\n";
+                    $output .= str_repeat("\t", (int)$nested) . '<' . (is_string($key) ? $key : $name . '_' . $key) . '>' . "\n";
                     ++$nested;
                     $output .= songlist_toXml($value, $name, false, false, $nested);
                     $nested--;
-                    $output .= str_repeat("\t", (1 * $nested)) . '</' . (is_string($key) ? $key : $name . '_' . $key) . '>' . "\n";
-                } else {
-                    if (strlen($value) > 0) {
+                    $output .= str_repeat("\t", (int)$nested) . '</' . (is_string($key) ? $key : $name . '_' . $key) . '>' . "\n";
+                } elseif ('' != $value) {
                         ++$nested;
-                        $output .= str_repeat("\t", (1 * $nested)) . '  <' . (is_string($key) ? $key : $name . '_' . $key) . '>' . trim($value) . '</' . (is_string($key) ? $key : $name . '_' . $key) . '>' . "\n";
+                        $output .= str_repeat("\t", (int)$nested) . '  <' . (is_string($key) ? $key : $name . '_' . $key) . '>' . trim($value) . '</' . (is_string($key) ? $key : $name . '_' . $key) . '>' . "\n";
                         $nested--;
-                    }
                 }
                 $nested--;
             }
-        } elseif (strlen($array) > 0) {
+        } elseif ('' != $array) {
             ++$nested;
-            $output .= str_repeat("\t", (1 * $nested)) . trim($array) . "\n";
+            $output .= str_repeat("\t", (int)$nested) . trim($array) . "\n";
             $nested--;
         }
 
@@ -540,8 +612,8 @@ if (!function_exists('songlist_toXml')) {
             $output .= '</' . $name . '>';
 
             return $output;
-        } else {
-            return $output;
         }
+
+        return $output;
     }
 }
