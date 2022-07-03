@@ -1,0 +1,21 @@
+<h5>2.00.0 Alpha 1          [NOT RELEASED]</h5>  Dev: XOOPS 2.5.11, PHP 7.4.30,  PHP 8.1.7, PHP 8.2.0 Alpha 2
+<hr>
+- added module Clone capability (mamba)
+- namespaces (mamba)
+- class autoloading with preloads(mamba)
+- added Migrate (mamba)
+- added Stats (mamba)
+- renamed 'PHP_SELF' to 'SCRIPT_NAME' (mamba)
+- Yoda (mamba)
+- PHP7, PHP8.1, PHP 8.2 adjustments (mamba)
+- semantic versioning (mamba)
+- added Blocksadmin class (mamba)
+- moved functions to Utility class (mamba)
+- refactored songlist.form.php to /Form/FormController class (mamba)
+
+
+
+
+<h5> 1.07 STABLE      [2012/03/26]</h5>
+<hr>
+ - First Release Package Was Finalised (wishcraft)

@@ -1,0 +1,48 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  run:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 2
+      matrix:
+        php:
+          - 7.3
+          - 7.4
+          - 8.0
+          - 8.1
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macOS-latest
+    name: PHP ${{ matrix.php }}; ${{ matrix.os }}
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, json, mbstring, pcre
+          ini-values: memory_limit=512M
+          tools: composer:v2
+      - name: Check PHP Version
+        run: php -v
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Composer install without dev
+        run: composer install --no-progress --no-dev --prefer-dist --optimize-autoloader
+      - name: Composer install with dev
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+      - name: PHPUnit (not windows)
+        run: ./vendor/bin/phpunit tests/
+        if: matrix.os != 'windows-latest'
+      - name: PHPUnit (windows)
+        run: .\vendor\bin\phpunit tests/
+        if: matrix.os == 'windows-latest'

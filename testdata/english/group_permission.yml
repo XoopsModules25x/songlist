@@ -1,0 +1,50 @@
+-
+    gperm_groupid: '1'
+    gperm_itemid: '1'
+    gperm_modid: '54'
+    gperm_name: songlist_edit
+-
+    gperm_groupid: '1'
+    gperm_itemid: '2'
+    gperm_modid: '54'
+    gperm_name: songlist_edit
+-
+    gperm_groupid: '1'
+    gperm_itemid: '1'
+    gperm_modid: '54'
+    gperm_name: songlist_post
+-
+    gperm_groupid: '2'
+    gperm_itemid: '1'
+    gperm_modid: '54'
+    gperm_name: songlist_post
+-
+    gperm_groupid: '1'
+    gperm_itemid: '2'
+    gperm_modid: '54'
+    gperm_name: songlist_search
+-
+    gperm_groupid: '2'
+    gperm_itemid: '2'
+    gperm_modid: '54'
+    gperm_name: songlist_search
+-
+    gperm_groupid: '3'
+    gperm_itemid: '2'
+    gperm_modid: '54'
+    gperm_name: songlist_search
+-
+    gperm_groupid: '36'
+    gperm_itemid: '2'
+    gperm_modid: '54'
+    gperm_name: songlist_search
+-
+    gperm_groupid: '35'
+    gperm_itemid: '2'
+    gperm_modid: '54'
+    gperm_name: songlist_search
+-
+    gperm_groupid: '34'
+    gperm_itemid: '2'
+    gperm_modid: '54'
+    gperm_name: songlist_search
