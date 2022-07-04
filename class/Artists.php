@@ -3,6 +3,7 @@
 namespace XoopsModules\Songlist;
 
 require_once \dirname(__DIR__) . '/include/songlist.object.php';
+
 // require_once \dirname(__DIR__) . '/include/songlist.form.php';
 use  XoopsModules\Songlist\Form\FormController;
 
@@ -11,6 +12,18 @@ use  XoopsModules\Songlist\Form\FormController;
  */
 class Artists extends \XoopsObject
 {
+    public $aid;
+    public $cids;
+    public $sids;
+    public $name;
+    public $albums;
+    public $songs;
+    public $hits;
+    public $rank;
+    public $votes;
+    public $created;
+    public $updated;
+
     /**
      * Artists constructor.
      * @param null $fid
@@ -52,8 +65,8 @@ class Artists extends \XoopsObject
         }
         foreach (['created', 'updated'] as $key) {
             if ($this->getVar($key) > 0) {
-                $ret['form'][$key] = \date(_DATESTRING, $this->getVar($key));
-                $ret[$key]         = \date(_DATESTRING, $this->getVar($key));
+                $ret['form'][$key] = \date(\_DATESTRING, $this->getVar($key));
+                $ret[$key]         = \date(\_DATESTRING, $this->getVar($key));
             }
         }
 

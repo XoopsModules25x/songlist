@@ -214,7 +214,6 @@ switch ($op) {
         $GLOBALS['xoopsTpl']->assign('uri', $_SERVER['REQUEST_URI']);
         require_once $GLOBALS['xoops']->path('/footer.php');
         break;
-        break;
     case 'category':
         switch ($fct) {
             default:

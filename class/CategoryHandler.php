@@ -39,7 +39,7 @@ class CategoryHandler extends \XoopsPersistableObjectHandler
                 if (\XOBJ_DTYPE_TXTBOX == $object->vars[$var[0]]['data_type']
                     || \XOBJ_DTYPE_TXTAREA == $object->vars[$var[0]]['data_type']) {
                     $criteria->add(new \Criteria('`' . $var[0] . '`', '%' . $var[1] . '%', ($var[2] ?? 'LIKE')));
-                } elseif (in_array($object->vars[$var[0]]['data_type'], [XOBJ_DTYPE_INT, XOBJ_DTYPE_DECIMAL, XOBJ_DTYPE_FLOAT])) {
+                } elseif (\in_array($object->vars[$var[0]]['data_type'], [\XOBJ_DTYPE_INT, \XOBJ_DTYPE_DECIMAL, XOBJ_DTYPE_FLOAT])) {
                     $criteria->add(new \Criteria('`' . $var[0] . '`', $var[1], ($var[2] ?? '=')));
                 } elseif (\XOBJ_DTYPE_ENUM == $object->vars[$var[0]]['data_type']) {
                     $criteria->add(new \Criteria('`' . $var[0] . '`', $var[1], ($var[2] ?? '=')));

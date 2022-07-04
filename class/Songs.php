@@ -7,6 +7,7 @@ use MyTextSanitizer;
 use XoopsObject;
 
 require_once \dirname(__DIR__) . '/include/songlist.object.php';
+
 // require_once \dirname(__DIR__) . '/include/songlist.form.php';
 use  XoopsModules\Songlist\Form\FormController;
 
@@ -15,6 +16,24 @@ use  XoopsModules\Songlist\Form\FormController;
  */
 class Songs extends XoopsObject
 {
+    public $sid;
+    public $cid;
+    public $gids;
+    public $vcid;
+    public $aids;
+    public $abid;
+    public $songid;
+    public $traxid;
+    public $title;
+    public $lyrics;
+    public $hits;
+    public $rank;
+    public $votes;
+    public $tags;
+    public $mp3;
+    public $created;
+    public $updated;
+
     /**
      * Songs constructor.
      * @param null $fid
@@ -67,8 +86,8 @@ class Songs extends XoopsObject
         }
         foreach (['created', 'updated'] as $key) {
             if ($this->getVar($key) > 0) {
-                $ret['form'][$key] = \date(_DATESTRING, $this->getVar($key));
-                $ret[$key]         = \date(_DATESTRING, $this->getVar($key));
+                $ret['form'][$key] = \date(\_DATESTRING, $this->getVar($key));
+                $ret[$key]         = \date(\_DATESTRING, $this->getVar($key));
             }
         }
 
@@ -162,7 +181,6 @@ class Songs extends XoopsObject
             if (null !== $albums) {
                 $ret['albums'] = $albums->toArray(false);
             }
-
         }
 
         return $ret;

@@ -13,15 +13,15 @@ xoops_loadLanguage('admin', 'songlist');
 
 xoops_cp_header();
 
-$op     = $_REQUEST['op'] ?? 'index';
+$op     = Request::getString('op', 'index', 'REQUEST');
 $fct    = Request::getString('fct', '', 'REQUEST');
 $limit  = Request::getInt('limit', 30, 'REQUEST');
 $start  = Request::getInt('start', 0, 'REQUEST');
-$order  = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
-$sort   = !empty($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : 'created';
-$filter = !empty($_REQUEST['filter']) ? '' . $_REQUEST['filter'] . '' : '1,1';
+$order  = Request::getString('order', 'DESC', 'REQUEST');
+$sort   = Request::getString('sort', 'created', 'REQUEST');
+$filter = Request::getString('filter', '1,1', 'REQUEST');
 
-$albumsHandler = Helper::getInstance()->getHandler('Albums');
+$albumsHandler   = Helper::getInstance()->getHandler('Albums');
 $songsHandler    = Helper::getInstance()->getHandler('Songs');
 $artistsHandler  = Helper::getInstance()->getHandler('Artists');
 $genreHandler    = Helper::getInstance()->getHandler('Genre');
@@ -99,7 +99,7 @@ switch ($op) {
                 $filesize = filesize($GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas'] . $_SESSION['xmlfile']));
                 $mb       = floor($filesize / 1024 / 1024);
                 if ($mb > 32) {
-                    set_ini('memory_limit', ($mb + 128) . 'M');
+                    ini_set('memory_limit', ($mb + 128) . 'M');
                 }
                 set_time_limit(3600);
 
@@ -193,26 +193,10 @@ switch ($op) {
                                 } else {
                                     $object = $songsHandler->create();
                                 }
-                                if ($object->getVar('cid') > 0 && $cid > 0) {
-                                    $object->setVar('cid', $cid);
-                                } else {
-                                    $object->setVar('cid', $cid);
-                                }
-                                if ($object->getVar('gid') > 0 && $gid > 0) {
-                                    $object->setVar('gid', $gid);
-                                } else {
-                                    $object->setVar('gid', $gid);
-                                }
-                                if (count($object->getVar('aids')) > 0 && count($aids) > 0) {
-                                    $object->setVar('aids', $aids);
-                                } else {
-                                    $object->setVar('aids', $aids);
-                                }
-                                if ($object->getVar('abid') > 0 && $abid > 0) {
-                                    $object->setVar('abid', $abid);
-                                } else {
-                                    $object->setVar('abid', $abid);
-                                }
+                                $object->setVar('cid', $cid);
+                                $object->setVar('gid', $gid);
+                                $object->setVar('aids', $aids);
+                                $object->setVar('abid', $abid);
                                 $object->setVar('songid', $data[$_POST['songid']]);
                                 $object->setVar('title', $data[$_POST['title']]);
                                 $object->setVar('lyrics', str_replace("\n", "<br>\n", $data[$_POST['lyrics']]));
@@ -305,26 +289,10 @@ switch ($op) {
                             } else {
                                 $object = $songsHandler->create();
                             }
-                            if ($object->getVar('cid') > 0 && $cid > 0) {
-                                $object->setVar('cid', $cid);
-                            } else {
-                                $object->setVar('cid', $cid);
-                            }
-                            if ($object->getVar('gid') > 0 && $gid > 0) {
-                                $object->setVar('gid', $gid);
-                            } else {
-                                $object->setVar('gid', $gid);
-                            }
-                            if (count($object->getVar('aids')) > 0 && count($aids) > 0) {
-                                $object->setVar('aids', $aids);
-                            } else {
-                                $object->setVar('aids', $aids);
-                            }
-                            if ($object->getVar('abid') > 0 && $abid > 0) {
-                                $object->setVar('abid', $abid);
-                            } else {
-                                $object->setVar('abid', $abid);
-                            }
+                            $object->setVar('cid', $cid);
+                            $object->setVar('gid', $gid);
+                            $object->setVar('aids', $aids);
+                            $object->setVar('abid', $abid);
                             $object->setVar('songid', $data[$_POST['songid']]);
                             $object->setVar('title', $data[$_POST['title']]);
                             $object->setVar('lyrics', str_replace("\n", "<br>\n", $data[$_POST['lyrics']]));

@@ -6,6 +6,7 @@ use XoopsFormText;
 use XoopsObject;
 
 require_once \dirname(__DIR__) . '/include/songlist.object.php';
+
 // require_once \dirname(__DIR__) . '/include/songlist.form.php';
 use  XoopsModules\Songlist\Form\FormController;
 
@@ -14,6 +15,20 @@ use  XoopsModules\Songlist\Form\FormController;
  */
 class Requests extends XoopsObject
 {
+    public $rid;
+    public $aid;
+    public $artist;
+    public $album;
+    public $title;
+    public $lyrics;
+    public $uid;
+    public $name;
+    public $email;
+    public $songid;
+    public $sid;
+    public $created;
+    public $updated;
+
     /**
      * Requests constructor.
      * @param null $fid
@@ -57,8 +72,8 @@ class Requests extends XoopsObject
         }
         foreach (['created', 'updated'] as $key) {
             if ($this->getVar($key) > 0) {
-                $ret['form'][$key] = \date(_DATESTRING, $this->getVar($key));
-                $ret[$key]         = \date(_DATESTRING, $this->getVar($key));
+                $ret['form'][$key] = \date(\_DATESTRING, $this->getVar($key));
+                $ret[$key]         = \date(\_DATESTRING, $this->getVar($key));
             }
         }
 

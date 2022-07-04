@@ -1,0 +1,21 @@
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^songlist/([a-zA-Z0-9]+)/(.*?)/([a-zA-Z]+)-([a-zA-Z]+)-([0-9]+).html 												modules/songlist/$1.php?op=$3&fct=$4&id=$5  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/(.*?)/([a-zA-Z]+)-([a-zA-Z]+)-([0-9]+)-([0-9]+)-([0-9]+).html 								modules/songlist/$1.php?op=$3&fct=$4&id=$5&gid=$6&cid=$7  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/(.*?)/([0-9]+)-([0-9]+)-([a-zA-Z]+)-([a-zA-Z]+)-([0-9]+)-([0-9]+)/(.*?).html 				modules/songlist/$1.php?start=$3&id=$4&op=$5&fct=$6&gid=$7&cid=$8&value=$9
+RewriteRule ^songlist/([a-zA-Z0-9]+)/(.*?)/([0-9]+)-([0-9]+)-([a-zA-Z]+)-([a-zA-Z]+)-([0-9]+)-([0-9]+).html 					modules/songlist/$1.php?start=$3&id=$4&op=$5&fct=$6&gid=$7&cid=$8
+RewriteRule ^songlist/([a-zA-Z0-9]+)/(.*?)/([a-zA-Z]+)-([a-zA-Z]+)-([0-9]+)-([0-9]+)-([0-9]+)/(.*?).html 						modules/songlist/$1.php?op=$3&fct=$4&id=$5&value=$8&gid=$6&cid=$7  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)-([a-zA-Z0-9]+)-([0-9]+).html 												modules/songlist/$1.php?op=$2&fct=$3&id=$4  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)-([a-zA-Z0-9]+).html 														modules/songlist/$1.php?op=$2&fct=$3  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/([0-9]+)-([0-9]+)-([a-zA-Z]+)-([a-zA-Z]+)-([0-9]+)-([0-9]+).html 							modules/songlist/$1.php?start=$2&id=3&op=$4&fct=$5&gid=$6&cid=$7  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/([0-9]+)-([a-zA-Z]+)-([a-zA-Z]+)-([0-9]+)-([0-9]+)-([0-9]+)-([0-9]+).html 					modules/songlist/$1.php?start=$2&op=$3&fct=$4&id=$5&gid=$6&vcid=$7&cid=$8  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/([0-9]+)-([a-zA-Z]+)-([a-zA-Z]+)-([0-9]+)-([0-9]+)-([0-9]+).html 							modules/songlist/$1.php?start=$2&op=$3&fct=$4&gid=$5&cid=$6&vcid=$7  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/([0-9]+)-([a-zA-Z]+)-([a-zA-Z]+)-([0-9]+)-([0-9]+)-([0-9]+)-([0-9]+)-([0-9]+)/(.*?).html 	modules/songlist/$1.php?start=$2&op=$3&fct=$4&id=$5&value=$9&gid=$6&cid=$7&vcid=$8  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/([0-9]+)-([0-9]+)-([a-zA-Z]+)-([a-zA-Z]+)-([0-9]+)-([0-9]+)-([0-9]+)/(.*?).html 			modules/songlist/$1.php?start=$2&id=$3&op=$4&fct=$5&value=$8&gid=$6&cid=$7  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/([0-9]+)-([0-9]+)-([a-zA-Z]+)-([a-zA-Z]+)-([0-9]+)-([0-9]+)/(.*?).html 					modules/songlist/$1.php?start=$2&id=3&op=$4&fct=$5&gid=$6&cid=$7&value=$8  [L,NC,QSA]
+RewriteRule ^songlist/([a-zA-Z0-9]+)/([0-9]+)-([a-zA-Z]+)-([a-zA-Z]+)-([0-9]+)-([0-9]+)-([0-9]+)/(.*?).html 					modules/songlist/$1.php?start=$2&op=$3&fct=$4&value=$8&gid=$5&cid=$6&vcid=$7  [L,NC,QSA]
+														
+

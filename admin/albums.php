@@ -2,10 +2,15 @@
 
 use Xmf\Module\Admin;
 use Xmf\Request;
-use XoopsModules\Songlist\Helper;
-use XoopsModules\Songlist\Uploader;
-use XoopsModules\Songlist\AlbumsHandler;
-use XoopsModules\Songlist\Form\FormController;
+use XoopsModules\Songlist\{
+    Form\FormController,
+    Helper,
+    Uploader,
+    Albums,
+    AlbumsHandler
+};
+
+/** @var Albums $album */
 
 require __DIR__ . '/header.php';
 
@@ -13,13 +18,13 @@ xoops_loadLanguage('admin', 'songlist');
 
 xoops_cp_header();
 
-$op     = $_REQUEST['op'] ?? 'albums';
-$fct    = $_REQUEST['fct'] ?? 'list';
+$op     = Request::getString('op', 'albums', 'REQUEST');
+$fct    = Request::getString('fct', 'list', 'REQUEST');
 $limit  = Request::getInt('limit', 30, 'REQUEST');
 $start  = Request::getInt('start', 0, 'REQUEST');
-$order  = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
-$sort   = !empty($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : 'created';
-$filter = !empty($_REQUEST['filter']) ? '' . $_REQUEST['filter'] . '' : '1,1';
+$order  = Request::getString('order', 'DESC', 'REQUEST');
+$sort   = Request::getString('sort', 'created', 'REQUEST');
+$filter = Request::getString('filter', '1,1', 'REQUEST');
 
 switch ($op) {
     default:
@@ -35,7 +40,7 @@ switch ($op) {
 
                 $criteria        = $albumsHandler->getFilterCriteria($GLOBALS['filter']);
                 $ttl             = $albumsHandler->getCount($criteria);
-                $GLOBALS['sort'] = !empty($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : 'created';
+                $GLOBALS['sort'] = Request::getString('sort', 'created', 'REQUEST');
 
                 $pagenav = new \XoopsPageNav($ttl, $GLOBALS['limit'], $GLOBALS['start'], 'start', 'limit=' . $GLOBALS['limit'] . '&sort=' . $GLOBALS['sort'] . '&order=' . $GLOBALS['order'] . '&op=' . $GLOBALS['op'] . '&fct=' . $GLOBALS['fct'] . '&filter=' . $GLOBALS['filter']);
                 $GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
@@ -76,7 +81,7 @@ switch ($op) {
                 $criteria->setSort('`' . $GLOBALS['sort'] . '`');
                 $criteria->setOrder($GLOBALS['order']);
 
-                $albumsArray = $albumsHandler->getObjects($criteria, true);
+            $albumsArray = $albumsHandler->getObjects($criteria, true);
                 foreach ($albumsArray as $cid => $album) {
                     if (is_object($album)) {
                         $GLOBALS['xoopsTpl']->append('albums', $album->toArray());
@@ -178,8 +183,6 @@ switch ($op) {
                     redirect_header($_SERVER['SCRIPT_NAME'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_ALBUMS_SAVEDOKEY);
                 }
                 exit(0);
-
-                break;
             case 'savelist':
                 $albumsHandler = Helper::getInstance()->getHandler('Albums');
                 foreach ($_REQUEST['id'] as $id) {
@@ -196,7 +199,6 @@ switch ($op) {
                 }
                 redirect_header($_SERVER['SCRIPT_NAME'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_ALBUMS_SAVEDOKEY);
                 exit(0);
-                break;
             case 'delete':
                 $albumsHandler = Helper::getInstance()->getHandler('Albums');
                 $id            = 0;
@@ -222,7 +224,6 @@ switch ($op) {
 
                 break;
         }
-        break;
 }
 
 xoops_cp_footer();

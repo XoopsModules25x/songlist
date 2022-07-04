@@ -5,13 +5,28 @@ namespace XoopsModules\Songlist;
 use function base64_decode;
 use function base64_encode;
 
-
-
 /**
  * @copyright copyright &copy; 2000 XOOPS.org
  */
 class Field extends \XoopsObject
 {
+    public $field_id;
+    public $cids;
+    public $field_type;
+    public $field_valuetype;
+    public $field_name;
+    public $field_title;
+    public $field_description;
+    public $field_required; //0 = no, 1 = yes
+    public $field_maxlength;
+    public $field_weight;
+    public $field_default;
+    public $field_notnull;
+    public $field_edit;
+    public $field_show;
+    public $field_config;
+    public $field_options;
+
     public function __construct()
     {
         $this->initVar('field_id', \XOBJ_DTYPE_INT, null);
@@ -72,7 +87,7 @@ class Field extends \XoopsObject
      * @param \XoopsUser     $user    {@link XoopsUser} object to edit the value of
      * @param ObjectsProfile $profile {@link ObjectsProfile} object to edit the value of
      *
-     * @return \\XoopsFormDhtmlTextArea|\\XoopsFormEditor|\\XoopsFormLabel|\\XoopsFormSelect|\\XoopsFormText|\\XoopsFormTextArea
+     * @return \XoopsFormCheckBox|\XoopsFormDhtmlTextArea|\XoopsFormEditor|\XoopsFormLabel|\XoopsFormRadio|\XoopsFormRadioYN|\XoopsFormSelect|\XoopsFormSelectGroup|\XoopsFormSelectLang|\XoopsFormSelectTimezone|\XoopsFormText|\XoopsFormTextArea|\XoopsFormTextDateSelect|\XoopsModules\Songlist\XoopsFormDatetime \XoopsFormDhtmlTextArea|\\XoopsFormEditor|\\XoopsFormLabel|\\XoopsFormSelect|\\XoopsFormText|\\XoopsFormTextArea
      */
     public function getEditElement($user, $profile)
     {
@@ -122,10 +137,10 @@ class Field extends \XoopsObject
                 $element = new \XoopsFormSelect($caption, $name, $value);
                 // If options do not include an empty element, then add a blank option to prevent any default selection
                 if (!\array_key_exists('', $options)) {
-                    $element->addOption('', _NONE);
+                    $element->addOption('', \_NONE);
                     //trabis
                     if (1 == $this->getVar('field_required')) {
-                        $eltmsg                          = empty($caption) ? \sprintf(_FORM_ENTER, $name) : \sprintf(_FORM_ENTER, $caption);
+                        $eltmsg                          = empty($caption) ? \sprintf(\_FORM_ENTER, $name) : \sprintf(\_FORM_ENTER, $caption);
                         $eltmsg                          = \str_replace('"', '\"', \stripslashes($eltmsg));
                         $element->customValidationCode[] = "\nvar hasSelected = false; var selectBox = myform.{$name};"
                                                            . "for (i = 0; i < selectBox.options.length; i++  ) { if ( selectBox.options[i].selected === true && selectBox.options[i].value != '' ) { hasSelected = true; break; } }"
@@ -250,10 +265,10 @@ class Field extends \XoopsObject
                 $element = new \XoopsFormSelect($caption, $name, $value);
                 // If options do not include an empty element, then add a blank option to prevent any default selection
                 if (!\array_key_exists('', $options)) {
-                    $element->addOption('', _NONE);
+                    $element->addOption('', \_NONE);
                     //trabis
                     if (1 == $this->getVar('field_required')) {
-                        $eltmsg                          = empty($caption) ? \sprintf(_FORM_ENTER, $name) : \sprintf(_FORM_ENTER, $caption);
+                        $eltmsg                          = empty($caption) ? \sprintf(\_FORM_ENTER, $name) : \sprintf(\_FORM_ENTER, $caption);
                         $eltmsg                          = \str_replace('"', '\"', \stripslashes($eltmsg));
                         $element->customValidationCode[] = "\nvar hasSelected = false; var selectBox = myform.{$name};"
                                                            . "for (i = 0; i < selectBox.options.length; i++  ) { if ( selectBox.options[i].selected === true && selectBox.options[i].value != '' ) { hasSelected = true; break; } }"
@@ -362,7 +377,6 @@ class Field extends \XoopsObject
                 }
 
                 return $value;
-                break;
             case 'editor':
             case 'textarea':
             case 'dhtml':
@@ -370,7 +384,6 @@ class Field extends \XoopsObject
             case 'language':
             case 'list':
                 return $value;
-                break;
             case 'select':
             case 'radio':
                 $options = $this->getVar('field_options');
@@ -381,7 +394,6 @@ class Field extends \XoopsObject
                 }
 
                 return $value;
-                break;
             case 'select_multi':
             case 'checkbox':
                 $options = $this->getVar('field_options');
@@ -395,29 +407,24 @@ class Field extends \XoopsObject
                 }
 
                 return $ret;
-                break;
             case 'group':
                 //change to retrieve groups and return name of group
                 return $value;
-                break;
             case 'group_multi':
                 //change to retrieve groups and return array of group names
                 return '';
-                break;
             case 'longdate':
                 //return YYYY/MM/DD format - not optimal as it is not using local date format, but how do we do that
                 //when we cannot convert it to a UNIX timestamp?
                 return \str_replace('-', '/', $value);
             case 'date':
                 return \formatTimestamp($value, 's');
-                break;
             case 'datetime':
                 if (!empty($value)) {
                     return \formatTimestamp($value, 'm');
                 }
 
                 return $value = \_MI_SONGLIST_DATENOTSET;
-                break;
             case 'autotext':
                 $value = $user->getVar($this->getVar('field_name'), 'n'); //autotext can have HTML in it
                 $value = \str_replace('{X_UID}', $user->getVar('uid'), $value);
@@ -425,7 +432,6 @@ class Field extends \XoopsObject
                 $value = \str_replace('{X_UNAME}', $user->getVar('uname'), $value);
 
                 return $value;
-                break;
             case 'rank':
                 $userrank       = $user->rank();
                 $user_rankimage = '';
@@ -434,17 +440,14 @@ class Field extends \XoopsObject
                 }
 
                 return $user_rankimage . $userrank['title'];
-                break;
             case 'yesno':
-                return $value ? _YES : _NO;
-                break;
+                return $value ? \_YES : \_NO;
             case 'timezone':
                 require_once $GLOBALS['xoops']->path('class/xoopslists.php');
                 $timezones = \XoopsLists::getTimeZoneList();
                 $value     = empty($value) ? '0' : (string)$value;
 
                 return $timezones[\str_replace('.0', '', $value)];
-                break;
         }
     }
 
@@ -481,14 +484,12 @@ class Field extends \XoopsObject
                 }
 
                 return $value;
-                break;
             case 'datetime':
                 if (!empty($value)) {
-                    return \strtotime($value['date']??'') + (int)$value['time'];
+                    return \strtotime($value['date'] ?? '') + (int)$value['time'];
                 }
 
                 return $value;
-                break;
         }
     }
 

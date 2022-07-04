@@ -3,16 +3,22 @@
 namespace XoopsModules\Songlist;
 
 require_once \dirname(__DIR__) . '/include/songlist.object.php';
+
 // require_once \dirname(__DIR__) . '/include/songlist.form.php';
 use  XoopsModules\Songlist\Form\FormController;
-
-
 
 /**
  * Class Votes
  */
 class Votes extends \XoopsObject
 {
+    public $vid;
+    public $sid;
+    public $uid;
+    public $ip;
+    public $netaddy;
+    public $rank;
+
     /**
      * Votes constructor.
      * @param null $fid

@@ -35,6 +35,11 @@ class Helper extends \Xmf\Module\Helper
         parent::__construct($moduleDirName);
     }
 
+    /**
+     * @param bool $debug
+     *
+     * @return static
+     */
     public static function getInstance(bool $debug = false): self
     {
         static $instance;

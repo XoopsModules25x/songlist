@@ -3,6 +3,7 @@
 namespace XoopsModules\Songlist;
 
 require_once \dirname(__DIR__) . '/include/songlist.object.php';
+
 // require_once \dirname(__DIR__) . '/include/songlist.form.php';
 use  XoopsModules\Songlist\Form\FormController;
 
@@ -11,6 +12,21 @@ use  XoopsModules\Songlist\Form\FormController;
  */
 class Albums extends \XoopsObject
 {
+    public $abid;
+    public $cid;
+    public $aids;
+    public $sids;
+    public $title;
+    public $image;
+    public $path;
+    public $artists;
+    public $songs;
+    public $hits;
+    public $rank;
+    public $votes;
+    public $created;
+    public $updated;
+
     /**
      * Albums constructor.
      * @param null $fid
@@ -55,8 +71,8 @@ class Albums extends \XoopsObject
         }
         foreach (['created', 'updated'] as $key) {
             if ($this->getVar($key) > 0) {
-                $ret['form'][$key] = \date(_DATESTRING, $this->getVar($key));
-                $ret[$key]         = \date(_DATESTRING, $this->getVar($key));
+                $ret['form'][$key] = \date(\_DATESTRING, $this->getVar($key));
+                $ret[$key]         = \date(\_DATESTRING, $this->getVar($key));
             }
         }
         $ret['picture'] = $this->getImage('image', false);

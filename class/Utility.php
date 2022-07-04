@@ -11,8 +11,6 @@ use XoopsModules\Songlist\Form\{
     SelectSongForm
 };
 
-
-
 /**
  * Class Utility
  */
@@ -48,25 +46,6 @@ class Utility extends Common\SysUtility
         }
     }
 
-    /**
-     * @param string $file
-     * @param string $folder
-     * @return bool
-     */
-    public static function copyFile(string $file, string $folder): bool
-    {
-        return \copy($file, $folder);
-        //        try {
-        //            if (!is_dir($folder)) {
-        //                throw new \RuntimeException(sprintf('Unable to copy file as: %s ', $folder));
-        //            } else {
-        //                return copy($file, $folder);
-        //            }
-        //        } catch (\Exception $e) {
-        //            echo 'Caught exception: ', $e->getMessage(), "\n", "<br>";
-        //        }
-        //        return false;
-    }
 
     /**
      * @param $src
@@ -232,11 +211,11 @@ class Utility extends Common\SysUtility
     public static function ucword($string): string
     {
         $ret = [];
-        foreach (explode(' ', \mb_strtolower($string)) as $part) {
-            $ret[] = ucfirst($part);
+        foreach (\explode(' ', \mb_strtolower($string)) as $part) {
+            $ret[] = \ucfirst($part);
         }
 
-        return implode(' ', $ret);
+        return \implode(' ', $ret);
     }
 
     /**
@@ -246,7 +225,7 @@ class Utility extends Common\SysUtility
     public static function getIPData($ip = false): array
     {
         $ret = [];
-        if (is_object($GLOBALS['xoopsUser'])) {
+        if (\is_object($GLOBALS['xoopsUser'])) {
             $ret['uid']   = $GLOBALS['xoopsUser']->getVar('uid');
             $ret['uname'] = $GLOBALS['xoopsUser']->getVar('uname');
             $ret['email'] = $GLOBALS['xoopsUser']->getVar('email');
@@ -258,8 +237,8 @@ class Utility extends Common\SysUtility
         $ret['agent'] = $_SERVER['HTTP_USER_AGENT'];
         if ($ip) {
             $ret['is_proxied']   = false;
-            $ret['network-addy'] = @gethostbyaddr($ip);
-            $ret['long']         = @ip2long($ip);
+            $ret['network-addy'] = @\gethostbyaddr($ip);
+            $ret['long']         = @\ip2long($ip);
             if (isIpv6($ip)) {
                 $ret['ip6'] = true;
                 $ret['ip4'] = false;
@@ -272,8 +251,8 @@ class Utility extends Common\SysUtility
             $ip                  = $_SERVER['HTTP_X_FORWARDED_FOR'];
             $ret['is_proxied']   = true;
             $proxy_ip            = $_SERVER['REMOTE_ADDR'];
-            $ret['network-addy'] = @gethostbyaddr($ip);
-            $ret['long']         = @ip2long($ip);
+            $ret['network-addy'] = @\gethostbyaddr($ip);
+            $ret['long']         = @\ip2long($ip);
             if (isIpv6($ip)) {
                 $ret['ip6']       = true;
                 $ret['proxy-ip6'] = true;
@@ -290,8 +269,8 @@ class Utility extends Common\SysUtility
         } else {
             $ret['is_proxied']   = false;
             $ip                  = $_SERVER['REMOTE_ADDR'];
-            $ret['network-addy'] = @gethostbyaddr($ip);
-            $ret['long']         = @ip2long($ip);
+            $ret['network-addy'] = @\gethostbyaddr($ip);
+            $ret['long']         = @\ip2long($ip);
             if (isIpv6($ip)) {
                 $ret['ip6'] = true;
                 $ret['ip4'] = false;
@@ -301,7 +280,7 @@ class Utility extends Common\SysUtility
             }
             $ret['ip'] = $ip;
         }
-        $ret['made'] = time();
+        $ret['made'] = \time();
 
         return $ret;
     }
@@ -335,7 +314,7 @@ class Utility extends Common\SysUtility
     {
         $components = static::getFilterURLComponents($filter, $field, $sort);
         $ele        = false;
-        require_once dirname(__DIR__) . '/include/songlist.object.php';
+        require_once \dirname(__DIR__) . '/include/songlist.object.php';
         switch ($field) {
             case 'gid':
                 if ('genre' !== $op) {
@@ -522,21 +501,21 @@ class Utility extends Common\SysUtility
      */
     public static function getFilterURLComponents($filter, $field, $sort = 'created'): array
     {
-        $parts     = explode('|', $filter);
+        $parts     = \explode('|', $filter);
         $ret       = [];
         $value     = '';
         $ele_value = '';
         $operator  = '';
         foreach ($parts as $part) {
-            $var = explode(',', $part);
-            if (count($var) > 1) {
+            $var = \explode(',', $part);
+            if (\count($var) > 1) {
                 if ($var[0] == $field) {
                     $ele_value = $var[1];
                     if (isset($var[2])) {
                         $operator = $var[2];
                     }
                 } elseif (1 != $var[0]) {
-                    $ret[] = implode(',', $var);
+                    $ret[] = \implode(',', $var);
                 }
             }
         }
@@ -552,7 +531,7 @@ class Utility extends Common\SysUtility
             $retb[] = "$key=$value";
         }
 
-        return ['value' => $ele_value, 'field' => $field, 'operator' => $operator, 'filter' => implode('|', $ret), 'extra' => implode('&', $retb)];
+        return ['value' => $ele_value, 'field' => $field, 'operator' => $operator, 'filter' => \implode('|', $ret), 'extra' => \implode('&', $retb)];
     }
 
     /**
@@ -563,9 +542,9 @@ class Utility extends Common\SysUtility
     {
         $ret = [];
         foreach ((array)$objects as $key => $value) {
-            if (is_a($value, 'stdClass')) {
+            if (\is_a($value, 'stdClass')) {
                 $ret[$key] = static::obj2array($value);
-            } elseif (is_array($value)) {
+            } elseif (\is_array($value)) {
                 $ret[$key] = static::obj2array($value);
             } else {
                 $ret[$key] = $value;
@@ -582,25 +561,25 @@ class Utility extends Common\SysUtility
     public static function shortenUrl($url)
     {
         /** @var \XoopsModuleHandler $moduleHandler */
-        $moduleHandler = xoops_getHandler('module');
+        $moduleHandler = \xoops_getHandler('module');
         /** @var \XoopsConfigHandler $configHandler */
-        $configHandler                   = xoops_getHandler('config');
+        $configHandler                   = \xoops_getHandler('config');
         $GLOBALS['songlistModule']       = $moduleHandler->getByDirname('songlist');
         $GLOBALS['songlistModuleConfig'] = $configHandler->getConfigList($GLOBALS['songlistModule']->getVar('mid'));
 
         if (!empty($GLOBALS['songlistModuleConfig']['bitly_username']) && !empty($GLOBALS['songlistModuleConfig']['bitly_apikey'])) {
-            $source_url = $GLOBALS['songlistModuleConfig']['bitly_apiurl'] . '/shorten?login=' . $GLOBALS['songlistModuleConfig']['bitly_username'] . '&apiKey=' . $GLOBALS['songlistModuleConfig']['bitly_apikey'] . '&format=json&longUrl=' . urlencode($url);
-            $cookies    = XOOPS_ROOT_PATH . '/uploads/songlist_' . md5($GLOBALS['songlistModuleConfig']['bitly_apikey']) . '.cookie';
-            if (!$ch = curl_init($source_url)) {
+            $source_url = $GLOBALS['songlistModuleConfig']['bitly_apiurl'] . '/shorten?login=' . $GLOBALS['songlistModuleConfig']['bitly_username'] . '&apiKey=' . $GLOBALS['songlistModuleConfig']['bitly_apikey'] . '&format=json&longUrl=' . \urlencode($url);
+            $cookies    = XOOPS_ROOT_PATH . '/uploads/songlist_' . \md5($GLOBALS['songlistModuleConfig']['bitly_apikey']) . '.cookie';
+            if (!$ch = \curl_init($source_url)) {
                 return $url;
             }
-            curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERAGENT, $GLOBALS['songlistModuleConfig']['user_agent']);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $GLOBALS['songlistModuleConfig']['curl_connect_timeout']);
-            curl_setopt($ch, CURLOPT_TIMEOUT, $GLOBALS['songlistModuleConfig']['curl_timeout']);
-            $data = curl_exec($ch);
-            curl_close($ch);
+            \curl_setopt($ch, \CURLOPT_COOKIEJAR, $cookies);
+            \curl_setopt($ch, \CURLOPT_RETURNTRANSFER, 1);
+            \curl_setopt($ch, \CURLOPT_USERAGENT, $GLOBALS['songlistModuleConfig']['user_agent']);
+            \curl_setopt($ch, \CURLOPT_CONNECTTIMEOUT, $GLOBALS['songlistModuleConfig']['curl_connect_timeout']);
+            \curl_setopt($ch, \CURLOPT_TIMEOUT, $GLOBALS['songlistModuleConfig']['curl_timeout']);
+            $data = \curl_exec($ch);
+            \curl_close($ch);
             $result                = songlist_object2array(json_decode($data));
             $result['status_code'] = 200;
             if ($result['status_code']) {
@@ -629,17 +608,17 @@ class Utility extends Common\SysUtility
             return [];
         }
 
-        if (!function_exists('xml_parser_create')) {
+        if (!\function_exists('xml_parser_create')) {
             return [];
         }
 
         //Get the XML parser of PHP - PHP must have this module for the parser to work
-        $parser = xml_parser_create('');
-        xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'UTF-8'); # https://minutillo.com/steve/weblog/2004/6/17/php-xml-and-character-encodings-a-tale-of-sadness-rage-and-data-loss
-        xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
-        xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1);
-        xml_parse_into_struct($parser, trim($contents), $xml_values);
-        xml_parser_free($parser);
+        $parser = \xml_parser_create('');
+        \xml_parser_set_option($parser, \XML_OPTION_TARGET_ENCODING, 'UTF-8'); # https://minutillo.com/steve/weblog/2004/6/17/php-xml-and-character-encodings-a-tale-of-sadness-rage-and-data-loss
+        \xml_parser_set_option($parser, \XML_OPTION_CASE_FOLDING, 0);
+        \xml_parser_set_option($parser, \XML_OPTION_SKIP_WHITE, 1);
+        \xml_parse_into_struct($parser, \trim($contents), $xml_values);
+        \xml_parser_free($parser);
 
         if (!$xml_values) {
             return;
@@ -660,7 +639,7 @@ class Utility extends Common\SysUtility
 
             //This command will extract these variables into the foreach scope
             // tag(string), type(string), level(int), attributes(array).
-            extract($data); //We could use the array by itself, but this cooler.
+            \extract($data); //We could use the array by itself, but this cooler.
 
             $result          = [];
             $attributes_data = [];
@@ -670,7 +649,7 @@ class Utility extends Common\SysUtility
                     $result = $value;
                 } else {
                     $result['value'] = $value;
-                } //Put the value in a assoc array if we are in the 'Attribute' mode
+                } //Put the value in an assoc array if we are in the 'Attribute' mode
             }
 
             //Set the attributes too.
@@ -680,14 +659,14 @@ class Utility extends Common\SysUtility
                         $attributes_data[$attr] = $val;
                     } else {
                         $result['attr'][$attr] = $val;
-                    } //Set all the attributes in a array called 'attr'
+                    } //Set all the attributes in an array called 'attr'
                 }
             }
 
             //See tag status and do the needed.
             if ('open' === $type) {//The starting of the tag '<tag>'
                 $parent[$level - 1] = &$current;
-                if (!is_array($current) or (!array_key_exists($tag, $current))) { //Insert New tag
+                if (!\is_array($current) or (!\array_key_exists($tag, $current))) { //Insert New tag
                     $current[$tag] = $result;
                     if ($attributes_data) {
                         $current[$tag . '_attr'] = $attributes_data;
@@ -714,16 +693,15 @@ class Utility extends Common\SysUtility
             } elseif ('complete' === $type) { //Tags that ends in 1 line '<tag>'
                 //See if the key is already taken.
                 if (isset($current[$tag])) { //If taken, put all things inside a list(array)
-                    if (isset($current[$tag][0]) and is_array($current[$tag])) {//If it is already an array...
+                    if (isset($current[$tag][0]) and \is_array($current[$tag])) {//If it is already an array...
                         // ...push the new element into that array.
                         $current[$tag][$repeated_tag_index[$tag . '_' . $level]] = $result;
 
                         if ('tag' === $priority and $get_attributes and $attributes_data) {
                             $current[$tag][$repeated_tag_index[$tag . '_' . $level] . '_attr'] = $attributes_data;
                         }
-                        $repeated_tag_index[$tag . '_' . $level]++;
                     } else { //If it is not an array...
-                        $current[$tag]                           = [$current[$tag], $result]; //...Make it an array using using the existing value and the new value
+                        $current[$tag]                           = [$current[$tag], $result]; //...Make it an array using the existing value and the new value
                         $repeated_tag_index[$tag . '_' . $level] = 1;
                         if ('tag' === $priority and $get_attributes) {
                             if (isset($current[$tag . '_attr'])) { //The attribute of the last(0th) tag must be moved as well
@@ -735,8 +713,9 @@ class Utility extends Common\SysUtility
                                 $current[$tag][$repeated_tag_index[$tag . '_' . $level] . '_attr'] = $attributes_data;
                             }
                         }
-                        $repeated_tag_index[$tag . '_' . $level]++; //0 and 1 index is already taken
+                        //0 and 1 index is already taken
                     }
+                    $repeated_tag_index[$tag . '_' . $level]++;
                 } else { //New Key
                     $current[$tag]                           = $result;
                     $repeated_tag_index[$tag . '_' . $level] = 1;
@@ -765,32 +744,32 @@ class Utility extends Common\SysUtility
         $output = '';
         if ($beginning) {
             if ($standalone) {
-                header('content-type:text/xml;charset=' . _CHARSET);
+                \header('content-type:text/xml;charset=' . _CHARSET);
             }
             $output .= '<' . '?' . 'xml version="1.0" encoding="' . _CHARSET . '"' . '?' . '>' . "\n";
             $output .= '<' . $name . '>' . "\n";
             $nested = 0;
         }
 
-        if (is_array($array)) {
+        if (\is_array($array)) {
             foreach ($array as $key => $value) {
                 ++$nested;
-                if (is_array($value)) {
-                    $output .= str_repeat("\t", (int)$nested) . '<' . (is_string($key) ? $key : $name . '_' . $key) . '>' . "\n";
+                if (\is_array($value)) {
+                    $output .= \str_repeat("\t", (int)$nested) . '<' . (\is_string($key) ? $key : $name . '_' . $key) . '>' . "\n";
                     ++$nested;
                     $output .= static::toXml($value, $name, false, false, $nested);
                     $nested--;
-                    $output .= str_repeat("\t", (int)$nested) . '</' . (is_string($key) ? $key : $name . '_' . $key) . '>' . "\n";
+                    $output .= \str_repeat("\t", (int)$nested) . '</' . (\is_string($key) ? $key : $name . '_' . $key) . '>' . "\n";
                 } elseif ('' != $value) {
                     ++$nested;
-                    $output .= str_repeat("\t", (int)$nested) . '  <' . (is_string($key) ? $key : $name . '_' . $key) . '>' . trim($value) . '</' . (is_string($key) ? $key : $name . '_' . $key) . '>' . "\n";
+                    $output .= \str_repeat("\t", (int)$nested) . '  <' . (\is_string($key) ? $key : $name . '_' . $key) . '>' . \trim($value) . '</' . (\is_string($key) ? $key : $name . '_' . $key) . '>' . "\n";
                     $nested--;
                 }
                 $nested--;
             }
         } elseif ('' != $array) {
             ++$nested;
-            $output .= str_repeat("\t", (int)$nested) . trim($array) . "\n";
+            $output .= \str_repeat("\t", (int)$nested) . \trim($array) . "\n";
             $nested--;
         }
 
@@ -802,5 +781,4 @@ class Utility extends Common\SysUtility
 
         return $output;
     }
-    
 }

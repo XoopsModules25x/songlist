@@ -43,7 +43,7 @@ class RequestsHandler extends \XoopsPersistableObjectHandler
                 if (\XOBJ_DTYPE_TXTBOX == $object->vars[$var[0]]['data_type']
                     || \XOBJ_DTYPE_TXTAREA == $object->vars[$var[0]]['data_type']) {
                     $criteria->add(new \Criteria('`' . $var[0] . '`', '%' . $var[1] . '%', ($var[2] ?? 'LIKE')));
-                } elseif (in_array($object->vars[$var[0]]['data_type'], [XOBJ_DTYPE_INT, XOBJ_DTYPE_DECIMAL, XOBJ_DTYPE_FLOAT])) {
+                } elseif (\in_array($object->vars[$var[0]]['data_type'], [\XOBJ_DTYPE_INT, \XOBJ_DTYPE_DECIMAL, XOBJ_DTYPE_FLOAT])) {
                     $criteria->add(new \Criteria('`' . $var[0] . '`', $var[1], ($var[2] ?? '=')));
                 } elseif (\XOBJ_DTYPE_ENUM == $object->vars[$var[0]]['data_type']) {
                     $criteria->add(new \Criteria('`' . $var[0] . '`', $var[1], ($var[2] ?? '=')));
@@ -106,8 +106,8 @@ class RequestsHandler extends \XoopsPersistableObjectHandler
         $rid = parent::insert($obj, $force);
         if ($rid) {
             if ($sendmail) {
+                \xoops_loadLanguage('email', 'songlist');
                 if ($new) {
-                    \xoops_loadLanguage('email', 'songlist');
                     $xoopsMailer = \xoops_getMailer();
                     $xoopsMailer->setHTML(true);
                     $xoopsMailer->setTemplateDir($GLOBALS['xoops']->path('/modules/songlist/language/' . $GLOBALS['xoopsConfig']['language'] . '/mail_templates/'));
@@ -135,12 +135,12 @@ class RequestsHandler extends \XoopsPersistableObjectHandler
                         \xoops_error($xoopsMailer->getErrors(true), 'Email Send Error');
                     }
                 } else {
-                    \xoops_loadLanguage('email', 'songlist');
                     $songsHandler   = \XoopsModules\Songlist\Helper::getInstance()->getHandler('Songs');
                     $artistsHandler = \XoopsModules\Songlist\Helper::getInstance()->getHandler('Artists');
                     $albumsHandler  = \XoopsModules\Songlist\Helper::getInstance()->getHandler('Albums');
                     $genreHandler   = \XoopsModules\Songlist\Helper::getInstance()->getHandler('Genre');
 
+                    /** @var Songs $song */
                     $song = $songsHandler->get($obj->getVar('sid'));
                     if (\is_object($song)) {
                         $sng = $genre->getVar('title');

@@ -8,6 +8,7 @@ namespace XoopsModules\Songlist;
 class Extras extends \XoopsObject
 {
     public $handler;
+    public $sid;
 
     /**
      * Extras constructor.
