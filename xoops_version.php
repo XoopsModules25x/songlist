@@ -15,11 +15,9 @@ if (is_object($GLOBALS['songlistModule'])) {
     $GLOBALS['songlistModuleConfig'] = $configHandler->getConfigList($GLOBALS['songlistModule']->getVar('mid'));
 }
 
-// $Id: xoops_version.php,v 4.04 2008/06/05 15:35:59 wishcraft Exp $
-
 $modversion['version']             = '2.0.0';
-$modversion['module_status']       = 'Alpha 1';
-$modversion['release_date']        = '2022/07/03';
+$modversion['module_status']       = 'Alpha 2 NOT RELEASED';
+$modversion['release_date']        = '2022/07/04';
 $modversion['name']                = _MI_SONGLIST_NAME;
 $modversion['description']         = _MI_SONGLIST_DESC;
 $modversion['credits']             = 'Orginally Written by wishcraft, Testing Phil and Michael Beck';
@@ -31,7 +29,7 @@ $modversion['image']               = 'assets/images/logoModule.png';
 $modversion['releasedate']         = 'Thursday, 03rd July, 2022';
 $modversion['website']             = 'www.chronolabs.coop';
 $modversion['release_info']        = 'Stable 2012/08/16';
-$modversion['release_file']        = XOOPS_URL . '/modules/xforum/docs/changelog.txt';
+$modversion['release_file']        = XOOPS_URL . '/modules/songlist/docs/changelog.txt';
 $modversion['author_realname']     = 'Wishcraft';
 $modversion['author_website_url']  = 'https://www.chronolabs.coop';
 $modversion['author_website_name'] = 'Chronolabs';
@@ -49,24 +47,23 @@ $modversion['support_site_name']   = 'Chronolabs';
 $modversion['submit_feature']      = 'https://www.chronolabs.coop/';
 $modversion['submit_bug']          = 'https://www.chronolabs.coop/';
 
-$modversion = [
-    // ------------------- Mysql -----------------------------
-    'sqlfile' => ['mysql' => 'sql/mysql.sql'],
-    // ------------------- Tables ----------------------------
-    'tables'  => [
-        $moduleDirName . '_' . 'albums',
-        $moduleDirName . '_' . 'artists',
-        $moduleDirName . '_' . 'category',
-        $moduleDirName . '_' . 'extra',
-        $moduleDirName . '_' . 'field',
-        $moduleDirName . '_' . 'genre',
-        $moduleDirName . '_' . 'voice',
-        $moduleDirName . '_' . 'requests',
-        $moduleDirName . '_' . 'songs',
-        $moduleDirName . '_' . 'utf8map',
-        $moduleDirName . '_' . 'visibility',
-        $moduleDirName . '_' . 'votes',
-    ],
+// ------------------- Mysql ------------------- //
+$modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
+
+// ------------------- Tables ------------------ //
+$modversion['tables'] = [
+    $moduleDirName . '_' . 'albums',
+    $moduleDirName . '_' . 'artists',
+    $moduleDirName . '_' . 'category',
+    $moduleDirName . '_' . 'extra',
+    $moduleDirName . '_' . 'field',
+    $moduleDirName . '_' . 'genre',
+    $moduleDirName . '_' . 'voice',
+    $moduleDirName . '_' . 'requests',
+    $moduleDirName . '_' . 'songs',
+    $moduleDirName . '_' . 'utf8map',
+    $moduleDirName . '_' . 'visibility',
+    $moduleDirName . '_' . 'votes',
 ];
 
 // Admin things
@@ -80,6 +77,7 @@ $modversion['hasMain'] = 1;
 
 //install
 //$modversion['onInstall'] = 'include/module.php';
+//$modversion['onInstall'] = 'include/oninstall.php';
 
 //update things
 $modversion['onUpdate'] = 'include/update.php';
@@ -93,7 +91,7 @@ $modversion['search']['file'] = 'include/search.inc.php';
 $modversion['search']['func'] = 'songlist_search';
 
 // Smarty
-$modversion['use_smarty'] = 1;
+//$modversion['use_smarty'] = 1;
 
 // ------------------- Help files ------------------- //
 $modversion['helpsection'] = [
