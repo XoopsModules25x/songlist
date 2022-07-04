@@ -342,9 +342,9 @@
 		
 		foreach($ele as $id => $obj)			
 			if (in_array($id, $required))
-				$sform->addElement($ele[$id], true);			
+				$sform->addElement($obj, true);
 			else
-				$sform->addElement($ele[$id], false);
+				$sform->addElement($obj, false);
 		
 		return $sform->render();
 		
@@ -401,9 +401,9 @@
 		
 		foreach($ele as $id => $obj)			
 			if (in_array($id, $required))
-				$sform->addElement($ele[$id], true);			
+				$sform->addElement($obj, true);
 			else
-				$sform->addElement($ele[$id], false);
+				$sform->addElement($obj, false);
 		
 		return $sform->render();
 		
@@ -474,9 +474,9 @@
 		
 		foreach($ele as $id => $obj)			
 			if (in_array($id, $required))
-				$sform->addElement($ele[$id], true);			
+				$sform->addElement($obj, true);
 			else
-				$sform->addElement($ele[$id], false);
+				$sform->addElement($obj, false);
 		
 		return $sform->render();
 		
@@ -541,9 +541,9 @@
 		
 		foreach($ele as $id => $obj)			
 			if (in_array($id, $required))
-				$sform->addElement($ele[$id], true);			
+				$sform->addElement($obj, true);
 			else
-				$sform->addElement($ele[$id], false);
+				$sform->addElement($obj, false);
 		
 		return $sform->render();
 		
@@ -623,9 +623,9 @@
 		
 		foreach($ele as $id => $obj)			
 			if (in_array($id, $required))
-				$sform->addElement($ele[$id], true);			
+				$sform->addElement($obj, true);
 			else
-				$sform->addElement($ele[$id], false);
+				$sform->addElement($obj, false);
 		
 		return $sform->render();
 		
@@ -767,9 +767,9 @@
 		
 		foreach($ele as $id => $obj)			
 			if (in_array($id, $required))
-				$sform->addElement($ele[$id], true);			
+				$sform->addElement($obj, true);
 			else
-				$sform->addElement($ele[$id], false);
+				$sform->addElement($obj, false);
 		
 		return $sform->render();
 		
@@ -837,9 +837,9 @@
 		
 		foreach($ele as $id => $obj)			
 			if (in_array($id, $required))
-				$sform->addElement($ele[$id], true);			
+				$sform->addElement($obj, true);
 			else
-				$sform->addElement($ele[$id], false);
+				$sform->addElement($obj, false);
 		
 		return $sform->render();
 		

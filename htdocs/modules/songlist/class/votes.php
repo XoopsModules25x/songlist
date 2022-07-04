@@ -28,7 +28,7 @@ class SonglistVotes extends XoopsObject
 		$ret = parent::toArray();
 		$form = $this->getForm(true);
 		foreach($form as $key => $element) {
-			$ret['form'][$key] = $form[$key]->render();	
+			$ret['form'][$key] = $element->render();
 		}
 		
 		$ret['rank'] = number_format($this->getVar('rank'),2)._MI_SONGLIST_OFTEN;

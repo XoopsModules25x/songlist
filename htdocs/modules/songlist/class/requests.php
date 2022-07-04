@@ -36,7 +36,7 @@ class SonglistRequests extends XoopsObject
 		$form = $this->getForm(true);
 		$form['songid'] = new XoopsFormText('', $this->getVar('rid').'[songid]', 11, 32);
 		foreach($form as $key => $element) {
-			$ret['form'][$key] = $form[$key]->render();	
+			$ret['form'][$key] = $element->render();
 		}
 		foreach(array('created', 'updated') as $key) {
 			if ($this->getVar($key)>0) {

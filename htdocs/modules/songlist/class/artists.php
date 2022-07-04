@@ -33,7 +33,7 @@ class SonglistArtists extends XoopsObject
 		$ret = parent::toArray();
 		$form = $this->getForm(true);
 		foreach($form as $key => $element) {
-			$ret['form'][$key] = $form[$key]->render();	
+			$ret['form'][$key] = $element->render();
 		}
 		foreach(array('created', 'updated') as $key) {
 			if ($this->getVar($key)>0) {
