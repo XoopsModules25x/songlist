@@ -68,6 +68,9 @@ switch ($op) {
 
 // XMF TableLoad for SAMPLE data
 
+/**
+ * @return void
+ */
 function loadSampleData(): void
 {
     global $xoopsConfig;
@@ -109,6 +112,9 @@ function loadSampleData(): void
     \redirect_header('../admin/index.php', 1, \constant('CO_' . $moduleDirNameUpper . '_' . 'LOAD_SAMPLEDATA_SUCCESS'));
 }
 
+/**
+ * @return void
+ */
 function saveSampleData(): void
 {
     global $xoopsConfig;
@@ -139,6 +145,9 @@ function saveSampleData(): void
     \redirect_header('../admin/index.php', 1, \constant('CO_' . $moduleDirNameUpper . '_' . 'SAVE_SAMPLEDATA_SUCCESS'));
 }
 
+/**
+ * @return void
+ */
 function exportSchema(): void
 {
     $moduleDirName      = \basename(\dirname(__DIR__));
@@ -210,6 +219,9 @@ function loadTableFromArrayWithReplace($table, $data, $search, $replace): int
     return $count;
 }
 
+/**
+ * @return void
+ */
 function clearSampleData(): void
 {
     $moduleDirName      = \basename(\dirname(__DIR__));

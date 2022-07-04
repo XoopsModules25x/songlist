@@ -87,7 +87,7 @@ class Field extends \XoopsObject
      * @param \XoopsUser     $user    {@link XoopsUser} object to edit the value of
      * @param ObjectsProfile $profile {@link ObjectsProfile} object to edit the value of
      *
-     * @return \\XoopsFormDhtmlTextArea|\\XoopsFormEditor|\\XoopsFormLabel|\\XoopsFormSelect|\\XoopsFormText|\\XoopsFormTextArea
+     * @return \XoopsFormCheckBox|\XoopsFormDhtmlTextArea|\XoopsFormEditor|\XoopsFormLabel|\XoopsFormRadio|\XoopsFormRadioYN|\XoopsFormSelect|\XoopsFormSelectGroup|\XoopsFormSelectLang|\XoopsFormSelectTimezone|\XoopsFormText|\XoopsFormTextArea|\XoopsFormTextDateSelect|\XoopsModules\Songlist\XoopsFormDatetime \XoopsFormDhtmlTextArea|\\XoopsFormEditor|\\XoopsFormLabel|\\XoopsFormSelect|\\XoopsFormText|\\XoopsFormTextArea
      */
     public function getEditElement($user, $profile)
     {

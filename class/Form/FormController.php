@@ -11,6 +11,9 @@ use XoopsModules\Songlist\{
 
 xoops_loadLanguage('user');
 
+/**
+ *
+ */
 class FormController
 {
     /**

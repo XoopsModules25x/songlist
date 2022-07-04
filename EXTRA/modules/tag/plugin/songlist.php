@@ -1,6 +1,11 @@
 <?php
 if (!defined('XOOPS_ROOT_PATH')) { exit(); }
 
+/**
+ * @param $items
+ *
+ * @return false|void
+ */
 function songlist_tag_iteminfo(&$items)
 {
     if (empty($items) || !is_array($items)) {
