@@ -46,25 +46,6 @@ class Utility extends Common\SysUtility
         }
     }
 
-    /**
-     * @param string $file
-     * @param string $folder
-     * @return bool
-     */
-    public static function copyFile(string $file, string $folder): bool
-    {
-        return \copy($file, $folder);
-        //        try {
-        //            if (!is_dir($folder)) {
-        //                throw new \RuntimeException(sprintf('Unable to copy file as: %s ', $folder));
-        //            } else {
-        //                return copy($file, $folder);
-        //            }
-        //        } catch (\Exception $e) {
-        //            echo 'Caught exception: ', $e->getMessage(), "\n", "<br>";
-        //        }
-        //        return false;
-    }
 
     /**
      * @param $src
