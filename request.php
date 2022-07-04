@@ -40,7 +40,6 @@ switch ($op) {
                         redirect_header($_SERVER['SCRIPT_NAME'] . "?op=item&fct=list&id=$id&value=$value&start=$start&limit=$limit", 10, _MD_SONGLIST_MSG_REQUESTNOTSENT);
                     }
                     exit;
-                    break;
                 }
                 $error = _MD_SONGLIST_MSG_EMAILNOTSET;
 

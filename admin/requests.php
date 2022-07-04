@@ -132,8 +132,6 @@ switch ($op) {
                     redirect_header($_SERVER['SCRIPT_NAME'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_REQUESTS_SAVEDOKEY);
                 }
                 exit(0);
-
-                break;
             case 'savelist':
                 $requestsHandler = Helper::getInstance()->getHandler('Requests');
                 foreach ($_REQUEST['id'] as $id) {
@@ -150,7 +148,6 @@ switch ($op) {
                 }
                 redirect_header($_SERVER['SCRIPT_NAME'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_REQUESTS_SAVEDOKEY);
                 exit(0);
-                break;
             case 'delete':
                 $requestsHandler = Helper::getInstance()->getHandler('Requests');
                 $id              = 0;
@@ -176,7 +173,6 @@ switch ($op) {
 
                 break;
         }
-        break;
 }
 
 xoops_cp_footer();

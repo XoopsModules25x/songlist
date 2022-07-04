@@ -192,8 +192,6 @@ switch ($op) {
                     redirect_header($_SERVER['SCRIPT_NAME'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_SONGS_SAVEDOKEY);
                 }
                 exit(0);
-
-                break;
             case 'savelist':
                 print_r($_FILES);
                 exit;
@@ -259,7 +257,6 @@ switch ($op) {
                 }
                 redirect_header($_SERVER['SCRIPT_NAME'] . '?op=' . $GLOBALS['op'] . '&fct=list&limit=' . $GLOBALS['limit'] . '&start=' . $GLOBALS['start'] . '&order=' . $GLOBALS['order'] . '&sort=' . $GLOBALS['sort'] . '&filter=' . $GLOBALS['filter'], 10, _AM_SONGLIST_MSG_SONGS_SAVEDOKEY);
                 exit(0);
-                break;
             case 'delete':
                 $songsHandler = Helper::getInstance()->getHandler('Songs');
                 $id           = 0;
@@ -285,7 +282,6 @@ switch ($op) {
 
                 break;
         }
-        break;
 }
 
 xoops_cp_footer();

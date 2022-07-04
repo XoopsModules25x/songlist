@@ -377,7 +377,6 @@ class Field extends \XoopsObject
                 }
 
                 return $value;
-                break;
             case 'editor':
             case 'textarea':
             case 'dhtml':
@@ -385,7 +384,6 @@ class Field extends \XoopsObject
             case 'language':
             case 'list':
                 return $value;
-                break;
             case 'select':
             case 'radio':
                 $options = $this->getVar('field_options');
@@ -396,7 +394,6 @@ class Field extends \XoopsObject
                 }
 
                 return $value;
-                break;
             case 'select_multi':
             case 'checkbox':
                 $options = $this->getVar('field_options');
@@ -410,29 +407,24 @@ class Field extends \XoopsObject
                 }
 
                 return $ret;
-                break;
             case 'group':
                 //change to retrieve groups and return name of group
                 return $value;
-                break;
             case 'group_multi':
                 //change to retrieve groups and return array of group names
                 return '';
-                break;
             case 'longdate':
                 //return YYYY/MM/DD format - not optimal as it is not using local date format, but how do we do that
                 //when we cannot convert it to a UNIX timestamp?
                 return \str_replace('-', '/', $value);
             case 'date':
                 return \formatTimestamp($value, 's');
-                break;
             case 'datetime':
                 if (!empty($value)) {
                     return \formatTimestamp($value, 'm');
                 }
 
                 return $value = \_MI_SONGLIST_DATENOTSET;
-                break;
             case 'autotext':
                 $value = $user->getVar($this->getVar('field_name'), 'n'); //autotext can have HTML in it
                 $value = \str_replace('{X_UID}', $user->getVar('uid'), $value);
@@ -440,7 +432,6 @@ class Field extends \XoopsObject
                 $value = \str_replace('{X_UNAME}', $user->getVar('uname'), $value);
 
                 return $value;
-                break;
             case 'rank':
                 $userrank       = $user->rank();
                 $user_rankimage = '';
@@ -449,17 +440,14 @@ class Field extends \XoopsObject
                 }
 
                 return $user_rankimage . $userrank['title'];
-                break;
             case 'yesno':
                 return $value ? _YES : _NO;
-                break;
             case 'timezone':
                 require_once $GLOBALS['xoops']->path('class/xoopslists.php');
                 $timezones = \XoopsLists::getTimeZoneList();
                 $value     = empty($value) ? '0' : (string)$value;
 
                 return $timezones[\str_replace('.0', '', $value)];
-                break;
         }
     }
 
@@ -496,14 +484,12 @@ class Field extends \XoopsObject
                 }
 
                 return $value;
-                break;
             case 'datetime':
                 if (!empty($value)) {
                     return \strtotime($value['date'] ?? '') + (int)$value['time'];
                 }
 
                 return $value;
-                break;
         }
     }
 
