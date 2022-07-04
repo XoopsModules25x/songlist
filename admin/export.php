@@ -193,26 +193,10 @@ switch ($op) {
                                 } else {
                                     $object = $songsHandler->create();
                                 }
-                                if ($object->getVar('cid') > 0 && $cid > 0) {
-                                    $object->setVar('cid', $cid);
-                                } else {
-                                    $object->setVar('cid', $cid);
-                                }
-                                if ($object->getVar('gid') > 0 && $gid > 0) {
-                                    $object->setVar('gid', $gid);
-                                } else {
-                                    $object->setVar('gid', $gid);
-                                }
-                                if (count($object->getVar('aids')) > 0 && count($aids) > 0) {
-                                    $object->setVar('aids', $aids);
-                                } else {
-                                    $object->setVar('aids', $aids);
-                                }
-                                if ($object->getVar('abid') > 0 && $abid > 0) {
-                                    $object->setVar('abid', $abid);
-                                } else {
-                                    $object->setVar('abid', $abid);
-                                }
+                                $object->setVar('cid', $cid);
+                                $object->setVar('gid', $gid);
+                                $object->setVar('aids', $aids);
+                                $object->setVar('abid', $abid);
                                 $object->setVar('songid', $data[$_POST['songid']]);
                                 $object->setVar('title', $data[$_POST['title']]);
                                 $object->setVar('lyrics', str_replace("\n", "<br>\n", $data[$_POST['lyrics']]));
@@ -305,26 +289,10 @@ switch ($op) {
                             } else {
                                 $object = $songsHandler->create();
                             }
-                            if ($object->getVar('cid') > 0 && $cid > 0) {
-                                $object->setVar('cid', $cid);
-                            } else {
-                                $object->setVar('cid', $cid);
-                            }
-                            if ($object->getVar('gid') > 0 && $gid > 0) {
-                                $object->setVar('gid', $gid);
-                            } else {
-                                $object->setVar('gid', $gid);
-                            }
-                            if (count($object->getVar('aids')) > 0 && count($aids) > 0) {
-                                $object->setVar('aids', $aids);
-                            } else {
-                                $object->setVar('aids', $aids);
-                            }
-                            if ($object->getVar('abid') > 0 && $abid > 0) {
-                                $object->setVar('abid', $abid);
-                            } else {
-                                $object->setVar('abid', $abid);
-                            }
+                            $object->setVar('cid', $cid);
+                            $object->setVar('gid', $gid);
+                            $object->setVar('aids', $aids);
+                            $object->setVar('abid', $abid);
                             $object->setVar('songid', $data[$_POST['songid']]);
                             $object->setVar('title', $data[$_POST['title']]);
                             $object->setVar('lyrics', str_replace("\n", "<br>\n", $data[$_POST['lyrics']]));

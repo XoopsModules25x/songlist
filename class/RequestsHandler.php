@@ -106,8 +106,8 @@ class RequestsHandler extends \XoopsPersistableObjectHandler
         $rid = parent::insert($obj, $force);
         if ($rid) {
             if ($sendmail) {
+                \xoops_loadLanguage('email', 'songlist');
                 if ($new) {
-                    \xoops_loadLanguage('email', 'songlist');
                     $xoopsMailer = \xoops_getMailer();
                     $xoopsMailer->setHTML(true);
                     $xoopsMailer->setTemplateDir($GLOBALS['xoops']->path('/modules/songlist/language/' . $GLOBALS['xoopsConfig']['language'] . '/mail_templates/'));
@@ -135,7 +135,6 @@ class RequestsHandler extends \XoopsPersistableObjectHandler
                         \xoops_error($xoopsMailer->getErrors(true), 'Email Send Error');
                     }
                 } else {
-                    \xoops_loadLanguage('email', 'songlist');
                     $songsHandler   = \XoopsModules\Songlist\Helper::getInstance()->getHandler('Songs');
                     $artistsHandler = \XoopsModules\Songlist\Helper::getInstance()->getHandler('Artists');
                     $albumsHandler  = \XoopsModules\Songlist\Helper::getInstance()->getHandler('Albums');

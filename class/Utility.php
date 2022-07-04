@@ -719,7 +719,6 @@ class Utility extends Common\SysUtility
                         if ('tag' === $priority and $get_attributes and $attributes_data) {
                             $current[$tag][$repeated_tag_index[$tag . '_' . $level] . '_attr'] = $attributes_data;
                         }
-                        $repeated_tag_index[$tag . '_' . $level]++;
                     } else { //If it is not an array...
                         $current[$tag]                           = [$current[$tag], $result]; //...Make it an array using using the existing value and the new value
                         $repeated_tag_index[$tag . '_' . $level] = 1;
@@ -733,8 +732,9 @@ class Utility extends Common\SysUtility
                                 $current[$tag][$repeated_tag_index[$tag . '_' . $level] . '_attr'] = $attributes_data;
                             }
                         }
-                        $repeated_tag_index[$tag . '_' . $level]++; //0 and 1 index is already taken
+                        //0 and 1 index is already taken
                     }
+                    $repeated_tag_index[$tag . '_' . $level]++;
                 } else { //New Key
                     $current[$tag]                           = $result;
                     $repeated_tag_index[$tag . '_' . $level] = 1;

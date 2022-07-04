@@ -1014,14 +1014,13 @@ class FormController
             $ele['name'] = new \XoopsFormText((!$as_array ? _FRM_SONGLIST_FORM_REQUESTS_NAME : ''), $id . '[name]', (!$as_array ? 55 : 21), 128, ($object->isNew() ? $GLOBALS['xoopsUser']->getVar('name') : $object->getVar('name')));
             $ele['name']->setDescription((!$as_array ? _FRM_SONGLIST_FORM_REQUESTS_NAME_DESC : ''));
             $ele['email'] = new \XoopsFormText((!$as_array ? _FRM_SONGLIST_FORM_REQUESTS_EMAIL : ''), $id . '[email]', (!$as_array ? 55 : 21), 128, ($object->isNew() ? $GLOBALS['xoopsUser']->getVar('email') : $object->getVar('email')));
-            $ele['email']->setDescription((!$as_array ? _FRM_SONGLIST_FORM_REQUESTS_EMAIL_DESC : ''));
         } else {
             $ele['uid']  = new \XoopsFormHidden('uid', 0);
             $ele['name'] = new \XoopsFormText((!$as_array ? _FRM_SONGLIST_FORM_REQUESTS_NAME : ''), $id . '[name]', (!$as_array ? 55 : 21), 128, ($object->isNew() ? '' : $object->getVar('name')));
             $ele['name']->setDescription((!$as_array ? _FRM_SONGLIST_FORM_REQUESTS_NAME_DESC : ''));
             $ele['email'] = new \XoopsFormText((!$as_array ? _FRM_SONGLIST_FORM_REQUESTS_EMAIL : ''), $id . '[email]', (!$as_array ? 55 : 21), 128, ($object->isNew() ? '' : $object->getVar('email')));
-            $ele['email']->setDescription((!$as_array ? _FRM_SONGLIST_FORM_REQUESTS_EMAIL_DESC : ''));
         }
+        $ele['email']->setDescription((!$as_array ? _FRM_SONGLIST_FORM_REQUESTS_EMAIL_DESC : ''));
         if ($object->getVar('created') > 0) {
             $ele['created'] = new \XoopsFormLabel((!$as_array ? _FRM_SONGLIST_FORM_REQUESTS_CREATED : ''), date(_DATESTRING, $object->getVar('created')));
         }
