@@ -39,7 +39,7 @@ function songlist_tag_iteminfo(&$items)
 /**
  * Remove orphan tag-item links
  *
- * @return    boolean
+ * @return    bool
  * 
  */
 function songlist_tag_synchronization($mid)
