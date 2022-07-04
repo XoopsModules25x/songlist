@@ -18,13 +18,13 @@ xoops_loadLanguage('admin', 'songlist');
 
 xoops_cp_header();
 
-$op     = $_REQUEST['op'] ?? 'requests';
-$fct    = $_REQUEST['fct'] ?? 'lists';
+$op     = Request::getString('op', 'requests', 'REQUEST');
+$fct    = Request::getString('fct', 'lists', 'REQUEST');
 $limit  = Request::getInt('limit', 30, 'REQUEST');
 $start  = Request::getInt('start', 0, 'REQUEST');
-$order  = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
-$sort   = !empty($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : 'created';
-$filter = !empty($_REQUEST['filter']) ? '' . $_REQUEST['filter'] . '' : '1,1';
+$order  = Request::getString('order', 'DESC', 'REQUEST');
+$sort   = Request::getString('sort', 'created', 'REQUEST');
+$filter = Request::getString('filter', '1,1', 'REQUEST');
 
 switch ($op) {
     default:
@@ -40,7 +40,7 @@ switch ($op) {
 
                 $criteria        = $requestsHandler->getFilterCriteria($GLOBALS['filter']);
                 $ttl             = $requestsHandler->getCount($criteria);
-                $GLOBALS['sort'] = !empty($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : 'created';
+                $GLOBALS['sort'] = Request::getString('sort', 'created', 'REQUEST');;
 
                 $pagenav = new \XoopsPageNav($ttl, $GLOBALS['limit'], $GLOBALS['start'], 'start', 'limit=' . $GLOBALS['limit'] . '&sort=' . $GLOBALS['sort'] . '&order=' . $GLOBALS['order'] . '&op=' . $GLOBALS['op'] . '&fct=' . $GLOBALS['fct'] . '&filter=' . $GLOBALS['filter']);
                 $GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());

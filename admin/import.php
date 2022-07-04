@@ -12,13 +12,13 @@ xoops_loadLanguage('admin', 'songlist');
 
 xoops_cp_header();
 
-$op     = $_REQUEST['op'] ?? 'import';
-$fct    = $_REQUEST['fct'] ?? 'actiona';
+$op     = Request::getString('op', 'import', 'REQUEST');
+$fct    = Request::getString('fct', 'actiona', 'REQUEST');
 $limit  = Request::getInt('limit', 30, 'REQUEST');
 $start  = Request::getInt('start', 0, 'REQUEST');
-$order  = $_REQUEST['order'] ?? 'DESC';
-$sort   = isset($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : 'created';
-$filter = isset($_REQUEST['filter']) ? '' . $_REQUEST['filter'] . '' : '1,1';
+$order  = Request::getString('order', 'DESC', 'REQUEST');
+$sort   = Request::getString('sort', 'created', 'REQUEST');
+$filter = Request::getString('filter', '1,1', 'REQUEST');
 $file = '';
 
 switch ($op) {
