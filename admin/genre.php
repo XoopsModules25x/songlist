@@ -2,9 +2,14 @@
 
 use Xmf\Module\Admin;
 use Xmf\Request;
-use XoopsModules\Songlist\Helper;
-use XoopsModules\Songlist\GenreHandler;
-use XoopsModules\Songlist\Form\FormController;
+use XoopsModules\Songlist\{
+    Helper,
+    Genre,
+    GenreHandler,
+    Form\FormController
+};
+
+/** @var Genre $genre */
 
 require __DIR__ . '/header.php';
 

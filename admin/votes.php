@@ -2,10 +2,15 @@
 
 use Xmf\Module\Admin;
 use Xmf\Request;
-use XoopsModules\Songlist\Helper;
-use XoopsModules\Songlist\Uploader;
-use XoopsModules\Songlist\VotesHandler;
-use XoopsModules\Songlist\Form\FormController;
+use XoopsModules\Songlist\{
+    Form\FormController,
+    Helper,
+    Votes,
+    VotesHandler,
+    Uploader
+};
+
+/** @var Votes $votes */
 
 require __DIR__ . '/header.php';
 

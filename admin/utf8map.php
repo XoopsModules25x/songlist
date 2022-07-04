@@ -2,9 +2,14 @@
 
 use Xmf\Module\Admin;
 use Xmf\Request;
-use XoopsModules\Songlist\Helper;
-use XoopsModules\Songlist\Utf8mapHandler;
-use XoopsModules\Songlist\Form\FormController;
+use XoopsModules\Songlist\{
+    Form\FormController,
+    Helper,
+    Utf8map,
+    Utf8mapHandler,
+};
+
+/** @var Utf8map $utf8map */
 
 require __DIR__ . '/header.php';
 

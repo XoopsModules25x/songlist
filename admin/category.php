@@ -2,10 +2,15 @@
 
 use Xmf\Module\Admin;
 use Xmf\Request;
-use XoopsModules\Songlist\Helper;
-use XoopsModules\Songlist\Uploader;
-use XoopsModules\Songlist\CategoryHandler;
-use XoopsModules\Songlist\Form\FormController;
+use XoopsModules\Songlist\{
+    Form\FormController,
+    Helper,
+    Category,
+    CategoryHandler,
+    Uploader
+};
+
+/** @var Category $category */
 
 require __DIR__ . '/header.php';
 

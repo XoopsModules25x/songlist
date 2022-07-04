@@ -2,9 +2,14 @@
 
 use Xmf\Module\Admin;
 use Xmf\Request;
-use XoopsModules\Songlist\Helper;
-use XoopsModules\Songlist\ArtistsHandler;
-use XoopsModules\Songlist\Form\FormController;
+use XoopsModules\Songlist\{
+    Form\FormController,
+    Helper,
+    Artists,
+    ArtistsHandler
+};
+
+/** @var Artists $artist */
 
 require __DIR__ . '/header.php';
 
