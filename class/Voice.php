@@ -5,6 +5,7 @@ namespace XoopsModules\Songlist;
 use XoopsObject;
 
 require_once \dirname(__DIR__) . '/include/songlist.object.php';
+
 // require_once \dirname(__DIR__) . '/include/songlist.form.php';
 use  XoopsModules\Songlist\Form\FormController;
 
@@ -13,6 +14,17 @@ use  XoopsModules\Songlist\Form\FormController;
  */
 class Voice extends XoopsObject
 {
+    public $vcid;
+    public $name;
+    public $artists;
+    public $albums;
+    public $songs;
+    public $hits;
+    public $rank;
+    public $votes;
+    public $created;
+    public $updated;
+
     /**
      * Voice constructor.
      * @param null $fid

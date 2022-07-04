@@ -5,13 +5,28 @@ namespace XoopsModules\Songlist;
 use function base64_decode;
 use function base64_encode;
 
-
-
 /**
  * @copyright copyright &copy; 2000 XOOPS.org
  */
 class Field extends \XoopsObject
 {
+    public $field_id;
+    public $cids;
+    public $field_type;
+    public $field_valuetype;
+    public $field_name;
+    public $field_title;
+    public $field_description;
+    public $field_required; //0 = no, 1 = yes
+    public $field_maxlength;
+    public $field_weight;
+    public $field_default;
+    public $field_notnull;
+    public $field_edit;
+    public $field_show;
+    public $field_config;
+    public $field_options;
+
     public function __construct()
     {
         $this->initVar('field_id', \XOBJ_DTYPE_INT, null);
@@ -484,7 +499,7 @@ class Field extends \XoopsObject
                 break;
             case 'datetime':
                 if (!empty($value)) {
-                    return \strtotime($value['date']??'') + (int)$value['time'];
+                    return \strtotime($value['date'] ?? '') + (int)$value['time'];
                 }
 
                 return $value;

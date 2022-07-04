@@ -11,8 +11,6 @@ use XoopsModules\Songlist\Form\{
     SelectSongForm
 };
 
-
-
 /**
  * Class Utility
  */
@@ -802,5 +800,4 @@ class Utility extends Common\SysUtility
 
         return $output;
     }
-    
 }

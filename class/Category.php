@@ -9,6 +9,22 @@ use  XoopsModules\Songlist\Form\FormController;
  */
 class Category extends \XoopsObject
 {
+    public $cid;
+    public $pid;
+    public $weight;
+    public $name;
+    public $description;
+    public $image;
+    public $path;
+    public $artists;
+    public $albums;
+    public $songs;
+    public $hits;
+    public $rank;
+    public $votes;
+    public $created;
+    public $updated;
+
     /**
      * Category constructor.
      * @param null $fid
@@ -97,6 +113,6 @@ class Category extends \XoopsObject
     {
         global $file, $op, $fct, $id, $value, $gid, $cid, $start, $limit;
 
-        return XOOPS_URL . '/modules/songlist/' . $file . '.php?op=category&fct=set&id=' . $this->getVar('cid') . '&value=' . \urlencode($file??'') . '&gid=' . $gid . '&cid=' . $cid;
+        return XOOPS_URL . '/modules/songlist/' . $file . '.php?op=category&fct=set&id=' . $this->getVar('cid') . '&value=' . \urlencode($file ?? '') . '&gid=' . $gid . '&cid=' . $cid;
     }
 }

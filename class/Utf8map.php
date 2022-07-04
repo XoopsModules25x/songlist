@@ -7,6 +7,7 @@ use XoopsObject;
 \defined('XOOPS_ROOT_PATH') || exit('Restricted access');
 
 require_once \dirname(__DIR__) . '/include/songlist.object.php';
+
 // require_once \dirname(__DIR__) . '/include/songlist.form.php';
 use  XoopsModules\Songlist\Form\FormController;
 
@@ -15,6 +16,12 @@ use  XoopsModules\Songlist\Form\FormController;
  */
 class Utf8map extends XoopsObject
 {
+    public $utfid;
+    public $from;
+    public $to;
+    public $created;
+    public $updated;
+
     /**
      * Utf8map constructor.
      * @param null $fid
