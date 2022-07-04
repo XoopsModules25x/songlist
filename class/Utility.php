@@ -649,7 +649,7 @@ class Utility extends Common\SysUtility
                     $result = $value;
                 } else {
                     $result['value'] = $value;
-                } //Put the value in a assoc array if we are in the 'Attribute' mode
+                } //Put the value in an assoc array if we are in the 'Attribute' mode
             }
 
             //Set the attributes too.
@@ -659,7 +659,7 @@ class Utility extends Common\SysUtility
                         $attributes_data[$attr] = $val;
                     } else {
                         $result['attr'][$attr] = $val;
-                    } //Set all the attributes in a array called 'attr'
+                    } //Set all the attributes in an array called 'attr'
                 }
             }
 
@@ -701,7 +701,7 @@ class Utility extends Common\SysUtility
                             $current[$tag][$repeated_tag_index[$tag . '_' . $level] . '_attr'] = $attributes_data;
                         }
                     } else { //If it is not an array...
-                        $current[$tag]                           = [$current[$tag], $result]; //...Make it an array using using the existing value and the new value
+                        $current[$tag]                           = [$current[$tag], $result]; //...Make it an array using the existing value and the new value
                         $repeated_tag_index[$tag . '_' . $level] = 1;
                         if ('tag' === $priority and $get_attributes) {
                             if (isset($current[$tag . '_attr'])) { //The attribute of the last(0th) tag must be moved as well

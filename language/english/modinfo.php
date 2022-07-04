@@ -115,7 +115,7 @@ define('_MI_SONGLIST_OVERVIEW', 'Overview');
 
 //define('_MI_SONGLIST_HELP_DIR', __DIR__);
 
-//help multi-page
+//help multipage
 define('_MI_SONGLIST_DISCLAIMER', 'Disclaimer');
 define('_MI_SONGLIST_LICENSE', 'License');
 define('_MI_SONGLIST_SUPPORT', 'Support');
