@@ -7,7 +7,7 @@ function songlist_tag_iteminfo(&$items)
         return false;
     }
     
-    $items_id = array();
+    $items_id = [];
     foreach (array_keys($items) as $cat_id) {
         // Some handling here to build the link upon catid
         // catid is not used in songlist, so just skip it
@@ -23,14 +23,14 @@ function songlist_tag_iteminfo(&$items)
         foreach (array_keys($items[$cat_id]) as $item_id) {
             $item_obj =& $items_obj[$item_id];
             if (is_object($item_obj))
-			$items[$cat_id][$item_id] = array(
+			$items[$cat_id][$item_id] = [
                 "title"     => $item_obj->getVar("title"),
                 "uid"       => $item_obj->getVar("uid"),
                 "link"      => 'index.php?op=item&fct=item&id='.$item_obj->getVar("sid").'&cid='.$item_obj->getVar("cid"),
                 "time"      => $item_obj->getVar("date"),
                 "tags"      => tag_parse_tag($item_obj->getVar("tags", "n")),
                 "content"   => $myts->displayTarea($item_obj->getVar("lyrics"),true,true,true,true,true,true)
-                );
+            ];
         }
     }
     unset($items_obj);    
