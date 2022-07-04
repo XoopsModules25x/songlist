@@ -141,6 +141,7 @@ class RequestsHandler extends \XoopsPersistableObjectHandler
                     $albumsHandler  = \XoopsModules\Songlist\Helper::getInstance()->getHandler('Albums');
                     $genreHandler   = \XoopsModules\Songlist\Helper::getInstance()->getHandler('Genre');
 
+                    /** @var Songs $song */
                     $song = $songsHandler->get($obj->getVar('sid'));
                     if (\is_object($song)) {
                         $sng = $genre->getVar('title');

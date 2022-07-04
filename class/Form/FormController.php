@@ -4,13 +4,10 @@ namespace XoopsModules\Songlist\Form;
 
 
 use Xmf\Request;
-use XoopsModules\Songlist;
-//use XoopsModules\Songlist\Form\SelectAlbumForm;
-//use XoopsModules\Songlist\Form\SelectArtistForm;
-//use XoopsModules\Songlist\Form\SelectCategoryForm;
-//use XoopsModules\Songlist\Form\SelectGenreForm;
-//use XoopsModules\Songlist\Form\SelectVoiceForm;
-use XoopsModules\Songlist\Helper;
+use XoopsModules\Songlist\{
+    Albums,
+    Helper
+};
 
 xoops_loadLanguage('user');
 
@@ -630,7 +627,7 @@ class FormController
     }
 
     /**
-     * @param      $object
+     * @param Albums  $object
      * @param bool $as_array
      * @return array|string
      */
