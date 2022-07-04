@@ -137,10 +137,10 @@ class Field extends \XoopsObject
                 $element = new \XoopsFormSelect($caption, $name, $value);
                 // If options do not include an empty element, then add a blank option to prevent any default selection
                 if (!\array_key_exists('', $options)) {
-                    $element->addOption('', _NONE);
+                    $element->addOption('', \_NONE);
                     //trabis
                     if (1 == $this->getVar('field_required')) {
-                        $eltmsg                          = empty($caption) ? \sprintf(_FORM_ENTER, $name) : \sprintf(_FORM_ENTER, $caption);
+                        $eltmsg                          = empty($caption) ? \sprintf(\_FORM_ENTER, $name) : \sprintf(\_FORM_ENTER, $caption);
                         $eltmsg                          = \str_replace('"', '\"', \stripslashes($eltmsg));
                         $element->customValidationCode[] = "\nvar hasSelected = false; var selectBox = myform.{$name};"
                                                            . "for (i = 0; i < selectBox.options.length; i++  ) { if ( selectBox.options[i].selected === true && selectBox.options[i].value != '' ) { hasSelected = true; break; } }"
@@ -265,10 +265,10 @@ class Field extends \XoopsObject
                 $element = new \XoopsFormSelect($caption, $name, $value);
                 // If options do not include an empty element, then add a blank option to prevent any default selection
                 if (!\array_key_exists('', $options)) {
-                    $element->addOption('', _NONE);
+                    $element->addOption('', \_NONE);
                     //trabis
                     if (1 == $this->getVar('field_required')) {
-                        $eltmsg                          = empty($caption) ? \sprintf(_FORM_ENTER, $name) : \sprintf(_FORM_ENTER, $caption);
+                        $eltmsg                          = empty($caption) ? \sprintf(\_FORM_ENTER, $name) : \sprintf(\_FORM_ENTER, $caption);
                         $eltmsg                          = \str_replace('"', '\"', \stripslashes($eltmsg));
                         $element->customValidationCode[] = "\nvar hasSelected = false; var selectBox = myform.{$name};"
                                                            . "for (i = 0; i < selectBox.options.length; i++  ) { if ( selectBox.options[i].selected === true && selectBox.options[i].value != '' ) { hasSelected = true; break; } }"
@@ -441,7 +441,7 @@ class Field extends \XoopsObject
 
                 return $user_rankimage . $userrank['title'];
             case 'yesno':
-                return $value ? _YES : _NO;
+                return $value ? \_YES : \_NO;
             case 'timezone':
                 require_once $GLOBALS['xoops']->path('class/xoopslists.php');
                 $timezones = \XoopsLists::getTimeZoneList();

@@ -56,8 +56,8 @@ class Utf8map extends XoopsObject
         }
         foreach (['created', 'updated'] as $key) {
             if ($this->getVar($key) > 0) {
-                $ret['form'][$key] = \date(_DATESTRING, $this->getVar($key));
-                $ret[$key]         = \date(_DATESTRING, $this->getVar($key));
+                $ret['form'][$key] = \date(\_DATESTRING, $this->getVar($key));
+                $ret[$key]         = \date(\_DATESTRING, $this->getVar($key));
             }
         }
 

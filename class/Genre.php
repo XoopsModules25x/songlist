@@ -62,8 +62,8 @@ class Genre extends \XoopsObject
         }
         foreach (['created', 'updated'] as $key) {
             if ($this->getVar($key) > 0) {
-                $ret['form'][$key] = \date(_DATESTRING, $this->getVar($key));
-                $ret[$key]         = \date(_DATESTRING, $this->getVar($key));
+                $ret['form'][$key] = \date(\_DATESTRING, $this->getVar($key));
+                $ret[$key]         = \date(\_DATESTRING, $this->getVar($key));
             }
         }
         $ret['rank'] = \number_format(($this->getVar('rank') > 0 && $this->getVar('votes') > 0 ? $this->getVar('rank') / $this->getVar('votes') : 0), 2) . \_MI_SONGLIST_OFTEN;

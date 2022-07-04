@@ -49,7 +49,7 @@ class AlbumsHandler extends XoopsPersistableObjectHandler
                 if (\XOBJ_DTYPE_TXTBOX == $object->vars[$var[0]]['data_type']
                     || \XOBJ_DTYPE_TXTAREA == $object->vars[$var[0]]['data_type']) {
                     $criteria->add(new Criteria('`' . $var[0] . '`', '%' . $var[1] . '%', ($var[2] ?? 'LIKE')));
-                } elseif (in_array($object->vars[$var[0]]['data_type'], [XOBJ_DTYPE_INT, XOBJ_DTYPE_DECIMAL, XOBJ_DTYPE_FLOAT])) {
+                } elseif (\in_array($object->vars[$var[0]]['data_type'], [\XOBJ_DTYPE_INT, \XOBJ_DTYPE_DECIMAL, XOBJ_DTYPE_FLOAT])) {
                     $criteria->add(new Criteria('`' . $var[0] . '`', $var[1], ($var[2] ?? '=')));
                 } elseif (\XOBJ_DTYPE_ENUM == $object->vars[$var[0]]['data_type']) {
                     $criteria->add(new Criteria('`' . $var[0] . '`', $var[1], ($var[2] ?? '=')));
@@ -122,7 +122,7 @@ class AlbumsHandler extends XoopsPersistableObjectHandler
                 }
             }
 
-            if (is_array($obj->vars['aids']['value']) && 0 != \count($obj->vars['aids']['value']) && true === $obj->vars['aids']['changed']) {
+            if (\is_array($obj->vars['aids']['value']) && 0 != \count($obj->vars['aids']['value']) && true === $obj->vars['aids']['changed']) {
                 foreach ($obj->vars['aids']['value'] as $aid) {
                     if (!\is_array($aid, $old->getVar('aids')) && 0 != $aid) {
                         $artists = $artistsHandler->get($aid);

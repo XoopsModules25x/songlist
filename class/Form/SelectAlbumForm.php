@@ -269,7 +269,7 @@ class SelectAlbumForm extends XoopsFormElement
         if ($this->isRequired()) {
             $eltname    = $this->getName();
             $eltcaption = $this->getCaption();
-            $eltmsg     = empty($eltcaption) ? \sprintf(_FORM_ENTER, $eltname) : \sprintf(_FORM_ENTER, $eltcaption);
+            $eltmsg     = empty($eltcaption) ? \sprintf(\_FORM_ENTER, $eltname) : \sprintf(\_FORM_ENTER, $eltcaption);
             $eltmsg     = \str_replace('"', '\"', \stripslashes($eltmsg));
 
             return "\nvar hasSelected = false; var selectBox = myform.{$eltname};"
