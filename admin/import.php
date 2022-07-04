@@ -116,7 +116,7 @@ switch ($op) {
                 $filesize = filesize($GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas'] . $_SESSION['xmlfile']));
                 $mb       = floor($filesize / 1024 / 1024);
                 if ($mb > 32) {
-                    set_ini('memory_limit', ($mb + 128) . 'M');
+                    ini_set('memory_limit', ($mb + 128) . 'M');
                 }
 
                 $record = 0;

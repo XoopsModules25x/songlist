@@ -404,7 +404,7 @@ class FormController
         $filesize = filesize($GLOBALS['xoops']->path($GLOBALS['songlistModuleConfig']['upload_areas'] . $file));
         $mb       = floor($filesize / 1024 / 1024);
         if ($mb > 32) {
-            set_ini('memory_limit', ($mb + 128) . 'M');
+            ini_set('memory_limit', ($mb + 128) . 'M');
         }
         set_time_limit(3600);
 
