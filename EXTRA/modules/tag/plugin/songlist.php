@@ -17,19 +17,19 @@ function songlist_tag_iteminfo(&$items)
         }
     }
     $item_handler =& xoops_getModuleHandler('songs', 'songlist');
-    $items_obj = $item_handler->getObjects(new Criteria("sid", "(" . implode(", ", $items_id) . ")", "IN"), true);
+    $items_obj = $item_handler->getObjects(new Criteria('sid', '(' . implode(', ', $items_id) . ')', 'IN'), true);
     $myts = MyTextSanitizer::getInstance();
     foreach (array_keys($items) as $cat_id) {
         foreach (array_keys($items[$cat_id]) as $item_id) {
             $item_obj =& $items_obj[$item_id];
             if (is_object($item_obj))
 			$items[$cat_id][$item_id] = [
-                "title"     => $item_obj->getVar("title"),
-                "uid"       => $item_obj->getVar("uid"),
-                "link"      => 'index.php?op=item&fct=item&id='.$item_obj->getVar("sid").'&cid='.$item_obj->getVar("cid"),
-                "time"      => $item_obj->getVar("date"),
-                "tags"      => tag_parse_tag($item_obj->getVar("tags", "n")),
-                "content"   => $myts->displayTarea($item_obj->getVar("lyrics"),true,true,true,true,true,true)
+                'title'   => $item_obj->getVar('title'),
+                'uid'     => $item_obj->getVar('uid'),
+                'link'    => 'index.php?op=item&fct=item&id=' . $item_obj->getVar('sid') . '&cid=' . $item_obj->getVar('cid'),
+                'time'    => $item_obj->getVar('date'),
+                'tags'    => tag_parse_tag($item_obj->getVar('tags', 'n')),
+                'content' => $myts->displayTarea($item_obj->getVar('lyrics'), true, true, true, true, true, true)
             ];
         }
     }
@@ -45,29 +45,29 @@ function songlist_tag_iteminfo(&$items)
 function songlist_tag_synchronization($mid)
 {
     $item_handler =& xoops_getModuleHandler('songs', 'songlist');
-    $link_handler =& xoops_getModuleHandler("link", "tag");
+    $link_handler =& xoops_getModuleHandler('link', 'tag');
         
     /* clear tag-item links */
-    if (version_compare( mysql_get_server_info(), "4.1.0", "ge" )):
+    if (version_compare(mysql_get_server_info(), '4.1.0', 'ge')):
     $sql =  "    DELETE FROM {$link_handler->table}" .
-            "    WHERE " .
+            '    WHERE ' .
             "        tag_modid = {$mid}" .
-            "        AND " .
-            "        ( tag_itemid NOT IN " .
+            '        AND ' .
+            '        ( tag_itemid NOT IN ' .
             "            ( SELECT DISTINCT {$item_handler->keyName} " .
             "                FROM {$item_handler->table} " .
             "                WHERE {$item_handler->table}.approved > 0" .
-            "            ) " .
-            "        )";
+            '            ) ' .
+            '        )';
     else:
     $sql =  "    DELETE {$link_handler->table} FROM {$link_handler->table}" .
             "    LEFT JOIN {$item_handler->table} AS aa ON {$link_handler->table}.tag_itemid = aa.{$item_handler->keyName} " .
-            "    WHERE " .
+            '    WHERE ' .
             "        tag_modid = {$mid}" .
-            "        AND " .
+            '        AND ' .
             "        ( aa.{$item_handler->keyName} IS NULL" .
-            "            OR aa.approved < 1" .
-            "        )";
+            '            OR aa.approved < 1' .
+            '        )';
     endif;
     if (!$result = $link_handler->db->queryF($sql)) {
         //xoops_error($link_handler->db->error());
